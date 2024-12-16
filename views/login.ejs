@@ -3,9 +3,103 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <!-- jquery CDN -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <!-- googlrFont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- css -->
+    <link rel="stylesheet" href="/static/css/login.css" />
+
+    <title>로그인</title>
   </head>
   <body>
-    login
+    <header>
+      <a href="#" onClick="history.back()">
+        <img src="/static/img/icons/Arrow - Left.png" alt="arrow" />
+      </a>
+      <p class="logo">로그인</p>
+    </header>
+
+    <div class="con">
+      <div class="loginDiv">
+        <form name="loginForm">
+          <input
+            type="text"
+            name="userId"
+            class="userId"
+            placeholder="  아이디"
+            required
+          />
+          <br />
+          <input
+            type="password"
+            name="userPw"
+            class="userPw"
+            placeholder="  비밀번호"
+            required
+          />
+          <br />
+          <label for="checkbox">
+            <input type="checkbox" name="autoLogin" checked />
+            자동 로그인
+          </label>
+          <br />
+          <button type="button" onclick="login()" class="loginB">로그인</button>
+          <br />
+          <button
+            type="button"
+            class="registerB"
+            onclick="location.href='/register'"
+          >
+            회원가입
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function login() {
+        const form = document.forms["loginForm"];
+        console.log("form.userId", form.userId.value);
+        console.log("form.userPw", form.userPw.value);
+        // 유효성 검사
+        if (form.userId.value.length === 0 || form.userPw.value.length === 0) {
+          alert("아이디와 비밀번호를 입력해주세요");
+          return;
+        }
+
+        //Ajax
+
+        $.ajax({
+          type: "post",
+          url: "/login",
+          data: {
+            userId: form.userId.value,
+            userPw: form.userPw.value,
+            autoLogin: form.autoLogin.checked,
+          },
+          success: function (res) {
+            if (res.success) {
+              console.log("Token :", res.token);
+              localStorage.setItem("authToken", res.token);
+            } else {
+              alert("로그인 실패 :" + res.message);
+            }
+          },
+          error: function (error) {
+            console.log(error);
+          },
+        });
+      }
+    </script>
   </body>
 </html>
