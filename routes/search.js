@@ -4,6 +4,8 @@ const router = express.Router();
 
 // GET
 router.get("/", controller.search); // search
+router.get("/video", controller.searchVideo);
+
 // POST
 
 module.exports = router;
