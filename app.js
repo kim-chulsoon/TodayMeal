@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-// const db = require("./models");no
+const db = require("./models");
 require("dotenv").config();
 const PORT = process.env.PORT;
 
@@ -27,12 +27,12 @@ app.get("*", (req, res) => {
   res.render("404");
 });
 
-// db.sequelize.sync({ force: false }).then((result) => {
-//   app.listen(PORT, () => {
-//     console.log(`http://localhost:${PORT}`);
-//   });
-// });
-
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+db.sequelize.sync({ force: true }).then((result) => {
+  app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+  });
 });
+
+// app.listen(PORT, () => {
+//   console.log(`http://localhost:${PORT}`);
+// });

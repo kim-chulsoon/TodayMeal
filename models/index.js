@@ -20,4 +20,9 @@ if (config.use_env_variable) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User = require("./User")(sequelize, Sequelize);
+db.Videos = require("./Videos")(sequelize, Sequelize);
+db.Notes = require("./Notes")(sequelize, Sequelize);
+db.Favorites = require("./Favorites")(sequelize, Sequelize);
+
 module.exports = db;
