@@ -3,18 +3,155 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <link rel="stylesheet" href="/static//css/resset.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static//css/index.css" />
+
+    <!-- AXIOS -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Js -->
+    <script src="/static//js/search.js" defer></script>
   </head>
   <body>
-    main
+    <header>
+      <div class="logoBox">
+        <a class="logoTitle" href="/"
+          ><img src="/static/img/b_logo.png" alt="로고" />
+          <span>오늘은 뭐 먹지?</span></a
+        >
+      </div>
+      <div class="searchBox">
+        <!-- 서치 폼 -->
+        <form name="search" method="get" onsubmit="return false">
+          <input
+            type="text"
+            name="search"
+            placeholder="요리 또는 재료를 검색하세요"
+            onkeyup="search_item(event);"
+          />
+          <span class="searchIcon"
+            ><img src="/static/img/i_search.png" alt="검색"
+          /></span>
+        </form>
+      </div>
+    </header>
+    <main>
+      <div class="bestTitle">
+        <h2>인기 레시피</h2>
+      </div>
+      <div class="container">
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는ddddddddddddd</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/t_tum.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static//img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static//img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static//img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static//img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
 
-    <a href="/users/register">register</a>
-    <a href="/users/login">login</a>
-    <a href="/users">users</a>
-    <a href="/users/edit">usersedit</a>
-    <a href="/search">search</a>
-    <a href="/detail">detail</a>
-    <a href="/favorites">favorites</a>
-    <a href="/loading">loading</a>
+    <!-- 개발용 js 완료 후 필히 삭제-->
+    <script>
+      const form = document.forms["search"];
+
+      function search_item(event) {
+        // 특정 키를 처리하는 예제
+        if (event.keyCode === 13) {
+          searching(form.search.value);
+        }
+      }
+
+      function searching(e) {
+        // SQL 인젝션을 방지하기 위한 사용자 입력값 정제
+        const inputData = e; // 사용자 입력
+        const sanitizedData = inputData.replace(/['";#--]/g, "");
+
+        axios({
+          method: "get",
+          url: "/videos/search",
+          params: { content: "닭볶음탕" },
+        })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    </script>
   </body>
 </html>
