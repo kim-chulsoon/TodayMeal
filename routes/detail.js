@@ -1,5 +1,5 @@
 const express = require("express");
-const controller = require("../controller/Cindex.js");
+const controller = require("../controller/Cdetail.js");
 const router = express.Router();
 
 // GET

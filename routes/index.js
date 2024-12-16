@@ -4,8 +4,7 @@ const router = express.Router();
 
 // GET
 router.get("/", controller.main); // main
-router.get("/search", controller.search); // search
-router.get("/detail", controller.detail); // detail
+
 router.get("/loading", controller.loading); // loading
 
 // POST
