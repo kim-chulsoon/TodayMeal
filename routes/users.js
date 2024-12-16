@@ -9,5 +9,6 @@ router.get("/edit", controller.edit); // usersedit
 router.get("/register", controller.register); // register
 
 // POST
+router.post("/login", controller.userLogin); //login post
 
 module.exports = router;
