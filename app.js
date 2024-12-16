@@ -4,7 +4,7 @@ const db = require("./models");
 require("dotenv").config();
 const PORT = process.env.PORT;
 
-// 미들웨어어
+// 미들웨어
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -24,10 +24,10 @@ app.use("/search", searchRouter);
 
 //  404
 app.get("*", (req, res) => {
-  res.render("404");
+  res.status(404).render("404");
 });
 
-db.sequelize.sync({ force: true }).then((result) => {
+db.sequelize.sync({ force: false }).then((result) => {
   app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
   });
