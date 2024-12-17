@@ -5,36 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘은 뭐 먹지?</title>
     <!-- css 초기화 -->
-    <link rel="stylesheet" href="/static//css/resset.css" />
+    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
-    <link rel="stylesheet" href="/static//css/index.css" />
+    <link rel="stylesheet" href="/static/css/index.css" />
 
     <!-- AXIOS -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- Js -->
-    <script src="/static//js/search.js" defer></script>
+    <script src="/static/js/search.js" defer></script>
   </head>
   <body>
     <header>
-      <div class="logoBox">
-        <a class="logoTitle" href="/"
-          ><img src="/static/img/b_logo.png" alt="로고" />
-          <span>오늘은 뭐 먹지?</span></a
-        >
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
       </div>
-      <div class="searchBox">
-        <!-- 서치 폼 -->
-        <form name="search" method="get" onsubmit="return false">
-          <input
-            type="text"
-            name="search"
-            placeholder="요리 또는 재료를 검색하세요"
-            onkeyup="search_item(event);"
-          />
-          <span class="searchIcon"
-            ><img src="/static/img/i_search.png" alt="검색"
-          /></span>
-        </form>
+      <div class="inner">
+        <div class="searchBox">
+          <!-- 서치 폼 -->
+          <form name="search" method="get" onsubmit="return false">
+            <input
+              type="text"
+              name="search"
+              placeholder="요리 또는 재료를 검색하세요"
+              onkeyup="search_enter(event);"
+            />
+            <span class="searchIcon" onclick="search_click();"
+              ><img src="/static/img/icons/i_search.png" alt="검색"
+            /></span>
+          </form>
+        </div>
       </div>
     </header>
     <main>
@@ -45,7 +61,7 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/1.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는ddddddddddddd</h3>
           </a>
@@ -54,7 +70,7 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/2.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는</h3>
           </a>
@@ -63,7 +79,7 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/3.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는</h3>
           </a>
@@ -72,7 +88,7 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/4.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는</h3>
           </a>
@@ -81,7 +97,7 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/1.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는</h3>
           </a>
@@ -90,7 +106,34 @@
         <div class="item">
           <a href="">
             <div class="thumbnail">
-              <img src="/static/img/t_tum.jpg" alt="백종원" />
+              <img src="/static/img/demo/2.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/3.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는ddddddddddddd</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/4.jpg" alt="백종원" />
+            </div>
+            <h3 class="title">하루 200마리씩 파는</h3>
+          </a>
+          <p class="creator">1분요리 뚝딱이형</p>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/1.jpg" alt="백종원" />
             </div>
             <h3 class="title">하루 200마리씩 파는</h3>
           </a>
@@ -98,60 +141,32 @@
         </div>
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
     <div class="mgnb">
       <div class="menubox">
         <div class="menu">
-          <a href="/"><img src="/static//img/icons/Home.png" alt="홈버튼" /></a>
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
         </div>
         <div class="menu">
           <a href="/favorites"
-            ><img src="/static//img/icons/Heart.png" alt="즐겨찾기"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
           /></a>
         </div>
         <div class="menu">
           <!-- 로그인시  태그변경 -->
           <% if(!true){ %>
           <a href="users/login"
-            ><img src="/static//img/icons/Login.png" alt="로그인"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
           /></a>
           <%}else{%>
           <a href="users/logout"
-            ><img src="/static//img/icons/Profile.png" alt="프로필"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
           /></a>
           <%} %>
         </div>
       </div>
     </div>
-
-    <!-- 개발용 js 완료 후 필히 삭제-->
-    <script>
-      const form = document.forms["search"];
-
-      function search_item(event) {
-        // 특정 키를 처리하는 예제
-        if (event.keyCode === 13) {
-          searching(form.search.value);
-        }
-      }
-
-      function searching(e) {
-        // SQL 인젝션을 방지하기 위한 사용자 입력값 정제
-        const inputData = e; // 사용자 입력
-        const sanitizedData = inputData.replace(/['";#--]/g, "");
-
-        axios({
-          method: "get",
-          url: "/videos/search",
-          params: { content: "닭볶음탕" },
-        })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    </script>
   </body>
 </html>
