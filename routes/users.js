@@ -12,4 +12,7 @@ router.get("/register", controller.register); // register
 router.post("/login", controller.userLogin); //login post
 router.post("/register", controller.userRegister); //register post
 
+//PATCH
+router.patch("/", controller.updateUserInfo);
+
 module.exports = router;
