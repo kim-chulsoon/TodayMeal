@@ -26,6 +26,7 @@ exports.searchVideo = async (req, res) => {
           part: "snippet",
           q: query,
           type: "video",
+          videoDuration: "medium",
           maxResults,
           key: YOUTUBE_API_KEY,
         },
