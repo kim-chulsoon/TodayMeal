@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
       },
       birthdate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
       },
     },
     {

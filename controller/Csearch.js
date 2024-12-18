@@ -14,6 +14,7 @@ exports.searchVideo = async (req, res) => {
   const maxResults = req.query.maxResults || 5;
 
   if (!query) {
+    console.log("검색어가 입력되지 않음");
     return res.status(400).json({ message: "검색어를 입력해주세요" });
   }
 
@@ -25,6 +26,7 @@ exports.searchVideo = async (req, res) => {
           part: "snippet",
           q: query,
           type: "video",
+          videoDuration: "medium",
           maxResults,
           key: YOUTUBE_API_KEY,
         },
@@ -39,9 +41,10 @@ exports.searchVideo = async (req, res) => {
       thumbnail: item.snippet.thumbnails.default.url,
     }));
 
+    console.log("검색 결과 비디오 개수", videos.length);
     res.render("search", { videos, error: null });
   } catch (err) {
-    console.log("youtube api err", err);
+    console.log("youtube api err", err.message);
     res.status(500).send("youtube api err");
   }
 };

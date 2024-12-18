@@ -224,10 +224,38 @@
           </li>
         </ul>
       </div>
+=======
+    <title>검색 결과</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+  </head>
+  <body>
+    <header>
+      <h1>검색 결과</h1>
+    </header>
+    <main>
+      <% if (error) { %>
+      <p><%= error %></p>
+      <% } else if (videos && videos.length > 0) { %>
+      <ul>
+        <% videos.forEach(video => { %>
+        <li>
+          <a href="<%= video.videoUrl %>" target="_blank">
+            <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
+            <h3><%= video.title %></h3>
+          </a>
+          <p><%= video.description %></p>
+          <p>채널명: <%= video.channelTitle %></p>
+        </li>
+        <% }) %>
+      </ul>
+      <% } else { %>
+      <p>검색 결과가 없습니다.</p>
+      <% } %>
     </main>
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
+
     <div class="mgnb">
       <div class="menubox">
         <div class="menu">
