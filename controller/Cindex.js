@@ -30,6 +30,7 @@ exports.main = async (req, res) => {
 
     // 데이터 변환
     const videos = response.data.items.map((item) => ({
+      videoId: item.id.videoId,
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
