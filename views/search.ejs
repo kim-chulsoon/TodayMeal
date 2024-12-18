@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/css/search.css" />
+    <!-- pagination CSS -->
+    <link rel="stylesheet" href="/static/css/pagination.css" />
+
+    <!-- AXIOS -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Js -->
+    <script src="/static/js/search.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
+      </div>
+      <div class="inner">
+        <div class="searchBox">
+          <!-- 서치 폼 -->
+          <form action="/search" name="keyword" method="get">
+            <input
+              type="text"
+              name="search"
+              placeholder="요리 또는 재료를 검색하세요"
+              onkeyup="search_enter(event);"
+            />
+            <span class="searchIcon" onclick="search_click();"
+              ><img src="/static/img/icons/i_search.png" alt="검색"
+            /></span>
+          </form>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bestTitle">
+        <p>총 295개의 결과</p>
+      </div>
+      <div class="container">
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/1.jpg" alt="백종원" />
+            </div>
+            <div class="desc">
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/2.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                지난번 시장에서 산 닭으로 닭볶음탕을 만들어 보았어요. 어렵지
+                않으니 맛있게 만들어보세요! ================= ====닭볶음탕
+                [재료] 토막 닭고기 1마리(10호) 물 3컵(540ml)대파
+                2대(200g)청양고추 3개(30g)홍고추 2개(20g)새 송이버섯
+                2개(120g)표고버섯 2개(40g)당근 1/3개(90g)양파 1개(250g)감자
+                2개(400g)간 마늘 1큰술(15g)굵은 고춧 가루 1/2컵(40g)고운
+                고춧가루 1큰술(6g)진간장 4/5컵(144ml)황설탕 3큰술(36g) 후춧가루
+                약간
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/3.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/4.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/1.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/2.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="item">
+          <a href="">
+            <div class="thumbnail">
+              <img src="/static/img/demo/3.jpg" alt="백종원" />
+            </div>
+            <div>
+              <h3 class="title">
+                식당에서 먹는 닭볶음탕 레시피 알려드립니다 백종원의 완벽한
+                레시피
+              </h3>
+              <p class="creator">백종원</p>
+              <p class="subtitle">
+                양념이 꾸덕꾸덕하니 정말 맛있고 참신한 레시피네요특히 밥을
+                비벼서 먹을 때 더욱 맛있는 레시피인 것양념이 꾸덕꾸덕하니 정말
+                맛있고 참신한 레시피네요특히 밥을 비벼서 먹을 때 더욱 맛있는
+                레시피인 것
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="pageBox">
+        <ul class="pagination">
+          <li class="page-item arrowLeft">
+            <a class="page-link" href="#"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
+            /></a>
+          </li>
+          <li class="page-item atv"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+          <li class="page-item arrowRight">
+            <a class="page-link" href="#"
+              ><img src="/static/img/icons/ArrowRight2.png" alt=""
+            /></a>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
+    <script>
+      function test() {
+        axios({
+          method: "get",
+          url: "/",
+          data: {},
+        })
+          .then((res) => {})
+          .catch((err) => {
+            console.log();
+          });
+      }
+    </script>
+  </body>
+</html>
