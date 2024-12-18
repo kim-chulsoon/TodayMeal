@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      youtube_url: {
+      youtubeUrl: {
         type: DataTypes.STRING(500),
         allowNull: false,
+        field: "youtube_url",
       },
-      thumbnail_url: {
+      thumbnailUrl: {
         type: DataTypes.STRING(500),
+        field: "thumbnail_url",
       },
     },
     {

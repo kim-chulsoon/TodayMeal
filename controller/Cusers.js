@@ -65,7 +65,7 @@ exports.userProfile = async (req, res) => {
     // User 테이블에서 사용자 정보 조회
     const user = await User.findOne({
       where: { id: userId },
-      attributes: ["id", "user_id", "name", "birthdate"], // 반환할 필드 지정
+      attributes: ["id", "userId", "name", "birthdate"], // 반환할 필드 지정
     });
 
     if (!user) {
@@ -74,16 +74,8 @@ exports.userProfile = async (req, res) => {
         .json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
     }
 
-    // user_id를 userId 키로 추가해서 반환
-    const userData = {
-      id: user.id,
-      userId: user.user_id,
-      name: user.name,
-      birthdate: user.birthdate,
-    };
-
     // 사용자 정보 반환
-    res.status(200).json({ success: true, user: userData });
+    res.status(200).json({ success: true, user });
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res.status(500).json({ success: false, message: "서버 오류 발생" });
@@ -94,7 +86,6 @@ exports.userProfile = async (req, res) => {
 exports.userRegister = async (req, res) => {
   try {
     const { userId, userPw, userName, userBirth } = req.body; // 요청 데이터 구조에 맞게 수정
-
     console.log(userName, userBirth);
 
     // 필수 항목 체크
@@ -105,7 +96,7 @@ exports.userRegister = async (req, res) => {
     }
 
     // 아이디 중복 체크
-    const existingUser = await User.findOne({ where: { user_id: userId } });
+    const existingUser = await User.findOne({ where: { userId } });
     if (existingUser) {
       return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
     }
@@ -116,15 +107,15 @@ exports.userRegister = async (req, res) => {
 
     // 사용자 생성
     const newUser = await User.create({
-      user_id: userId,
-      user_pw: hashedPassword,
+      userId,
+      userPw: hashedPassword,
       name: userName,
       birthdate: userBirth,
     });
 
     res.status(201).json({
       message: "회원가입 성공!",
-      userId: newUser.user_id,
+      userId: newUser.userId,
       success: true,
     });
   } catch (error) {
@@ -143,7 +134,7 @@ exports.checkUserId = async (req, res) => {
       return res.status(400).json({ message: "아이디를 입력해주세요." });
     }
 
-    const existingUser = await User.findOne({ where: { user_id: userId } });
+    const existingUser = await User.findOne({ where: { userId } });
     if (existingUser) {
       return res
         .status(409)
@@ -167,7 +158,7 @@ exports.userLogin = async (req, res) => {
 
   try {
     // 데이터베이스에서 사용자 조회
-    const user = await User.findOne({ where: { user_id: userId } });
+    const user = await User.findOne({ where: { userId } });
     if (!user) {
       return res.send({
         success: false,
@@ -176,7 +167,7 @@ exports.userLogin = async (req, res) => {
     }
 
     // 비밀번호 비교
-    const isMatch = await bcrypt.compare(userPw, user.user_pw);
+    const isMatch = await bcrypt.compare(userPw, user.userPw);
     if (!isMatch) {
       return res.send({
         success: false,
@@ -213,7 +204,7 @@ exports.updateUserInfo = async (req, res) => {
     }
 
     // 사용자 조회
-    const user = await User.findOne({ where: { user_id: userId } });
+    const user = await User.findOne({ where: { userId } });
     if (!user) {
       return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
     }
@@ -231,7 +222,7 @@ exports.updateUserInfo = async (req, res) => {
     if (newBirthdate) updatedData.birthdate = newBirthdate;
 
     // 사용자 정보 업데이트
-    await User.update(updatedData, { where: { user_id: userId } });
+    await User.update(updatedData, { where: { userId } });
 
     res
       .status(200)
