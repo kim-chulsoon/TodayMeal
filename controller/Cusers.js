@@ -30,10 +30,12 @@ exports.register = (req, res) => {
 //회원가입
 exports.userRegister = async (req, res) => {
   try {
-    const { userId, userPw, name, birthdate } = req.body; // 요청 데이터 구조에 맞게 수정
+    const { userId, userPw, userName, userBirth } = req.body; // 요청 데이터 구조에 맞게 수정
+
+    console.log(userName, userBirth);
 
     // 필수 항목 체크
-    if (!userId || !userPw || !name || !birthdate) {
+    if (!userId || !userPw || !userName || !userBirth) {
       return res
         .status(400)
         .json({ message: "모든 필수 항목을 입력해주세요." });
@@ -53,16 +55,44 @@ exports.userRegister = async (req, res) => {
     const newUser = await User.create({
       user_id: userId,
       user_pw: hashedPassword,
-      name,
-      birthdate,
+      name: userName,
+      birthdate: userBirth,
     });
 
-    res
-      .status(201)
-      .json({ message: "회원가입 성공!", userId: newUser.user_id });
+    res.status(201).json({
+      message: "회원가입 성공!",
+      userId: newUser.user_id,
+      success: true,
+    });
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).json({ message: "서버 오류", error: error.message });
+  }
+};
+
+// 중복 아이디 체크
+exports.checkUserId = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    console.log(userId);
+
+    if (!userId) {
+      return res.status(400).json({ message: "아이디를 입력해주세요." });
+    }
+
+    const existingUser = await User.findOne({ where: { user_id: userId } });
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ success: false, message: "이미 존재하는 아이디입니다." });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "사용 가능한 아이디입니다." });
+  } catch (error) {
+    console.error("Error during ID check:", error);
+    return res.status(500).json({ success: false, message: "서버 오류 발생" });
   }
 };
 

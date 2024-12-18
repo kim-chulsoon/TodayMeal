@@ -11,6 +11,7 @@ router.get("/register", controller.register); // register
 // POST
 router.post("/login", controller.userLogin); //login post
 router.post("/register", controller.userRegister); //register post
+router.post("/registerIdCheck", controller.checkUserId);
 
 //PATCH
 router.patch("/", controller.updateUserInfo);
