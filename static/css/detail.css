@@ -1,0 +1,433 @@
+/* 모바일 우선 */
+
+/* 헤더 */
+header {
+  width: 100%;
+  padding: 0px 1.3rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+/* 로고 */
+header > .inner > .logoBox {
+  display: none;
+  width: 100%;
+}
+
+/* PC메뉴 가리기 */
+header > .inner > .logoBox > .gnb {
+  display: none;
+}
+
+header > .inner > .logoBox > .logoTitle > img {
+  width: 40px;
+}
+
+header > .inner > .logoBox > .logoTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-content);
+}
+
+/* PC 로그인/회원가입 */
+header > .inner > .logoBox > .gnb a:last-child {
+  margin-left: 10px;
+}
+
+/* 검색 */
+header > .inner > .searchBox {
+  position: relative;
+  width: 100%;
+}
+
+header > .inner > .searchBox input {
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  border: 2px solid var(--color-brand);
+  border-radius: 10px;
+  margin-top: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+
+/* 아이콘 */
+header > .inner > .searchBox .searchIcon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+}
+
+/* 모바일 뒤로가기 */
+header > .inner > .headMenu {
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+}
+
+header > .inner > .headMenu > .backMove {
+  width: 48px;
+  position: absolute;
+}
+
+header > .inner > .headMenu > .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+main .container .description .recipeHead {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+main .container .description .bookmarkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 30px;
+  background-color: var(--color-brand);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
+main .container .description .bookmarkButton img {
+  width: 16px;
+}
+
+/* 메인 */
+main {
+  padding: 0px 1.3rem;
+  margin-top: 40px;
+  margin-bottom: 150px;
+}
+
+/* 인기 레시피 타이틀 */
+main > .bestTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+main > .bestTitle > h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+main > .bestTitle > a {
+  font-size: 0.8rem;
+}
+
+/* 레시피 컨텐츠 */
+main > .container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 2열, 각각 동일한 너비 */
+  gap: 12px; /* 아이템 간의 간격 */
+  width: 100%;
+  margin-top: 20px;
+}
+
+main > .container .item .thumbnail {
+  width: 100%;
+}
+
+/* 메인 컨텐츠 폰트 */
+main > .container .item {
+  width: 100%;
+  overflow: hidden; /* 넘치는 요소 숨김 */
+}
+
+main > .container .item .title {
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* 크기를 초과하면 ... 표시 */
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 30px;
+  box-sizing: border-box;
+}
+
+main > .container .item .subtitle {
+  width: 100%;
+  max-height: 110px;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #000;
+  cursor: pointer;
+  line-height: 1rem;
+  overflow: hidden;
+}
+
+main > .container .item .moreLine {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main > .container .item .moreLine p {
+  width: 80px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+main > .container .item .moreLine div {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-boder);
+}
+
+main > .container .item .creator {
+  width: 100px;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: var(--color-subtitle);
+  cursor: pointer;
+  /* 크기를 초과하면 ... 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+main > .memoBox > .memoItem {
+  margin: 30px 0px;
+}
+
+main > .memoBox > .memoItem p {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+main > .memoBox > .memoItem .ingredientTextarea {
+  width: 100%;
+  height: 150px;
+  border-radius: 5px;
+  border-color: #a0a0a0;
+  resize: vertical;
+}
+
+main > .memoBox > .memoItem .RecipeTextarea {
+  width: 100%;
+  height: 250px;
+}
+
+main > .memoBox > .memoItem .memoButtons {
+  display: flex; /* 플렉스박스를 사용하여 정렬 */
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* footer PC만 노출 */
+footer {
+  display: none;
+}
+
+/* 모바일 메뉴 */
+.mgnb {
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  bottom: 0px;
+  background-color: #fff;
+  border-top: 1px solid #e4e4e4;
+}
+
+.mgnb > .menubox {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* 작은 태블릿 이상 */
+@media (min-width: 600px) {
+  header {
+    padding: 0px 2.4rem;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: center;
+  }
+
+  header > .inner > .searchBox {
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  /* 메인 */
+  main > .bestTitle {
+    justify-content: center;
+  }
+}
+
+/* 태블릿 이상 */
+@media (min-width: 768px) {
+  header {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-sizing: border-box;
+  }
+
+  /* 로고 */
+  header > .inner > .logoBox {
+    display: block;
+    width: 100%;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    left: 0px;
+    border-bottom: 1px solid var(--color-boder);
+  }
+
+  header > .inner {
+    width: 100%;
+    height: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* 로고 */
+  header > .inner > .logoBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* PC메뉴 노출시킴 */
+  header > .inner > .logoBox > .gnb {
+    display: block;
+  }
+
+  /* 모바일 뒤로가기 */
+  header > .inner > .headMenu {
+    display: none;
+  }
+
+  /* PC 로그인/회원가입 */
+  header > .inner > .logoBox > .gnb a:last-child {
+    margin-left: 10px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: left;
+  }
+
+  header > .inner > .logoBox > .logoTitle > img {
+    width: 40px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-content);
+  }
+
+  /* 검색 */
+  header > .inner > .searchBox {
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  /* 레시피 컨텐츠 */
+  main > .container {
+    margin-top: 40px;
+  }
+
+  /* 컨텐츠 제목, 크리에이터 */
+  main > .container .item .title {
+    font-size: 1.2rem;
+  }
+
+  main > .container .item .creator {
+    width: 150px;
+    font-size: 1rem;
+  }
+
+  footer {
+    display: block;
+    width: 100%;
+    height: 80px;
+    border-top: 1px solid var(--color-boder);
+    color: var(--color-subtitle);
+    margin-top: 100px;
+    line-height: 80px;
+    text-align: center;
+  }
+
+  footer p {
+    color: var(--color-subtitle);
+  }
+
+  /* 모바일 지우기 */
+  .mgnb {
+    display: none;
+  }
+}
+
+/* 데스크탑 이상 */
+@media (min-width: 1024px) {
+  header {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  header > .inner > .logoBox {
+    margin-top: 20px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: center;
+  }
+
+  main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 40px;
+    box-sizing: border-box;
+  }
+
+  /* 메인 */
+  main > .bestTitle {
+    justify-content: center;
+  }
+
+  footer {
+    width: 100%;
+    height: 100px;
+    margin-top: 100px;
+    border-top: 1px solid var(--color-boder);
+    text-align: center;
+    line-height: 100px;
+  }
+  footer > p {
+    color: var(--color-subtitle);
+  }
+}
