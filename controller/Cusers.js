@@ -86,23 +86,22 @@ exports.userLogin = async (req, res) => {
     // 비밀번호 비교
 
     //암호화 했을 때
-    // const isMatch = await bcrypt.compare(user_pw, user.user_pw);
-    // if (!isMatch) {
-    //     return res.send({
-    //   isUserId: true,
-    //   isUserPw: false,
-    //   message: "비밀번호가 일치하지 않습니다.",
-    // });
-    // }
-
-    //아직 회원가입을 구현하지 않아 암호화 전이라 테스트용 로그인
-    // 비밀번호 비교 (평문 비교)
-    if (userPw !== user.user_pw) {
+    const isMatch = await bcrypt.compare(userPw, user.user_pw);
+    if (!isMatch) {
       return res.send({
         success: false,
         message: "비밀번호가 일치하지 않습니다.",
       });
     }
+
+    //아직 회원가입을 구현하지 않아 암호화 전이라 테스트용 로그인
+    // 비밀번호 비교 (평문 비교)
+    // if (userPw !== user.user_pw) {
+    //   return res.send({
+    //     success: false,
+    //     message: "비밀번호가 일치하지 않습니다.",
+    //   });
+    // }
 
     // JWT 토큰 생성
     const expiresIn = autoLogin ? "7d" : "1h"; // 자동 로그인 체크 시 7일, 아니면 1시간
