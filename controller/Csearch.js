@@ -44,6 +44,7 @@ exports.searchVideo = async (req, res) => {
     const { items, nextPageToken, prevPageToken } = response.data;
 
     const videos = items.map((item) => ({
+      videoId: item.id.videoId, // 추가
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
