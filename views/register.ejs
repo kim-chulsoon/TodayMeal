@@ -143,7 +143,7 @@
         // 중복 아이디 체크
         $.ajax({
           type: "post",
-          url: "/registerIdCheck", //여기 수정 필요
+          url: "/users/registerIdCheck", //여기 수정 필요
           data: { userId: inputId },
           success: function (res) {
             if (res.success) {
@@ -217,7 +217,7 @@
         //post
         $.ajax({
           type: "post",
-          url: "/users/register", //수정
+          url: "/users/register",
           data: {
             userId: userId,
             userPw: userPw1,
