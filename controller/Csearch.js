@@ -10,7 +10,7 @@ exports.search = (req, res) => {
 
 /* GET /video/search */
 exports.searchVideo = async (req, res) => {
-  const query = req.query.content;
+  const query = req.query.keyword;
   const maxResults = req.query.maxResults || 5;
 
   if (!query) {
