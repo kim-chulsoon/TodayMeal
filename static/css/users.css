@@ -25,10 +25,11 @@ header > .logo {
   font-weight: 700;
   font-family: "Noto Sans KR", serif;
   position: relative;
-  right: 25px;
+  right: 20px;
 }
 header > a {
   position: relative;
+  left: 20px;
 }
 
 /* 메인 */
@@ -113,8 +114,6 @@ header > a {
   height: 60px;
   position: fixed;
   bottom: 0px;
-  background-color: #fff;
-  border-top: 1px solid #e4e4e4;
 }
 
 .Menu {
@@ -122,4 +121,102 @@ header > a {
   height: 60px;
   align-items: center;
   justify-content: space-around;
+  border-top: 1px solid #eaeaea;
+}
+
+/*  웹 */
+@media (min-width: 1024px) {
+  .mobile {
+    display: none;
+  }
+  .web {
+    display: block;
+  }
+
+  /* 헤더 */
+
+  header {
+    width: 100vw;
+    height: 80px;
+    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    margin: 0;
+  }
+
+  /* 메인 */
+  .con {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mobileTitle {
+    width: 64px;
+    height: 24px;
+    position: relative;
+    left: 150px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+
+  .logoA {
+    position: absolute;
+    left: 165px;
+    text-decoration-line: none;
+  }
+  .logoA > span {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    position: relative;
+    bottom: 10px;
+  }
+
+  .logoImg {
+    width: 27px;
+    height: 40px;
+  }
+  .menu {
+    position: absolute;
+    right: 165px;
+  }
+  .menu a {
+    color: black;
+    text-decoration-line: none;
+  }
+
+  .userBox1 {
+    width: 353px;
+    height: 140px;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+    display: flex;
+    text-align: left;
+  }
+
+  .userPic {
+    margin: 20px;
+  }
+  .userP {
+    margin: 47px 0;
+  }
+
+  footer {
+    width: 100vw;
+    height: 80px;
+    text-align: center;
+    border-top: 1px solid #eaeaea;
+    position: relative;
+    display: flex;
+    align-content: center;
+  }
+  footer > p {
+    font-size: 16px;
+    color: #747474;
+  }
 }
