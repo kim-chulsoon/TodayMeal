@@ -1,0 +1,184 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans KR", serif;
+}
+/* 헤더 */
+header {
+  width: 100vw;
+  height: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+}
+header > .logo {
+  margin: 0 auto;
+  font-size: 20px;
+  font-weight: 700;
+}
+header > a {
+  position: relative;
+  left: 20px;
+}
+
+/* 메인 */
+.regiDiv {
+  width: 100vw;
+  height: 400px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form > p {
+  font-size: 14px;
+  color: rgba(160, 160, 160, 1);
+  margin-bottom: 10px;
+}
+
+input {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.userId {
+  width: 262px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  margin-right: 10px;
+}
+
+.userIdB {
+  width: 81px;
+  height: 50px;
+  background-color: #ff8675;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.pwBox {
+  position: relative;
+  width: 353px;
+  height: 50ox;
+}
+.pwBox span {
+  position: absolute;
+  left: 310px;
+  top: 15px;
+}
+
+span > img {
+  width: 20px;
+  height: 20px;
+}
+
+.userPw {
+  width: 353px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+.userName {
+  width: 353px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.Birth {
+  width: 353px;
+  height: 50px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  color: rgba(160, 160, 160, 1);
+}
+
+.registerB {
+  width: 353px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #ff8675;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* 모바일 none */
+.web {
+  display: none;
+}
+
+/* 웹 */
+
+@media ((min-width: 1024px)) {
+  .mobile {
+    display: none;
+  }
+  .web {
+    display: block;
+  }
+
+  header {
+    width: 100vw;
+    height: 80px;
+    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    margin: 0;
+  }
+
+  .logoA {
+    position: absolute;
+    left: 165px;
+    text-decoration-line: none;
+  }
+  .logoA > span {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    position: relative;
+    bottom: 10px;
+  }
+
+  .logoImg {
+    width: 27px;
+    height: 40px;
+  }
+
+  .menu {
+    position: absolute;
+    right: 165px;
+  }
+  .menu a {
+    color: black;
+    text-decoration-line: none;
+  }
+
+  .regiDiv {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  footer {
+    width: 100vw;
+    height: 80px;
+    text-align: center;
+    border-top: 1px solid #eaeaea;
+    position: relative;
+    display: flex;
+    align-content: center;
+  }
+  footer > p {
+    font-size: 16px;
+    color: #747474;
+  }
+}
