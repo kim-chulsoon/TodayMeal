@@ -12,7 +12,17 @@
     <p>채널명: <%= video.channelTitle %></p>
     <p>조회수: <%= video.viewCount %></p>
     <p>좋아요: <%= video.likeCount %></p>
-    <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
+    <iframe
+      width="560"
+      height="315"
+      src="https://www.youtube.com/embed/<%= video.videoId %>"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    >
+    </iframe>
+
     <p><%= video.description %></p>
     <a href="<%= video.videoUrl %>" target="_blank">유튜브에서 보기</a>
     <% } else { %>
