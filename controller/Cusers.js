@@ -224,9 +224,10 @@ exports.updateUserInfo = async (req, res) => {
     // 사용자 정보 업데이트
     await User.update(updatedData, { where: { userId } });
 
-    res
-      .status(200)
-      .json({ message: "사용자 정보가 성공적으로 수정되었습니다." });
+    res.status(200).json({
+      success: true,
+      message: "사용자 정보가 성공적으로 수정되었습니다.",
+    });
   } catch (error) {
     console.error("Error during user info update:", error);
     res.status(500).json({ message: "서버 오류", error: error.message });
