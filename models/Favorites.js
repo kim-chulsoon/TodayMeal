@@ -8,13 +8,15 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "user_id",
       },
-      video_id: {
+      videoId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "video_id",
       },
     },
     {
