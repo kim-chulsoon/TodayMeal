@@ -7,6 +7,7 @@ router.get("/", controller.users); // users
 router.get("/login", controller.login); // login
 router.get("/edit", controller.edit); // usersedit
 router.get("/register", controller.register); // register
+router.get("/users", controller.userProfile);
 
 // POST
 router.post("/login", controller.userLogin); //login post

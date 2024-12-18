@@ -27,6 +27,69 @@ exports.register = (req, res) => {
   res.render("register");
 };
 
+/** 사용자 정보 조회 */
+exports.userProfile = async (req, res) => {
+  try {
+    // Authorization 헤더에서 토큰 추출
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Authorization 헤더가 필요합니다." });
+    }
+
+    const token = authHeader.split(" ")[1]; // Bearer Token 형식
+    console.log("Authorization Header:", authHeader);
+    console.log("토큰값:", token);
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "토큰이 필요합니다." });
+    }
+
+    // 토큰 검증 및 사용자 ID 추출
+    let decoded;
+    try {
+      decoded = jwt.verify(token, SECRET_KEY);
+    } catch (error) {
+      console.error("JWT 검증 실패:", error.message);
+      return res
+        .status(401)
+        .json({ success: false, message: "토큰 검증 실패: " + error.message });
+    }
+
+    const userId = decoded.userId; // 토큰 페이로드의 userId 추출
+    console.log("유저id", userId);
+
+    // User 테이블에서 사용자 정보 조회
+    const user = await User.findOne({
+      where: { id: userId },
+      attributes: ["id", "user_id", "name", "birthdate"], // 반환할 필드 지정
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
+    }
+
+    // user_id를 userId 키로 추가해서 반환
+    const userData = {
+      id: user.id,
+      userId: user.user_id,
+      name: user.name,
+      birthdate: user.birthdate,
+    };
+
+    // 사용자 정보 반환
+    res.status(200).json({ success: true, user: userData });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
+  }
+};
+
 //회원가입
 exports.userRegister = async (req, res) => {
   try {
@@ -176,5 +239,36 @@ exports.updateUserInfo = async (req, res) => {
   } catch (error) {
     console.error("Error during user info update:", error);
     res.status(500).json({ message: "서버 오류", error: error.message });
+  }
+};
+
+/**회원 탈퇴 **/
+exports.deleteUser = async (req, res) => {
+  try {
+    // 로컬스토리지에 저장된 토큰 프론트엔드에서 요청 헤더에 담아 전송해야 함
+    const token = req.headers.authorization?.split(" ")[1]; // Bearer Token 형식
+    if (!token) {
+      return res.status(401).send("토큰이 필요합니다.");
+    }
+
+    const decoded = jwt.verify(token, SECRET_KEY); // 토큰 검증
+    const userId = decoded.userId; // 페이로드에서 사용자 ID 가져오기
+
+    // User 테이블에서 현재 로그인된 사용자의 데이터 삭제
+    const deleted = await User.destroy({
+      where: { id: userId },
+    });
+
+    if (!deleted) {
+      return res.status(404).send("사용자 정보를 찾을 수 없습니다.");
+    }
+
+    // 삭제 성공 응답
+    res
+      .status(200)
+      .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).send("서버 오류 발생");
   }
 };
