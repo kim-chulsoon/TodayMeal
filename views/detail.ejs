@@ -10,6 +10,18 @@
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/css/detail.css" />
+
+    <!-- AXIOS -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- cdn -->
+    <script
+      src="https://kit.fontawesome.com/6dd6eb0895.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- JS -->
+    <script src="/static/js/bookmark.js" defer></script>
   </head>
   <body>
     <header>
@@ -58,11 +70,17 @@
           <div class="description">
             <div class="recipeHead">
               <h3 class="title"><%= video.title %></h3>
-              <button class="bookmarkButton">
-                <img src="/static/img/icons/Bookmark.png" alt="북마크" />북마크
-              </button>
+              <!-- 북마크 -->
+              <form action="post" name="bookmark">
+                <button
+                  type="button"
+                  class="bookmark bookmarkButton-off"
+                  onclick="toggle_bookmark();"
+                >
+                  <i class="fa-regular fa-heart"></i>북마크
+                </button>
+              </form>
             </div>
-
 
             <p class="creator"><%= video.channelTitle %></p>
             <p class="subtitle"><%= video.description %></p>

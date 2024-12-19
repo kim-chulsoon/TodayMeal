@@ -1,3 +1,33 @@
+@font-face {
+  font-family: "SUIT-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  /* 링크에 대한 설정 */
+  text-decoration: none;
+  color: #000;
+}
+
+body {
+  font-family: "SUIT-Regular";
+}
+
+:root {
+  /* color */
+  --color-brand: #ff8675;
+  --color-boder: #cecece;
+  --color-content: #000;
+  --color-subtitle: #747474;
+}
+
+img {
+  width: 100%;
+}
+
 /* 모바일 우선 */
 
 /* 헤더 */
@@ -82,203 +112,78 @@ header > .inner > .headMenu > .title {
   font-size: 1.2rem;
 }
 
-.main .container .description {
-  margin-top: 10px;
-}
-
-main .container .description .recipeHead {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-}
-
-/* 북마크 */
-main .container .description .bookmarkButton-off {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 30px;
-  background-color: var(--color-boder);
-  border: none;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #000;
-  cursor: pointer;
-}
-
-/* 북마크 아이콘 */
-main .container .description .bookmarkButton-off i {
-  width: 16px;
-  color: red;
-}
-
-main .container .description .bookmarkButton-on {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 30px;
-  background-color: var(--color-brand);
-  border: none;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-}
-
-main .container .description .bookmarkButton-off:active i {
-}
-
-/* 북마크 아이콘 */
-main .container .description .bookmarkButton-on i {
-  width: 16px;
-  color: red;
-}
-
-@keyframes effect {
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1.2);
-  }
-}
-
 /* 메인 */
 main {
   padding: 0px 1.3rem;
   margin-top: 40px;
-  margin-bottom: 150px;
 }
 
-/* 인기 레시피 타이틀 */
-main > .bestTitle {
-  display: flex;
-  justify-content: space-between;
-}
-
-main > .bestTitle > h2 {
-  font-size: 1.2rem;
+/* 검색결과 */
+main .bestTitle h2 {
+  font-size: 1.3rem;
   font-weight: bold;
-}
-
-main > .bestTitle > a {
-  font-size: 0.8rem;
+  text-align: center;
 }
 
 /* 레시피 컨텐츠 */
 main > .container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 2열, 각각 동일한 너비 */
+  gap: 12px; /* 아이템 간의 간격 */
   width: 100%;
   margin-top: 20px;
-}
-
-main > .container .item .thumbnail {
-  width: 100%;
-  height: 100%;
-}
-
-main > .container .item iframe {
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  border-radius: 10px;
 }
 
 /* 메인 컨텐츠 폰트 */
 main > .container .item {
   width: 100%;
+  overflow: hidden; /* 넘치는 요소 숨김 */
 }
 
+main > .container .item .thumbnail {
+  width: 100%;
+}
+
+main > .container .item .thumbnail > img {
+  border-radius: 10px;
+}
+
+/* 영상제목 */
 main > .container .item .title {
   width: 100%;
-  font-size: 1.2rem;
+  margin-top: 10px;
   font-weight: bold;
+
   /* 크기를 초과하면 ... 표시 */
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 30px;
-  box-sizing: border-box;
 }
 
+/* 영상설명 */
 main > .container .item .subtitle {
+  display: inline-block;
   width: 100%;
-  max-height: 110px;
+  height: 35px;
   margin-top: 10px;
-  font-size: 1rem;
-  color: #000;
-  cursor: pointer;
-  line-height: 1.3rem;
+  font-size: 0.9rem;
+  line-height: 1.1rem;
   overflow: hidden;
-}
-
-main > .container .item .moreLine {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-main > .container .item .moreLine p {
-  width: 80px;
-  flex-shrink: 0;
-  text-align: center;
-}
-
-main > .container .item .moreLine div {
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-boder);
+  color: #a0a0a0;
 }
 
 main > .container .item .creator {
   width: 100px;
-  margin-top: 10px;
-  font-size: 1rem;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
   color: var(--color-subtitle);
   cursor: pointer;
   /* 크기를 초과하면 ... 표시 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-main > .memoBox > .memoItem {
-  margin: 30px 0px;
-}
-
-main > .memoBox > .memoItem p {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-main > .memoBox > .memoItem .ingredientTextarea {
-  width: 100%;
-  height: 150px;
-  border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: vertical;
-}
-
-main > .memoBox > .memoItem .RecipeTextarea {
-  width: 100%;
-  height: 250px;
-  border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: vertical;
-}
-
-main > .memoBox > .memoItem .memoButtons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
 }
 
 /* footer PC만 노출 */
@@ -303,6 +208,8 @@ footer {
   justify-content: space-around;
 }
 
+/* 페이징 */
+
 /* 작은 태블릿 이상 */
 @media (min-width: 600px) {
   header {
@@ -322,6 +229,11 @@ footer {
   main > .bestTitle {
     justify-content: center;
   }
+
+  main > .container {
+    grid-template-columns: repeat(2, 1fr); /* 2열, 각각 동일한 너비 */
+    gap: 20px;
+  }
 }
 
 /* 태블릿 이상 */
@@ -331,12 +243,6 @@ footer {
     margin: 0 auto;
     margin-top: 20px;
     box-sizing: border-box;
-  }
-
-  /* 로고 */
-  header > .inner > .logoBox {
-    display: block;
-    width: 100%;
   }
 
   header::after {
@@ -406,26 +312,64 @@ footer {
   /* 레시피 컨텐츠 */
   main > .container {
     margin-top: 40px;
+    grid-template-columns: repeat(1, 1fr); /* 2열, 각각 동일한 너비 */
+    gap: 30px;
   }
 
-  /* 컨텐츠 제목, 크리에이터 */
-  main > .container .item .title {
-    font-size: 1.2rem;
+  /* 메인 컨텐츠 */
+  main > .container .item {
+    width: 100%;
+    height: 200px;
   }
 
-  main > .container .item .creator {
-    width: 150px;
-    font-size: 1rem;
+  /* 메인 컨텐츠 */
+  main > .container .item > a {
+    display: flex;
+    gap: 20px;
   }
 
   main > .container .item .thumbnail {
-    width: 100%;
+    flex: 0 0 300px; /* 고정 크기 200px */
   }
 
-  main > .container .item iframe {
+  /* 영상제목, 설명 박스 */
+  main > .container .item .desc {
+    flex: 1; /* 남은 공간을 차지 */
+  }
+
+  /* 영상제목 */
+  main > .container .item .title {
     width: 100%;
-    height: 100%;
-    min-height: 500px;
+
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 0px;
+    /* 크기를 초과하면 ... 표시 */
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 영상설명 */
+  main > .container .item .subtitle {
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+  }
+
+  main > .container .item .creator {
+    width: 100px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--color-subtitle);
+    cursor: pointer;
+    /* 크기를 초과하면 ... 표시 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   footer {
@@ -477,15 +421,6 @@ footer {
     justify-content: center;
   }
 
-  main > .container .item .thumbnail {
-    width: 100%;
-  }
-
-  main > .container .item iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
-  }
   footer {
     width: 100%;
     height: 100px;
