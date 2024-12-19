@@ -2,31 +2,131 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title><%= video ? video.title : "비디오 상세" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/css/detail.css" />
   </head>
   <body>
-    <% if (error) { %>
-    <h2><%= error %></h2>
-    <% } else if (video) { %>
-    <h1><%= video.title %></h1>
-    <p>채널명: <%= video.channelTitle %></p>
-    <p>조회수: <%= video.viewCount %></p>
-    <p>좋아요: <%= video.likeCount %></p>
-    <iframe
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/<%= video.videoId %>"
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-    >
-    </iframe>
+    <header>
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
+        <div class="headMenu">
+          <div class="backMove">
+            <a href="/"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
+            /></a>
+          </div>
+          <div class="title">
+            <h3>뒤로가기</h3>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="item">
+          <div class="thumbnail">
+            <iframe
+              src="https://www.youtube.com/embed/<%= video.videoId %>"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="description">
+            <div class="recipeHead">
+              <h3 class="title"><%= video.title %></h3>
+              <button class="bookmarkButton">
+                <img src="/static/img/icons/Bookmark.png" alt="북마크" />북마크
+              </button>
+            </div>
 
-    <p><%= video.description %></p>
-    <a href="<%= video.videoUrl %>" target="_blank">유튜브에서 보기</a>
-    <% } else { %>
-    <h2>비디오 정보가 없습니다.</h2>
-    <% } %>
+
+            <p class="creator"><%= video.channelTitle %></p>
+            <p class="subtitle"><%= video.description %></p>
+            <div class="moreLine">
+              <div></div>
+              <p>더보기</p>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="memoBox">
+        <div class="memoItem">
+          <form name="memo" method="post">
+            <label>
+              <p>재료메모장</p>
+              <textarea class="ingredientTextarea" name="" id=""></textarea>
+            </label>
+            <div class="memoButtons">
+              <button class="btn btnClose">취소</button>
+              <button class="btn btnOpen">수정</button>
+            </div>
+          </form>
+        </div>
+        <div class="memoItem">
+          <form name="memo" method="post">
+            <label>
+              <p>레시피 메모장</p>
+              <textarea class="RecipeTextarea" name="" id=""></textarea>
+            </label>
+            <div class="memoButtons">
+              <button class="btn btnClose">취소</button>
+              <button class="btn btnOpen">수정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

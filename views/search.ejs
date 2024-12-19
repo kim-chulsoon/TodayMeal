@@ -56,53 +56,54 @@
       </div>
     </header>
     <main>
-        <div class="bestTitle">
-            <% if (videos && videos.length > 0) { %>
-              <% videos.forEach(video => { %>
-                <div class="item">
-                  <a href="/detail?videoId=<%= video.videoId %>" target="_blank">
-                    <div class="thumbnail">
-                      <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
-                    </div>
-                    <h3 class="title"><%= video.title %></h3>
-                  </a>
-                  <p class="creator"><%= video.channelTitle %></p>
-                  <p class="description"><%= video.description %></p>
-                </div>
-              <% }); %>
+      <div class="bestTitle">
 
-              <div class="pagination">
-                <% if (prevPageToken) { %>
-                  <a href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"><img src="/static/img/icons/ArrowLeft2.png" alt=""
-                    /></a>
-                <% } %>
-                <% if (nextPageToken) { %>
-                  <a href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"><img src="/static/img/icons/ArrowRight2.png" alt=""
-                    /></a>
-                <% } %>
-              </div>
-            <% } else { %>
-              <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
+        <p>검색결과</p>
+      </div>
+      <div class="container">
+        <% if (videos && videos.length > 0) { %>
+          <% videos.forEach(video => { %>
+        <div class="item">
+          <a href="/detail?videoId=<%= video.videoId %>" >
+            <div class="thumbnail">
+              <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
+            </div>
+            <div class="description">
+              <h3 class="title"><%= video.title %></h3>
+              <p class="creator"><%= video.channelTitle %></p>
+              <p class="subtitle"><%= video.description %></p>
+            </div>
+          </a>
+        </div>
+        <% }); %>
+        
+
+        <div class="pageBox">
+          <ul class="pagination">
+            <% if (prevPageToken) { %>
+            <li class="page-item arrowLeft">
+             
+                <a href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"><img src="/static/img/icons/ArrowLeft2.png" alt=""
+                  /></a>
+             
+            </li>
             <% } %>
-          </div>
-      <div class="pageBox">
-        <ul class="pagination">
-          <li class="page-item arrowLeft">
-            <a class="page-link" href="#"
-              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
-            /></a>
-          </li>
-          <li class="page-item atv"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">4</a></li>
-          <li class="page-item"><a class="page-link" href="#">5</a></li>
-          <li class="page-item arrowRight">
-            <a class="page-link" href="#"
-              ><img src="/static/img/icons/ArrowRight2.png" alt=""
-            /></a>
-          </li>
-        </ul>
+            <% if (nextPageToken) { %>
+            <li class="page-item arrowRight">
+             
+                <a><img src="/static/img/icons/ArrowLeft2.png" alt=""
+                  /></a>
+                <a href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"><img src="/static/img/icons/ArrowRight2.png" alt=""
+                  /></a>
+              
+            </li>
+            <% } %>
+          </ul>
+        </div>
+
+      <% } else { %>
+        <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
+      <% } %>
       </div>
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
