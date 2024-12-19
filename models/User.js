@@ -7,20 +7,28 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      user_id: {
+      userId: {
         type: DataTypes.STRING(20),
         allowNull: false,
         unique: true,
+        field: "user_id",
       },
-      user_pw: {
+      userPw: {
         type: DataTypes.STRING(200),
         allowNull: false,
+        field: "user_pw",
       },
       name: {
         type: DataTypes.STRING(20),
       },
       birthdate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
+      },
+      profileImage: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        defaultValue: "default.png", // 기본 이미지 설정
+        field: "profile_image",
       },
     },
     {

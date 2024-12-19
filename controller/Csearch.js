@@ -10,11 +10,19 @@ exports.search = (req, res) => {
 
 /* GET /video/search */
 exports.searchVideo = async (req, res) => {
+  console.log("검색어", req.query.keyword);
   const query = req.query.keyword;
-  const maxResults = req.query.maxResults || 5;
+  const pageToken = req.query.pageToken;
+  const maxResults = 7;
 
   if (!query) {
-    return res.status(400).json({ message: "검색어를 입력해주세요" });
+    return res.render("search", {
+      videos: [],
+      error: "검색어를 입력해주세요.",
+      query,
+      nextPageToken: null,
+      prevPageToken: null,
+    });
   }
 
   try {
@@ -25,13 +33,18 @@ exports.searchVideo = async (req, res) => {
           part: "snippet",
           q: query,
           type: "video",
+          videoDuration: "medium",
           maxResults,
           key: YOUTUBE_API_KEY,
+          pageToken: pageToken,
         },
       },
     );
 
-    const videos = response.data.items.map((item) => ({
+    const { items, nextPageToken, prevPageToken } = response.data;
+
+    const videos = items.map((item) => ({
+      videoId: item.id.videoId, // 추가
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
@@ -39,9 +52,16 @@ exports.searchVideo = async (req, res) => {
       thumbnail: item.snippet.thumbnails.default.url,
     }));
 
-    res.render("search", { videos, error: null });
+    console.log("검색 결과 비디오 개수", videos.length);
+    res.render("search", {
+      videos,
+      error: null,
+      query,
+      nextPageToken: nextPageToken || null,
+      prevPageToken: prevPageToken || null,
+    });
   } catch (err) {
-    console.log("youtube api err", err);
+    console.log("youtube api err", err.message);
     res.status(500).send("youtube api err");
   }
 };

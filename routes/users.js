@@ -7,9 +7,14 @@ router.get("/", controller.users); // users
 router.get("/login", controller.login); // login
 router.get("/edit", controller.edit); // usersedit
 router.get("/register", controller.register); // register
+router.get("/details", controller.userProfile);
 
 // POST
 router.post("/login", controller.userLogin); //login post
 router.post("/register", controller.userRegister); //register post
+router.post("/registerIdCheck", controller.checkUserId);
+
+//PATCH
+router.patch("/", controller.updateUserInfo);
 
 module.exports = router;
