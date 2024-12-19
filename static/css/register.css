@@ -59,6 +59,37 @@ input {
   margin-right: 10px;
   background-color: #cecece;
 }
+/*프로필 사진*/
+.profileSection {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.profileImg {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.dynamic {
+  display: flex;
+  align-items: center;
+}
+
+.userProfileB {
+  width: 100px;
+  height: 50px;
+  background-color: #ff8675;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  right: 50px;
+}
 
 .userIdB {
   width: 81px;
