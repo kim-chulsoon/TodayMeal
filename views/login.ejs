@@ -18,8 +18,10 @@
     />
     <!-- css -->
     <link rel="stylesheet" href="/static/css/login.css" />
-
     <title>로그인</title>
+
+    <!-- js -->
+    <script src="/static/js/login.js" defer></script>
   </head>
   <body>
     <header>
@@ -32,6 +34,7 @@
         <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
         <span>오늘은 뭐 먹지?</span>
       </a>
+      <!-- / 수정!!!!!!!!!!!!!1 -->
       <div class="menu web">
         <a href="/users/login">로그인</a>
         <a href="/users/register">회원가입</a>
@@ -67,7 +70,7 @@
           <button
             type="button"
             class="registerB"
-            onclick="location.href='/register'"
+            onclick="location.href='/users/register'"
           >
             회원가입
           </button>
@@ -78,6 +81,14 @@
     <footer class="web">
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
+
+    <div class="banner">
+      <div class="inner">
+        <img src="/static/img/logo/w_logo.png" alt="로고" />
+        <p class="title">오늘은 뭐 먹지?</p>
+        <p class="subTitle">매번 드는 고민! 해결</p>
+      </div>
+    </div>
 
     <script>
       function login() {
