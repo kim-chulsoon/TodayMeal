@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       profileImage: {
         type: DataTypes.STRING(255),
         allowNull: true,
-        defaultValue: "default.png", // 기본 이미지 설정
+        defaultValue: "/static/img/icons/profile.png", // 기본 이미지 설정
         field: "profile_image",
       },
     },

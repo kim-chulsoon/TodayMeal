@@ -3,6 +3,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { User } = require("../models"); // User 모델 가져오기
+const upload = require("../app");
 
 // JWT 시크릿 키
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -27,7 +28,7 @@ exports.register = (req, res) => {
   res.render("register");
 };
 
-/** 사용자 정보 조회 */
+// /** 사용자 정보 조회 */
 exports.userProfile = async (req, res) => {
   try {
     // Authorization 헤더에서 토큰 추출
@@ -65,7 +66,7 @@ exports.userProfile = async (req, res) => {
     // User 테이블에서 사용자 정보 조회
     const user = await User.findOne({
       where: { id: userId },
-      attributes: ["id", "userId", "name", "birthdate"], // 반환할 필드 지정
+      attributes: ["id", "userId", "name", "profileImage", "birthdate"], // 반환할 필드 지정
     });
 
     if (!user) {
@@ -262,5 +263,30 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).send("서버 오류 발생");
+  }
+};
+
+//파일 업로드
+
+exports.dynamicUpload = async (req, res) => {
+  try {
+    console.log("Uploaded file info:", req.file);
+    console.log("Additional fields:", req.body);
+
+    // req.body.userId 가 있다고 가정
+    const { userId } = req.body;
+    console.log("업로드 userId:?", userId);
+
+    // DB 업데이트
+    await User.update(
+      { profileImage: "\\" + req.file.path }, // 변경할 필드와 값
+      { where: { userId: userId } }, // 어떤 레코드를 업데이트 할지 조건
+    );
+
+    // 업데이트 성공 시 해당 경로를 응답
+    res.send(req.file.path);
+  } catch (error) {
+    console.error("File upload error:", error);
+    res.status(500).send("파일 업로드에 실패했습니다.");
   }
 };

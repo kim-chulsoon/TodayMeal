@@ -114,6 +114,7 @@
             if (res.success) {
               console.log("Token :", res.token);
               localStorage.setItem("authToken", res.token);
+              document.location.href = "/";
             } else {
               alert("로그인 실패 :" + res.message);
             }
