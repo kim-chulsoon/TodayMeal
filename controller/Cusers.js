@@ -197,7 +197,7 @@ exports.userLogin = async (req, res) => {
 //회원정보 수정
 exports.updateUserInfo = async (req, res) => {
   try {
-    const { userId, newUserPw, newName, newBirthdate } = req.body;
+    const { userId, newUserPw, newName, newBirthdate, profileImage } = req.body;
 
     // 필수 항목 체크
     if (!userId || (!newUserPw && !newName && !newBirthdate)) {
@@ -217,10 +217,11 @@ exports.updateUserInfo = async (req, res) => {
       const hashedPassword = await bcrypt.hash(newUserPw, saltRounds);
       updatedData.user_pw = hashedPassword;
     }
-
+    console.log("프로필이미지:", profileImage);
     // 다른 필드 업데이트
     if (newName) updatedData.name = newName;
     if (newBirthdate) updatedData.birthdate = newBirthdate;
+    if (profileImage) updatedData.profileImage = profileImage;
 
     // 사용자 정보 업데이트
     await User.update(updatedData, { where: { userId } });
@@ -273,15 +274,15 @@ exports.dynamicUpload = async (req, res) => {
     console.log("Uploaded file info:", req.file);
     console.log("Additional fields:", req.body);
 
-    // req.body.userId 가 있다고 가정
-    const { userId } = req.body;
-    console.log("업로드 userId:?", userId);
+    // // req.body.userId 가 있다고 가정
+    // const { userId } = req.body;
+    // console.log("업로드 userId:?", userId);
 
-    // DB 업데이트
-    await User.update(
-      { profileImage: "\\" + req.file.path }, // 변경할 필드와 값
-      { where: { userId: userId } }, // 어떤 레코드를 업데이트 할지 조건
-    );
+    // // DB 업데이트
+    // await User.update(
+    //   { profileImage: "\\" + req.file.path }, // 변경할 필드와 값
+    //   { where: { userId: userId } }, // 어떤 레코드를 업데이트 할지 조건
+    // );
 
     // 업데이트 성공 시 해당 경로를 응답
     res.send(req.file.path);

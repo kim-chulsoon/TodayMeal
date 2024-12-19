@@ -139,7 +139,6 @@
         const file = fileInput.files[0];
         const formData = new FormData();
         formData.append("dynamicFile", file);
-        formData.append("userId", userId);
 
         axios
           .post("/users/dynamicUpload", formData, {
@@ -163,6 +162,14 @@
           const userPw2 = form.userPw2.value;
           const userName = form.userName.value.trim();
           const userBirth = form.userBirth.value;
+
+          // 현재 이미지 src 값 가져오기
+          const imgSrc = document.querySelector("#profileImage").src;
+          // URL 객체를 사용해 파싱
+          const parsedUrl = new URL(imgSrc);
+          const relativePath = parsedUrl.pathname;
+
+          console.log("경로:", relativePath);
 
           if (!userId || !userPw1 || !userPw2 || !userName || !userBirth) {
             alert("모든 항목을 입력해주세요");
@@ -188,6 +195,7 @@
             newUserPw: userPw1,
             newName: userName,
             newBirthdate: userBirth,
+            profileImage: relativePath,
           });
 
           if (res.data.success) {
