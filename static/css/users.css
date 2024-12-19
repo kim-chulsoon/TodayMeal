@@ -107,6 +107,7 @@ header > a {
   height: 24px;
   position: absolute;
   right: 10px;
+  cursor: pointer;
 }
 
 .mMenu {

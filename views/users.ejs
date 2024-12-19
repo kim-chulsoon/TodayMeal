@@ -31,7 +31,7 @@
         <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
         <span>오늘은 뭐 먹지?</span>
       </a>
-      <!-- / 수정!!!!!!!!!!!!! -->
+
       <div class="menu web">
         <!-- 로그인시  변경 herf 수정!!!!!! -->
         <% if(!true){ %>
@@ -46,6 +46,9 @@
     <main>
       <div class="con">
         <div class="userBox">
+          <div class="web mobileTitle">
+            <p>내 정보</p>
+          </div>
           <!-- 프로필 박스1 -->
           <div class="userBox1">
             <!-- 프로필사진 이름 -->
@@ -54,8 +57,8 @@
             </div>
             <div class="userP">
               <!-- 아래  =user.userId , name으로 -->
-              <p class="userId">userID</p>
-              <p class="userName">name</p>
+              <p class="userId">admin1234</p>
+              <p class="userName">당근볶음</p>
             </div>
           </div>
 
@@ -63,7 +66,7 @@
           <div class="userBox2">
             <div class="box2">
               <span>정보수정</span>
-              <a href="/users/eidt">
+              <a href="/users/edit">
                 <img
                   src="/static/img/icons/arrow_right2.png"
                   alt="정보수정"
@@ -93,11 +96,10 @@
             </div>
             <div class="box2">
               <span>회원탈퇴</span>
-              <!-- 탈퇴는 온 클릭-->
               <img
                 src="/static/img/icons/arrow_right2.png"
                 alt="회원탈퇴"
-                class="box2img"
+                class="box2img confirm"
                 onclick="confirmClick()"
               />
             </div>
@@ -105,21 +107,21 @@
         </div>
       </div>
     </main>
-    <div class="mManu">
+    <div class="mManu mobile">
       <div class="Menu">
-        <div class="menu">
+        <div class="smallMenu">
           <a href="/">
             <img src="/static/img/icons/Home.png" alt="홈" />
           </a>
         </div>
 
-        <div class="menu">
+        <div class="smallMenu">
           <a href="/favorites">
             <img src="/static/img/icons/Heart.png" alt="즐겨찾기" />
           </a>
         </div>
 
-        <div class="menu">
+        <div class="smallMenu">
           <a href="/users">
             <img src="/static/img/icons/Profile.png" alt="프로필" />
           </a>
@@ -132,6 +134,41 @@
     </footer>
   </body>
   <script>
+    // 회원 탈퇴
+    // 회원 탈퇴 함수
+    function confirmClick() {
+      if (confirm("회원을 탈퇴하시겠습니까?")) {
+        const token = localStorage.getItem("authToken"); //토큰 가져오기
+
+        if (!token) {
+          alert("로그인이 필요합니다.");
+          return;
+        }
+
+        // Ajax 요청
+        $.ajax({
+          type: "DELETE",
+          url: "/users/delete", // 회원 탈퇴 라우트
+          headers: {
+            Authorization: `Bearer ${token}`, // 토큰
+          },
+          success: function (res) {
+            if (res.success) {
+              alert("회원 탈퇴가 완료되었습니다.");
+              localStorage.removeItem("authToken"); // 로컬 스토리지 토큰 삭제
+              document.location.href = "/"; // 홈으로
+            } else {
+              alert("회원 탈퇴 중 오류가 발생했습니다.");
+            }
+          },
+          error: function (err) {
+            console.error("회원 탈퇴 오류:", err);
+            alert("서버 오류가 발생했습니다.");
+          },
+        });
+      }
+    }
+
     //토큰 받기
     $(document).ready(function () {
       const token = localStorage.getItem("authToken"); //토큰 가져오기
@@ -146,9 +183,9 @@
       //서버에 유저 정보 요청
       $ajax({
         type: "GET",
-        url: "users/details",
+        url: "users/details", //회원 정보 라우터
         headers: {
-          Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 추가
+          Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
         },
         success: function (res) {
           if (res.success) {
@@ -161,17 +198,9 @@
         },
         error: function (err) {
           console.error("Error fetching user details:", err);
-          alert("서버 오류 발생. 다시 시도해주세요");
+          alert("서버 오류가 발생했습니다.");
         },
       });
     });
-
-    // /알람창
-    function confirmClick() {
-      if (confirm("회원을 탈퇴하시겠습니까?") == true) {
-        document.location.href = "/";
-      } // 수정
-    }
-    //axios
   </script>
 </html>
