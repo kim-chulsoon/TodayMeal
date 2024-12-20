@@ -3,6 +3,67 @@
   padding: 0;
   font-family: "Noto Sans KR", serif;
 }
+
+/* 메인 */
+.back {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ff8675;
+  position: fixed;
+
+  display: flex;
+  align-items: center;
+  /* 추가 */
+  z-index: 999;
+}
+
+.ani {
+  animation: Ani 1.3s 1 linear;
+  transform: translateX(-100vw);
+}
+@keyframes Ani {
+  0% {
+    transform: translateX(-0%);
+  }
+  25% {
+    transform: translateX(-25%);
+  }
+  50% {
+    transform: translateX(-50%);
+  }
+  75% {
+    transform: translateX(-75%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.container {
+  width: 300px;
+  height: 280px;
+  text-align: center;
+  margin: 0 auto;
+  cursor: pointer;
+  position: relative;
+}
+img {
+  width: 72px;
+  height: 99px;
+  margin-bottom: 13px;
+}
+.p1 {
+  font-size: 48px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 13px;
+}
+.p2 {
+  font-size: 20px;
+  color: white;
+  margin-bottom: 13px;
+}
+
 /* 헤더 */
 header {
   /* % ? vw? */
@@ -19,9 +80,14 @@ header > .logo {
   font-weight: 700;
   font-family: "Noto Sans KR", serif;
 }
-header > a {
+header > a.mobile {
   position: relative;
   left: 20px;
+}
+
+a.mobile > img {
+  width: 48px;
+  height: 48px;
 }
 
 /* form */
@@ -81,6 +147,13 @@ label {
 /* 모바일 none */
 .web {
   display: none;
+}
+
+/* 768 */
+@media (min-width: 768px) {
+  .mobile1 {
+    display: none;
+  }
 }
 
 /* 웹 */
