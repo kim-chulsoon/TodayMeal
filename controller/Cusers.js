@@ -99,7 +99,7 @@ exports.userRegister = async (req, res) => {
     // 아이디 중복 체크
     const existingUser = await User.findOne({ where: { userId } });
     if (existingUser) {
-      return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
+      return res.status(200).json({ message: "이미 존재하는 아이디입니다." });
     }
 
     // 비밀번호 암호화

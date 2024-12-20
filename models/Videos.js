@@ -1,4 +1,3 @@
-// Videos.js
 module.exports = (sequelize, DataTypes) => {
   const Videos = sequelize.define(
     "Videos",
@@ -20,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
       thumbnailUrl: {
         type: DataTypes.STRING(500),
         field: "thumbnail_url",
+      },
+      description: {
+        type: DataTypes.TEXT,
+        field: "description",
+      },
+      channelTitle: {
+        type: DataTypes.TEXT,
+        field: "channel_title",
       },
     },
     {
