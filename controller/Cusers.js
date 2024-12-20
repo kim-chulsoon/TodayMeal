@@ -274,16 +274,6 @@ exports.dynamicUpload = async (req, res) => {
     console.log("Uploaded file info:", req.file);
     console.log("Additional fields:", req.body);
 
-    // // req.body.userId 가 있다고 가정
-    // const { userId } = req.body;
-    // console.log("업로드 userId:?", userId);
-
-    // // DB 업데이트
-    // await User.update(
-    //   { profileImage: "\\" + req.file.path }, // 변경할 필드와 값
-    //   { where: { userId: userId } }, // 어떤 레코드를 업데이트 할지 조건
-    // );
-
     // 업데이트 성공 시 해당 경로를 응답
     res.send(req.file.path);
   } catch (error) {
