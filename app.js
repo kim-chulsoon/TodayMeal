@@ -4,6 +4,7 @@ const db = require("./models");
 require("dotenv").config();
 const PORT = process.env.PORT;
 const multer = require("multer");
+const session = require("express-session");
 
 // 미들웨어
 app.set("view engine", "ejs");
@@ -11,6 +12,13 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use("/static", express.static(__dirname + "/static"));
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
 
 // Multer 설정
 const upload = multer({
@@ -35,7 +43,7 @@ app.get("*", (req, res) => {
   res.status(404).render("404");
 });
 
-db.sequelize.sync({ force: false }).then((result) => {
+db.sequelize.sync({ force: true }).then((result) => {
   app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
   });

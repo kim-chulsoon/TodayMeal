@@ -150,9 +150,11 @@
               idP.innerText = "사용 가능한 아이디입니다.";
               idP.style.color = "rgba(160, 160, 160, 1)"; //원래 색으로
               isIdCheck = true; //아이디가 중복 확인
+              console.log("아이디 중복 확인");
             } else {
               idP.innerText = "이미 사용 중인 아이디입니다.";
               idP.style.color = "red";
+              console.log("아이디 중복 체크 실패");
             }
           },
           error: function (error) {

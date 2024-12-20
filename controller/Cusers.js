@@ -99,7 +99,7 @@ exports.userRegister = async (req, res) => {
     // 아이디 중복 체크
     const existingUser = await User.findOne({ where: { userId } });
     if (existingUser) {
-      return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
+      return res.status(200).json({ message: "이미 존재하는 아이디입니다." });
     }
 
     // 비밀번호 암호화
@@ -129,16 +129,17 @@ exports.userRegister = async (req, res) => {
 exports.checkUserId = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log(userId);
+    console.log("아이디:", userId);
 
     if (!userId) {
       return res.status(400).json({ message: "아이디를 입력해주세요." });
     }
 
     const existingUser = await User.findOne({ where: { userId } });
+
     if (existingUser) {
       return res
-        .status(409)
+        .status(200)
         .json({ success: false, message: "이미 존재하는 아이디입니다." });
     }
 
@@ -273,16 +274,6 @@ exports.dynamicUpload = async (req, res) => {
   try {
     console.log("Uploaded file info:", req.file);
     console.log("Additional fields:", req.body);
-
-    // // req.body.userId 가 있다고 가정
-    // const { userId } = req.body;
-    // console.log("업로드 userId:?", userId);
-
-    // // DB 업데이트
-    // await User.update(
-    //   { profileImage: "\\" + req.file.path }, // 변경할 필드와 값
-    //   { where: { userId: userId } }, // 어떤 레코드를 업데이트 할지 조건
-    // );
 
     // 업데이트 성공 시 해당 경로를 응답
     res.send(req.file.path);
