@@ -146,7 +146,6 @@
           url: "/users/registerIdCheck", //여기 수정 필요
           data: { userId: inputId },
           success: function (res) {
-            console.log("넘겨받은값:", res);
             if (res.success) {
               idP.innerText = "사용 가능한 아이디입니다.";
               idP.style.color = "rgba(160, 160, 160, 1)"; //원래 색으로
