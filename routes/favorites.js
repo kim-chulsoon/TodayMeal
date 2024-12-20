@@ -6,5 +6,4 @@ const router = express.Router();
 router.get("/", controller.favorites); // favorites
 
 // POST
-
 module.exports = router;

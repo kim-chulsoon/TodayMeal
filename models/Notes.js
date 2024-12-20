@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "Notes",
       timestamps: true,
+      indexes: [
+        {
+          unique: true, // 중복 방지
+          fields: ["user_id", "video_id"], // userId와 videoId 조합을 고유하게 설정
+        },
+      ],
     },
   );
   return Notes;

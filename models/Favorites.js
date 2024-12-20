@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      unique: true, // 중복 방지
       tableName: "Favorites",
       timestamps: true,
     },
