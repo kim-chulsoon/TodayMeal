@@ -49,7 +49,7 @@ exports.searchVideo = async (req, res) => {
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
       videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-      thumbnail: item.snippet.thumbnails.default.url,
+      thumbnail: item.snippet.thumbnails.high.url,
     }));
 
     console.log("검색 결과 비디오 개수", videos.length);
