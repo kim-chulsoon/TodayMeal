@@ -1,6 +1,8 @@
 const axios = require("axios");
+const { Notes, Videos } = require("../models");
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
+// GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
 
@@ -43,12 +45,52 @@ exports.detail = async (req, res) => {
       likeCount: item.statistics.likeCount || 0,
     };
 
-    res.render("detail", { video, error: null });
+    const videoRecord = await Videos.findOne({
+      where: { youtubeUrl: videoId },
+    });
+
+    let noteList = [];
+
+    if (videoRecord) {
+      noteList = await Notes.findAll({ where: { videoId: videoRecord.id } });
+    }
+
+    res.render("detail", { video, notes: noteList, error: null });
   } catch (err) {
     console.error("YouTube API 오류:", err.message);
     res.render("detail", {
       video: null,
+      notes: null,
       error: "비디오 정보를 가져올 수 없습니다.",
     });
+  }
+};
+
+// POST notes
+exports.Notes = async (req, res) => {
+  try {
+    const { ingredients, recipe, title, videoId } = req.body;
+    const user_id = req.session.user_id || 1;
+
+    let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
+
+    if (!video) {
+      video = await Videos.create({
+        title: title,
+        youtubeUrl: videoId,
+      });
+    }
+
+    await Notes.create({
+      userId: user_id,
+      videoId: video.id,
+      ingredients: ingredients,
+      recipe: recipe,
+    });
+
+    res.redirect(`/detail?videoId=${videoId}`);
+  } catch (err) {
+    console.log("note upload err", err.message);
+    res.status(500).send("note upload err");
   }
 };
