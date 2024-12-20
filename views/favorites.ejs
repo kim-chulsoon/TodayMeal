@@ -13,9 +13,15 @@
     <!-- pagination CSS -->
     <link rel="stylesheet" href="/static/css/pagination.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
     
     <!-- Js -->
+    
     <script src="/static/js/search.js" defer></script>
+    
+
   </head>
   <body>
     <header>
@@ -53,65 +59,23 @@
         <h2>나의 북마크</h2>
       </div>
       <div class="container">
-        <div class="item">
-          <a href="/" >
-            <div class="thumbnail">
-              <img src="/static/img//demo/1.jpg" alt="" />
-            </div>
-            <div class="description">
-              <h3 class="title">200마리씩 파는 강서구 배달 1등 닭볶음탕 전문점 레시피</h3>
-              <p class="creator">1분요리 뚝딱이형</p>
-              <p class="subtitle">지난번 시장에서 산 닭으로 닭볶음탕을 만들어 보았어요. 어렵지 않으니 맛있게 만들어보세요! =====================닭볶음탕 [재료] 토막 닭고기 1마리(10호)
-                물 3컵(540ml)대파 2대(200g)청양고추 3개(30g)홍고추 2개(20g)새 송이버섯 2개(120g)표고버섯 2개(40g)당근 1/3개(90g)양파 1개(250g)감자 2개(400g)간 마
-                늘 1큰술(15g)굵은 고춧 가루 1/2컵(40g)고운 고춧가루 1큰술(6g)진간장 4/5컵(144ml)황설탕 3큰술(36g) 후춧가루 약간</p>
-            </div>
-          </a>
-        </div>
-        <div class="item">
-          <a href="/" >
-            <div class="thumbnail">
-              <img src="/static/img//demo/1.jpg" alt="" />
-            </div>
-            <div class="description">
-              <h3 class="title">200마리씩 파는 강서구 배달 1등 닭볶음탕 전문점 레시피</h3>
-              <p class="creator">1분요리 뚝딱이형</p>
-              <p class="subtitle">지난번 시장에서 산 닭으로 닭볶음탕을 만들어 보았어요. 어렵지 않으니 맛있게 만들어보세요! =====================닭볶음탕 [재료] 토막 닭고기 1마리(10호)
-                물 3컵(540ml)대파 2대(200g)청양고추 3개(30g)홍고추 2개(20g)새 송이버섯 2개(120g)표고버섯 2개(40g)당근 1/3개(90g)양파 1개(250g)감자 2개(400g)간 마
-                늘 1큰술(15g)굵은 고춧 가루 1/2컵(40g)고운 고춧가루 1큰술(6g)진간장 4/5컵(144ml)황설탕 3큰술(36g) 후춧가루 약간</p>
-            </div>
-          </a>
-        </div>
-        <div class="item">
-          <a href="/" >
-            <div class="thumbnail">
-              <img src="/static/img//demo/1.jpg" alt="" />
-            </div>
-            <div class="description">
-              <h3 class="title">200마리씩 파는 강서구 배달 1등 닭볶음탕 전문점 레시피</h3>
-              <p class="creator">1분요리 뚝딱이형</p>
-              <p class="subtitle">지난번 시장에서 산 닭으로 닭볶음탕을 만들어 보았어요. 어렵지 않으니 맛있게 만들어보세요! =====================닭볶음탕 [재료] 토막 닭고기 1마리(10호)
-                물 3컵(540ml)대파 2대(200g)청양고추 3개(30g)홍고추 2개(20g)새 송이버섯 2개(120g)표고버섯 2개(40g)당근 1/3개(90g)양파 1개(250g)감자 2개(400g)간 마
-                늘 1큰술(15g)굵은 고춧 가루 1/2컵(40g)고운 고춧가루 1큰술(6g)진간장 4/5컵(144ml)황설탕 3큰술(36g) 후춧가루 약간</p>
-            </div>
-          </a>
-        </div>
-        <div class="item">
-          <a href="/" >
-            <div class="thumbnail">
-              <img src="/static/img//demo/1.jpg" alt="" />
-            </div>
-            <div class="description">
-              <h3 class="title">200마리씩 파는 강서구 배달 1등 닭볶음탕 전문점 레시피</h3>
-              <p class="creator">1분요리 뚝딱이형</p>
-              <p class="subtitle">지난번 시장에서 산 닭으로 닭볶음탕을 만들어 보았어요. 어렵지 않으니 맛있게 만들어보세요! =====================닭볶음탕 [재료] 토막 닭고기 1마리(10호)
-                물 3컵(540ml)대파 2대(200g)청양고추 3개(30g)홍고추 2개(20g)새 송이버섯 2개(120g)표고버섯 2개(40g)당근 1/3개(90g)양파 1개(250g)감자 2개(400g)간 마
-                늘 1큰술(15g)굵은 고춧 가루 1/2컵(40g)고운 고춧가루 1큰술(6g)진간장 4/5컵(144ml)황설탕 3큰술(36g) 후춧가루 약간</p>
-            </div>
-          </a>
-        </div>
-
-       
+        <% favoriteVideos.forEach(favorite => { %>
+          <div class="item">
+            <a href="<%= favorite.Video.youtubeUrl %>" target="_blank">
+              <div class="thumbnail">
+                <img src="<%= favorite.Video.thumbnailUrl %>" alt="<%= favorite.Video.title %> 썸네일" />
+              </div>
+              <div class="description">
+                <h3 class="title"><%= favorite.Video.title %></h3>
+                <p class="creator"><%= favorite.Video.channelTitle %></p>
+                <p class="subtitle"><%= favorite.Video.description %></p>
+              </div>
+            </a>
+          </div>
+        <% }) %>
       </div>
+      
+      
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
@@ -140,17 +104,56 @@
       </div>
     </div>
     <script>
-      function test() {
-        axios({
-          method: "get",
-          url: "/",
-          data: {},
-        })
-          .then((res) => {})
-          .catch((err) => {
-            console.log();
+      document.addEventListener("DOMContentLoaded", () => {
+
+        const container = document.querySelector(".container"); // 데이터를 추가할 컨테이너
+        const authToken = localStorage.getItem("authToken"); // 로컬 스토리지에서 토큰 가져오기
+      
+        if (!authToken) {
+          alert("로그인이 필요합니다.");
+          window.location.href = "/users/login"; // 로그인 페이지로 리다이렉션
+          return;
+        }
+      
+        // 서버로 요청 보내기
+        axios
+          .get("/favorites", {
+            headers: {
+              Authorization: `Bearer ${authToken}`, 
+            },
+          })
+          .then((response) => {
+            const favoriteVideos = response.data.favoriteVideos;
+      
+            if (favoriteVideos.length === 0) {
+              container.innerHTML = `<p>즐겨찾기한 동영상이 없습니다. 동영상을 추가해보세요!</p>`;
+              return;
+            }
+      
+            // 데이터를 HTML로 동적으로 생성
+            favoriteVideos.forEach((favorite) => {
+              const itemHTML = `
+                <div class="item">
+                  <a href="/detail?videoId=${favorite.Video.youtubeUrl}" target="_blank">
+                    <div class="thumbnail">
+                      <img src="${favorite.Video.thumbnailUrl}" alt="${favorite.Video.title} 썸네일" />
+                    </div>
+                    <div class="description">
+                      <h3 class="title">${favorite.Video.title}</h3>
+                      <p class="creator">채널: ${favorite.Video.channelTitle}</p>
+                      <p class="subtitle">${favorite.Video.description}</p>
+                    </div>
+                  </a>
+                </div>
+              `;
+              container.innerHTML += itemHTML; // 컨테이너에 추가
+            });
+          })
+          .catch((error) => {
+            console.error("데이터 로드 실패:", error.response ? error.response.data : error.message);
+            alert("데이터를 가져오는 중 오류가 발생했습니다.");
           });
-      }
+      });
     </script>
   </body>
 </html>
