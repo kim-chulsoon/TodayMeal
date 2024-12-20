@@ -29,7 +29,68 @@ function toggle_bookmark() {
   });
 }
 
-// AXIOS 메모 수정함수
+// 토큰 가져오기 함수
+function getAuthToken() {
+  return localStorage.getItem("authToken");
+}
+
+// 재료 메모 저장 함수
+async function saveIngredientsMemo(data) {
+  const videoId = document.getElementById("videoId").value;
+  const title = document.getElementById("title").value;
+
+  try {
+    const response = await axios.post(
+      "/detail/notes",
+      { ingredients: data, videoId, title },
+      {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (response.status === 201 || response.status === 200) {
+      alert("재료 메모가 성공적으로 저장되었습니다.");
+      window.location.reload();
+    } else {
+      alert("재료 메모 저장에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("재료 메모 저장 오류:", error);
+    alert("재료 메모 저장 중 오류가 발생했습니다.");
+  }
+}
+
+// 레시피 메모 저장 함수
+async function saveRecipeMemo(data) {
+  const videoId = document.getElementById("videoId").value;
+  const title = document.getElementById("title").value;
+
+  try {
+    const response = await axios.post(
+      "/detail/notes",
+      { recipe: data, videoId, title },
+      {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (response.status === 201 || response.status === 200) {
+      alert("레시피 메모가 성공적으로 저장되었습니다.");
+      window.location.reload();
+    } else {
+      alert("레시피 메모 저장에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("레시피 메모 저장 오류:", error);
+    alert("레시피 메모 저장 중 오류가 발생했습니다.");
+  }
+}
 
 // 재료수정
 function ingMemo(data) {
@@ -277,19 +338,18 @@ const ingDataConfig = {
   },
 };
 
-ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig).then(
-  (editor) => {
-    // 버튼 클릭 시 입력 데이터 가져옴
+ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
+  .then((editor) => {
     document
       .querySelector(".memoBox .ingrForm .btnOpen")
-      .addEventListener("click", () => {
+      .addEventListener("click", async () => {
         const editorData = editor.getData();
-        console.log(editorData);
-        // 입력값 전송
-        ingMemo(editorData);
+        await saveIngredientsMemo(editorData);
       });
-  },
-);
+  })
+  .catch((error) => {
+    console.error("CKEditor 초기화 오류 (재료):", error);
+  });
 
 const rcpDataConfig = {
   toolbar: {
@@ -463,16 +523,15 @@ const rcpDataConfig = {
   },
 };
 
-ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig).then(
-  (editor) => {
-    // 버튼 클릭 시 입력 데이터 가져옴
+ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig)
+  .then((editor) => {
     document
       .querySelector(".memoBox .rcprForm .btnOpen")
-      .addEventListener("click", () => {
+      .addEventListener("click", async () => {
         const editorData = editor.getData();
-        console.log(editorData);
-        // 레시피값 전송
-        rcpMemo(editorData);
+        await saveRecipeMemo(editorData);
       });
-  },
-);
+  })
+  .catch((error) => {
+    console.error("CKEditor 초기화 오류 (레시피):", error);
+  });
