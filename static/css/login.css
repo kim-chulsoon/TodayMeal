@@ -13,7 +13,6 @@
 
   display: flex;
   align-items: center;
-  /* 추가 */
   z-index: 999;
 }
 

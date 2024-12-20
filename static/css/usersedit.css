@@ -29,14 +29,22 @@ a.mobile > img {
 }
 
 /* 메인 */
+/* 추가 */
 .regiDiv {
   width: 100vw;
-  height: 400px;
+  /* height: 100vh; */
+  height: 700px;
+  /* position: relative; */
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 추가 */
+}
+/* 추가! */
+form {
+  width: 400px;
+  height: 700px;
+  position: absolute;
 }
 
 form > p {
@@ -71,6 +79,9 @@ input {
   text-align: center;
   margin-bottom: 20px;
   margin-right: 20px;
+  /* 추가 */
+  width: 353px;
+  margin-bottom: 10px;
 }
 
 .profileImg {
@@ -79,10 +90,14 @@ input {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
+  /* 추가 */
+  border: 1px solid black;
 }
 .dynamic {
   display: flex;
   align-items: center;
+  /* 추가 */
+  margin-bottom: 10px;
 }
 
 .userProfileB {
@@ -98,16 +113,6 @@ input {
   right: 50px;
 }
 
-.userIdB {
-  width: 81px;
-  height: 50px;
-  background-color: #ff8675;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
 .pwBox {
   position: relative;
   width: 353px;
@@ -176,7 +181,8 @@ span > img {
     height: 80px;
     border-bottom: 1px solid #eaeaea;
     position: relative;
-    margin: 0;
+    /* margin: 0; */
+    margin-bottom: 50px;
   }
 
   .logoA {
@@ -206,26 +212,56 @@ span > img {
     text-decoration-line: none;
   }
 
-  .regiDiv {
+  footer {
+    width: 100vw;
+    height: 80px;
+    text-align: center;
+    border-top: 1px solid #eaeaea;
+    /* position: relative; */
+    position: relative;
+    display: flex;
+    align-content: center;
+    bottom: 0px;
+  }
+  footer > p {
+    font-size: 16px;
+    color: #747474;
+  }
+
+  /* 전 */
+  /* .regiDiv {
     width: 100vw;
     height: 100vh;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+  } */
 
-  footer {
+  /* 추가 */
+  /* main {
     width: 100vw;
-    height: 80px;
-    text-align: center;
-    border-top: 1px solid #eaeaea;
+    height: 100vh;
+    position: relative;
+  } */
+  /* 추가 */
+  .regiDiv {
+    width: 100vw;
+    /* height: 100vh; */
+    height: 700px;
+    /* position: relative; */
     position: relative;
     display: flex;
-    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+    /* 추가 */
+    margin-bottom: 200px;
   }
-  footer > p {
-    font-size: 16px;
-    color: #747474;
+  /* 추가! */
+  form {
+    width: 400px;
+    height: 700px;
+    position: absolute;
   }
 }
