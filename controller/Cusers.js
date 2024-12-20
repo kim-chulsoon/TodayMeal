@@ -129,16 +129,17 @@ exports.userRegister = async (req, res) => {
 exports.checkUserId = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log(userId);
+    console.log("아이디:", userId);
 
     if (!userId) {
       return res.status(400).json({ message: "아이디를 입력해주세요." });
     }
 
     const existingUser = await User.findOne({ where: { userId } });
+
     if (existingUser) {
       return res
-        .status(409)
+        .status(200)
         .json({ success: false, message: "이미 존재하는 아이디입니다." });
     }
 
