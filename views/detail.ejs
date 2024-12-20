@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘은 뭐 먹지?</title>
     <!-- css 초기화 -->
-    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- <link rel="stylesheet" href="/static/css/resset.css" /> -->
     <!-- common CSS -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/css/detail.css" />
 
-    <!-- AXIOS -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- edit -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
 
-    <!-- cdn -->
-    <script
+  <!-- cdn -->
+   <script
       src="https://kit.fontawesome.com/6dd6eb0895.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <!-- JS -->
-    <script src="/static/js/bookmark.js" defer></script>
   </head>
   <body>
     <header>
@@ -83,7 +82,7 @@
             </div>
 
             <p class="creator"><%= video.channelTitle %></p>
-            <p class="subtitle"><%= video.description %></p>
+            <p class="subtitle subtitle-off"><%= video.description %></p>
             <div class="moreLine">
               <div></div>
               <p>더보기</p>
@@ -94,29 +93,33 @@
       </div>
       <div class="memoBox">
         <div class="memoItem">
-          <form name="memo" method="post" action="/detail/notes">
+
+          <form class="ingrForm" name="memo" method="post">
+              <p class="title">재료메모장</p>
+              <div id="ingData"></div>
+=======
+          <!--<form name="memo" method="post" action="/detail/notes">
             <input type="hidden" name="videoId" value="<%= video.videoId %>" />
             <input type="hidden" name="title" value="<%= video.title %>" />
             <label>
               <p>재료메모장</p>
-              <!-- prettier-ignore -->
+
               <textarea class="ingredientTextarea" name="ingredients" id="ingredients"><%- notes.length > 0 && notes[0].ingredients ? notes[0].ingredients.trim() : '' %></textarea>
             </label>
+
             <div class="memoButtons">
-              <button class="btn btnClose">취소</button>
-              <button class="btn btnOpen">수정</button>
-            </div>
+              <button type="button" class="btn btnClose">취소</button>
+              <button type="button" class="btn btnOpen" >수정</button>
+            </div>-->
           </form>
         </div>
         <div class="memoItem">
-          <form name="memo" method="post">
-            <label>
-              <p>레시피 메모장</p>
-              <textarea class="RecipeTextarea" name="" id=""></textarea>
-            </label>
+          <form class="rcprForm" name="memo" method="post">
+              <p class="title">레시피 메모장</p>
+              <div id="rcpData"></div>
             <div class="memoButtons">
               <button class="btn btnClose">취소</button>
-              <button class="btn btnOpen">수정</button>
+              <button type="button" class="btn btnOpen">수정</button>
             </div>
           </form>
         </div>
@@ -149,5 +152,10 @@
         </div>
       </div>
     </div>
+
+    <!-- edit -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
+		<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
+		<script src="/static/js/detail.js"></script>
   </body>
 </html>
