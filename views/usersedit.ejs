@@ -19,23 +19,20 @@
     />
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--   css -->
+    <!-- common  -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <!-- 회원정보 수정 -->
     <link rel="stylesheet" href="/static/css/usersedit.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="/static/css/footer.css" />
   </head>
   <body>
-    <header>
-      <a href="#" onClick="history.back()" class="mobile">
-        <img src="/static/img/icons/Arrow - Left.png" alt="arrow" />
-      </a>
-      <p class="logo mobile">정보수정</p>
-      <a href="/" class="web logoA">
-        <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
-        <span>오늘은 뭐 먹지?</span>
-      </a>
-      <div class="menu web">
-        <a href="/users/login">로그인</a>
-        <a href="/users/register">회원가입</a>
-      </div>
-    </header>
+    <!-- header include -->
+    <%-include("./includes/header") %>
+
     <main>
       <div class="regiDiv">
         <form name="edit" class="edit" onsubmit="return editClick()">
@@ -110,10 +107,14 @@
         </form>
       </div>
     </main>
-    <footer class="web">
-      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
-    </footer>
+
+    <!-- footer -->
+    <%- include("./includes/footer") %>
+
     <script>
+      // .title!!!!!!!
+      document.querySelector(".title h3").innerText = "정보수정";
+
       document.addEventListener("DOMContentLoaded", async () => {
         const token = localStorage.getItem("authToken");
 
