@@ -12,7 +12,15 @@
       rel="stylesheet"
     />
     <!-- CSS -->
+    <!--   css -->
+    <!-- common  -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <!-- login -->
     <link rel="stylesheet" href="/static/css/login.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="/static/css/footer.css" />
     <title>로그인</title>
 
     <!-- JS (jQuery 제거하고 Axios 사용) -->
@@ -29,21 +37,8 @@
       </div>
     </div>
 
-    <header>
-      <a href="#" onClick="history.back()" class="mobile">
-        <img src="/static/img/icons/Arrow - Left.png" alt="arrow" />
-      </a>
-      <p class="logo mobile">로그인</p>
-      <!-- 웹 -->
-      <a href="/" class="web logoA">
-        <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
-        <span>오늘은 뭐 먹지?</span>
-      </a>
-      <div class="menu web">
-        <a href="/users/login">로그인</a>
-        <a href="/users/register">회원가입</a>
-      </div>
-    </header>
+    <!-- header include -->
+    <%-include("./includes/header") %>
 
     <div class="con">
       <div class="loginDiv">
@@ -82,11 +77,15 @@
       </div>
     </div>
 
-    <footer class="web">
-      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
-    </footer>
+    <!-- footer -->
+    <%- include("./includes/footer") %>
 
     <script>
+      // .title!!!!!!!
+      document.querySelector(".title h3").innerText = "로그인";
+      // 모바일 메뉴
+      document.querySelector(".mgnb").style.display = "none";
+
       async function login() {
         const form = document.forms["loginForm"];
         const userId = form.userId.value.trim();

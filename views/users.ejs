@@ -17,32 +17,21 @@
       rel="stylesheet"
     />
     <!-- css -->
+    <!-- common  -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <!-- users css -->
     <link rel="stylesheet" href="/static/css/users.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="/static/css/footer.css" />
+
     <title>회원 정보</title>
   </head>
   <body>
-    <header>
-      <a href="#" onClick="history.back()" class="mobile">
-        <img src="/static/img/icons/Arrow - Left.png" alt="arrow" />
-      </a>
-      <p class="logo mobile">내정보</p>
-      <!-- 웹 -->
-      <a href="/" class="web logoA">
-        <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
-        <span>오늘은 뭐 먹지?</span>
-      </a>
+    <!-- header include -->
+    <%-include("./includes/header") %>
 
-      <div class="menu web">
-        <!-- 로그인시  변경 herf 수정!!!!!! -->
-        <% if(!true){ %>
-        <a href="/users">내정보</a>
-        <a href="/users/logout">로그아웃</a>
-        <%}else{%>
-        <a href="/users/login">로그인</a>
-        <a href="/users/register">회원가입</a>
-        <%} %>
-      </div>
-    </header>
     <main>
       <div class="con">
         <div class="userBox">
@@ -54,13 +43,12 @@
             <!-- 프로필사진 이름 -->
             <div class="userPic">
               <img
-                src="/static/img/demo/pro.png"
+                src="/static/img/icons/profile.png"
                 alt="profileimage"
                 class="profileImg"
               />
             </div>
             <div class="userP">
-              <!-- 아래  =user.userId , name으로 -->
               <p class="userId">admin1234</p>
               <p class="userName">당근볶음</p>
             </div>
@@ -68,77 +56,56 @@
 
           <!-- 프로필박스2 -->
           <div class="userBox2">
-            <div class="box2">
-              <span>정보수정</span>
-              <a href="/users/edit">
+            <a href="/users/edit" class="box2A">
+              <div class="box2">
+                <span>정보수정</span>
                 <img
                   src="/static/img/icons/arrow_right2.png"
                   alt="정보수정"
                   class="box2img"
                 />
-              </a>
-            </div>
-            <div class="box2">
-              <span>즐겨찾기</span>
-              <a href="/favorites">
+              </div>
+            </a>
+            <a href="/users/edit" class="box2A">
+              <div class="box2">
+                <span>즐겨찾기</span>
                 <img
                   src="/static/img/icons/arrow_right2.png"
-                  alt="즐겨찾기"
+                  alt="정보수정"
                   class="box2img"
                 />
-              </a>
-            </div>
-            <div class="box2">
+              </div>
+            </a>
+            <div class="box2" onclick="logout()">
               <span>로그아웃</span>
               <a href="/users/logout">
                 <img
                   src="/static/img/icons/arrow_right2.png"
                   alt="로그아웃"
                   class="box2img"
-                  onclick="logout()"
                 />
               </a>
             </div>
-            <div class="box2">
+            <div class="box2" onclick="confirmClick()">
               <span>회원탈퇴</span>
               <img
                 src="/static/img/icons/arrow_right2.png"
                 alt="회원탈퇴"
                 class="box2img confirm"
-                onclick="confirmClick()"
               />
             </div>
           </div>
         </div>
       </div>
     </main>
-    <div class="mManu mobile">
-      <div class="Menu">
-        <div class="smallMenu">
-          <a href="/">
-            <img src="/static/img/icons/Home.png" alt="홈" />
-          </a>
-        </div>
 
-        <div class="smallMenu">
-          <a href="/favorites">
-            <img src="/static/img/icons/Heart.png" alt="즐겨찾기" />
-          </a>
-        </div>
-
-        <div class="smallMenu">
-          <a href="/users">
-            <img src="/static/img/icons/Profile.png" alt="프로필" />
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <footer class="web">
-      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
-    </footer>
+    <!-- footer -->
+    <%- include("./includes/footer") %>
   </body>
   <script>
+    // .title!!!!!!!
+    document.querySelector(".title h3").innerText = "내정보";
+
     //토큰 받기
     $(document).ready(function () {
       const token = localStorage.getItem("authToken"); //토큰 가져오기
