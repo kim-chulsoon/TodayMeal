@@ -2,12 +2,13 @@ const express = require("express");
 const controller = require("../controller/Cusers");
 const router = express.Router();
 const uploadDetail = require("../middlewares/uploadDetail"); // Multer 설정 파일
+const authenticateToken = require("../middlewares/jwtAuth");
+
 // GET
 router.get("/", controller.users); // users
 router.get("/login", controller.login); // login
-router.get("/edit", controller.edit); // usersedit
+router.get("/edit", authenticateToken, controller.edit); // usersedit
 router.get("/register", controller.register); // register
-router.get("/edit/details", controller.userProfile);
 
 // POST
 router.post("/login", controller.userLogin); //login post
@@ -21,5 +22,8 @@ router.post(
 
 //PATCH
 router.patch("/", controller.updateUserInfo);
+
+//DELETE
+router.delete("/delete", authenticateToken, controller.deleteUser);
 
 module.exports = router;

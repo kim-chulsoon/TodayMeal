@@ -95,7 +95,6 @@
             type="date"
             name="userBirth"
             class="Birth"
-            value="1993-03-03"
             min="1970-01-01"
             max="2018-12-31"
             required
@@ -124,21 +123,25 @@
         }
 
         try {
-          const res = await axios.get("/users/edit/details", {
+          const res = await axios.get("/users/edit", {
             headers: { Authorization: `Bearer ${token}` },
           });
 
-          if (res.data.success) {
-            document.querySelector(".userId2").value = res.data.user.userId;
-            document.querySelector(".userName").value = res.data.user.name;
-            document.querySelector(".Birth").value = res.data.user.birthdate;
-            document.querySelector(".profileImg").src =
-              res.data.user.profileImage;
-          } else {
-            alert("유저 정보를 불러올 수 없습니다. 다시 로그인해주세요.");
+          if (!res.data.success) {
+            alert("사용자 정보를 불러올 수 없습니다.");
+            return;
           }
+
+          const user = res.data.user;
+
+          // 데이터를 사용해 동적으로 콘텐츠 생성
+          document.querySelector("#profileImage").src =
+            user.profileImage || "/static/img/icons/profile.png";
+          document.querySelector(".userId2").value = user.userId;
+          document.querySelector(".userName").value = user.name;
+          document.querySelector(".Birth").value = user.birthdate;
         } catch (err) {
-          console.error("Error fetching user details:", err);
+          console.error("Error fetching user edit page:", err);
           alert("서버 오류 발생. 다시 시도해주세요.");
         }
       });
