@@ -1,6 +1,11 @@
 const more = document.querySelector(".moreLine");
 const form = document.forms["bookmark"];
 
+// 에디터 전역화
+let ingEditor;
+let rcpEditor;
+
+console.log(document.querySelector(".btn btnOpen registr"));
 // 영상 설명 더보기/숨기기
 more.addEventListener("click", () => {
   const subtitle = document.querySelector(".subtitle");
@@ -29,6 +34,43 @@ function toggle_bookmark() {
   });
 }
 
+// 재료메모 폼 변환
+function ingForm() {
+  const ing = document.querySelector(".memoItem.ing");
+  const ingform = document.querySelectorAll(".memoItem.ing form");
+
+  if (ingform[0].classList.contains("ingForm-Open")) {
+    ingform[0].classList.remove("ingForm-Open");
+    ingform[0].classList.add("ingForm");
+    ingform[1].classList.remove("ingForm");
+    ingform[1].classList.add("ingForm-Open");
+  } else {
+    ingform[0].classList.add("ingForm-Open");
+    ingform[0].classList.remove("ingForm");
+    ingform[1].classList.add("ingForm");
+    ingform[1].classList.remove("ingForm-Open");
+  }
+}
+
+// 재료메모 폼 변환
+function rcpForm() {
+  console.log("test");
+  const rcp = document.querySelector(".memoItem.ing");
+  const rcpform = document.querySelectorAll(".memoItem.rcp form");
+
+  if (rcpform[0].classList.contains("rcpForm-Open")) {
+    rcpform[0].classList.remove("rcpForm-Open");
+    rcpform[0].classList.add("rcpForm");
+    rcpform[1].classList.remove("rcpForm");
+    rcpform[1].classList.add("rcpForm-Open");
+  } else {
+    rcpform[0].classList.add("rcpForm-Open");
+    rcpform[0].classList.remove("rcpForm");
+    rcpform[1].classList.add("rcpForm");
+    rcpform[1].classList.remove("rcpForm-Open");
+  }
+}
+
 // 토큰 가져오기 함수
 function getAuthToken() {
   return localStorage.getItem("authToken");
@@ -54,7 +96,10 @@ async function saveIngredientsMemo(data) {
     );
 
     if (response.status === 201 || response.status === 200) {
+      // 수정폼 닫음
+      ingForm();
       alert("재료 메모가 성공적으로 저장되었습니다.");
+
       window.location.reload();
     } else {
       alert("재료 메모 저장에 실패했습니다.");
@@ -83,6 +128,8 @@ async function saveRecipeMemo(data) {
     );
 
     if (response.status === 201 || response.status === 200) {
+      // 수정폼 닫음
+      rcpForm();
       alert("레시피 메모가 성공적으로 저장되었습니다.");
       window.location.reload();
     } else {
@@ -110,6 +157,14 @@ function rcpMemo(data) {
     url: "/",
     data: { recipe: data },
   });
+}
+
+// 메모창 초기화 버튼
+function ingReset() {
+  ingEditor.setData("");
+}
+function rcpReset() {
+  rcpEditor.setData("");
 }
 
 // 에디터 설정값
@@ -328,7 +383,7 @@ const ingDataConfig = {
       reversed: true,
     },
   },
-  placeholder: "Type or paste your content here!",
+  placeholder: "🌽🥬🫑 재료를 입력해주세요!😊",
   table: {
     contentToolbar: [
       "tableColumn",
@@ -339,11 +394,11 @@ const ingDataConfig = {
     ],
   },
 };
-
 ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
   .then((editor) => {
+    ingEditor = editor;
     document
-      .querySelector(".memoBox .ingrForm .btnOpen")
+      .querySelector(".memoBox .ingForm-Open .btnOpen.registr")
       .addEventListener("click", async () => {
         const editorData = editor.getData();
         await saveIngredientsMemo(editorData);
@@ -527,8 +582,9 @@ const rcpDataConfig = {
 
 ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig)
   .then((editor) => {
+    rcpEditor = editor;
     document
-      .querySelector(".memoBox .rcprForm .btnOpen")
+      .querySelector(".memoBox .rcpForm-Open .btnOpen.registr")
       .addEventListener("click", async () => {
         const editorData = editor.getData();
         await saveRecipeMemo(editorData);
