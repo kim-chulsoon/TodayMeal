@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원 정보 수정</title>
-    <!-- jquery CDN -->
-    <!-- googlrFont -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--   css -->
@@ -120,13 +118,6 @@
     <script>
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
-
-      //로그아웃
-      function logout() {
-        localStorage.clear();
-        document.location.href = "/";
-        console.log("로그아웃");
-      }
 
       document.addEventListener("DOMContentLoaded", async () => {
         const token = localStorage.getItem("authToken");
