@@ -94,9 +94,16 @@
         </div>
       </div>
       <div class="memoBox">
-        <div class="blur"></div>
+        <div style="display: none;" class="loginAlert">
+          <h3>지금 로그인하고<br> 메모 기능을 사용해보세요!</h3>
+          <p>간편하게 재료와 레시피를 나의 스타일에 맞게 작성할 수 있습니다.</p>
+          <div class="buttonBox">
+            <a href="/users/login" class="btnOpen ">로그인</a>
+            <a href="/users/register" class="btnClose">회원가입</a>
+          </div>
+        </div>
         <!-- 재료 메모박스 -->
-        <div class="memoItem ing">
+        <div class="memoItem  ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
@@ -123,7 +130,7 @@
         <!-- 재료 메모박스 끝 -->
 
         <!-- 레시피 메모박스 -->
-        <div class="memoItem rcp">
+        <div class="memoItem  rcp">
           <p class="title">레시피 메모장</p>
           <form  class="rcpForm-Open" name="memo" method="post">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
