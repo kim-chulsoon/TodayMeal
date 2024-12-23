@@ -13,7 +13,7 @@ header > .inner > .logoBox {
 }
 
 /* PC메뉴 가리기 */
-header > .inner > .logoBox > .gnb {
+header > .inner > .logoBox > #gnb {
   display: none;
 }
 
@@ -32,7 +32,7 @@ header > .inner > .logoBox > .logoTitle {
 }
 
 /* PC 로그인/회원가입 */
-header > .inner > .logoBox > .gnb a:last-child {
+header > .inner > .logoBox > #gnb a:last-child {
   margin-left: 10px;
 }
 
@@ -135,7 +135,7 @@ header > .inner > .headMenu > .title {
   }
 
   /* PC메뉴 노출시킴 */
-  header > .inner > .logoBox > .gnb {
+  header > .inner > .logoBox > #gnb {
     display: block;
   }
 

@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="/static/css/usersedit.css" />
     <!-- footer -->
     <link rel="stylesheet" href="/static/css/footer.css" />
+
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
   </head>
   <body>
     <!-- header include -->
@@ -130,6 +133,7 @@
 
         if (!token) {
           alert("로그인이 필요합니다.");
+          document.location.href = "/";
           return;
         }
 
