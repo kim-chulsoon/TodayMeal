@@ -4,20 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>회원가입</title>
-    <!-- cdn,font,jquery   -->
-    <!-- jquery CDN -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <!-- googlrFont -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
+
+    <!-- JS (jQuery 제거하고 Axios 사용) -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--   css -->
     <!-- common  -->
     <link rel="stylesheet" href="/static/css/common.css" />
@@ -113,12 +102,6 @@
       document.querySelector(".title h3").innerText = "회원가입";
       // 모바일 메뉴
       document.querySelector(".mgnb").style.display = "none";
-      //로그아웃
-      function logout() {
-        localStorage.clear();
-        document.location.href = "/";
-        console.log("로그아웃");
-      }
 
       let isIdCheck = false; // 아이디 중복 확인 결과
 
@@ -148,26 +131,24 @@
         }
 
         // 중복 아이디 체크
-        $.ajax({
-          type: "post",
-          url: "/users/registerIdCheck", //여기 수정 필요
-          data: { userId: inputId },
-          success: function (res) {
-            if (res.success) {
+
+        axios
+          .post("/users/registerIdCheck", { userId: inputId })
+          .then((response) => {
+            if (response.data.success) {
               idP.innerText = "사용 가능한 아이디입니다.";
-              idP.style.color = "rgba(160, 160, 160, 1)"; //원래 색으로
-              isIdCheck = true; //아이디가 중복 확인
+              idP.style.color = "rgba(160, 160, 160, 1)"; // 원래 색으로
+              isIdCheck = true; // 아이디 중복 확인
               console.log("아이디 중복 확인");
             } else {
               idP.innerText = "이미 사용 중인 아이디입니다.";
               idP.style.color = "red";
               console.log("아이디 중복 체크 실패");
             }
-          },
-          error: function (error) {
-            console.log(error);
-          },
-        });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
 
       //회원가입
@@ -217,27 +198,24 @@
 
         // 폼 전송
         //post
-        $.ajax({
-          type: "post",
-          url: "/users/register",
-          data: {
+        axios
+          .post("/users/register", {
             userId: userId,
             userPw: userPw1,
             userName: userName,
             userBirth: userBirth,
-          },
-          success: function (res) {
-            if (res.success) {
-              // 성공 시 로그인 페이지로 이동  /users/login
+          })
+          .then((response) => {
+            if (response.data.success) {
+              //성공 시 로그인 페이지로 이동
               document.location.href = "/users/login";
             } else {
               alert("회원가입 실패했습니다.");
             }
-          },
-          error: function (error) {
-            console.log(error);
-          },
-        });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     </script>
     <!-- 비밀번호 확인  span -->
