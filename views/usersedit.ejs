@@ -118,6 +118,13 @@
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
 
+      //로그아웃
+      function logout() {
+        localStorage.clear();
+        document.location.href = "/";
+        console.log("로그아웃");
+      }
+
       document.addEventListener("DOMContentLoaded", async () => {
         const token = localStorage.getItem("authToken");
 
