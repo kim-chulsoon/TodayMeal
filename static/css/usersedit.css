@@ -4,12 +4,9 @@
 }
 
 /* 메인 */
-/* 추가 */
 .regiDiv {
   width: 100%;
-  /* height: 100vh; */
   height: 100%;
-  /* position: relative; */
   position: relative;
   display: flex;
   justify-content: center;
@@ -18,7 +15,7 @@
   margin-bottom: 110px;
   box-sizing: border-box;
 }
-/* 추가! */
+
 form {
   width: 400px;
   height: 700px;
@@ -27,7 +24,7 @@ form {
   left: 20px;
 }
 
-form > p {
+form > .pwP {
   font-size: 14px;
   color: rgba(160, 160, 160, 1);
   margin-bottom: 10px;
@@ -58,10 +55,11 @@ input {
 .profileSection {
   text-align: center;
   margin-bottom: 20px;
-  margin-right: 20px;
-  /* 추가 */
   width: 353px;
-  margin-bottom: 10px;
+}
+.profileP > .pId {
+  font-size: 22px;
+  font-weight: 900;
 }
 
 .profileImg {
@@ -71,29 +69,21 @@ input {
   border-radius: 50%;
   object-fit: cover;
   /* 추가 */
-  border: 1px solid black;
-}
-.dynamic {
-  display: flex;
-  align-items: center;
-  /* 추가 */
   margin-bottom: 10px;
-}
-.dynamic input {
-  width: 300px;
 }
 
 .userProfileB {
-  width: 100px;
-  height: 50px;
-  background-color: #ff8675;
-  color: white;
-  border: none;
+  width: 355px;
+  height: 52px;
+  /* 버튼는 크기를 +2  */
+  background-color: white;
+  color: black;
+  font-weight: 700;
+  border: 1px solid #cecece;
+  /* 인풋 테두리 색다 바꿔 */
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  position: relative;
-  right: 50px;
+  font-size: 14px;
 }
 
 .pwBox {
