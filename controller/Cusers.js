@@ -9,26 +9,17 @@ const upload = require("../app");
 const SECRET_KEY = process.env.SECRET_KEY;
 
 /* GET /users */
-exports.users = (req, res) => {
-  res.render("users");
-};
-
-/* GET /users/login */
-exports.login = (req, res) => {
-  res.render("login");
-};
-
-/* GET /users/details */
-exports.getUserInfo = async (req, res) => {
+exports.users = async (req, res) => {
   try {
     const user = req.user || null; // 인증된 사용자 정보 가져오기
 
+    // 인증되지 않은 사용자 처리
+    if (!user) {
+      return res.render("users", { user: [] });
+    }
+
     const userId = user.id;
     console.log("유저userid", userId);
-    if (!user) {
-      console.error("User is not authenticated.");
-      return res.json({ success: false, message: "로그인이 필요합니다." });
-    }
 
     // User 테이블에서 사용자 정보 조회
     const userData = await User.findOne({
@@ -44,7 +35,7 @@ exports.getUserInfo = async (req, res) => {
     }
 
     // 사용자 정보 반환
-    res.json({
+    res.render("users", {
       success: true,
       user: userData,
     });
@@ -56,6 +47,11 @@ exports.getUserInfo = async (req, res) => {
   }
 };
 
+/* GET /users/login */
+exports.login = (req, res) => {
+  res.render("login");
+};
+
 /* GET /users/edit */
 exports.edit = async (req, res) => {
   try {
@@ -63,7 +59,7 @@ exports.edit = async (req, res) => {
 
     // 인증되지 않은 사용자 처리
     if (!user) {
-      return res.render("usersedit", { users: [] });
+      return res.render("usersedit", { user: [] });
     }
 
     const userId = user.id;
@@ -84,7 +80,7 @@ exports.edit = async (req, res) => {
 
     console.log("userdata", userData);
     // 사용자 정보 반환
-    res.json({
+    res.render("usersedit", {
       success: true,
       user: userData,
     });
@@ -170,7 +166,7 @@ exports.checkUserId = async (req, res) => {
   }
 };
 
-//로그인
+// 로그인
 /* POST /users/userLogin */
 exports.userLogin = async (req, res) => {
   const { userId, userPw, autoLogin } = req.body;
@@ -197,15 +193,22 @@ exports.userLogin = async (req, res) => {
 
     // JWT 토큰 생성
     const expiresIn = autoLogin ? "7d" : "1h"; // 자동 로그인 체크 시 7일, 아니면 1시간
-    const token = jwt.sign({ userId: user.id }, SECRET_KEY, {
-      expiresIn, // 토큰 만료 시간
-    });
+    const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn });
 
-    // 응답으로 토큰 반환
+    // 쿠키 옵션 설정
+    const cookieOptions = {
+      httpOnly: false, // 클라이언트에서 JavaScript로 쿠키에 접근 불가
+      secure: false,
+      maxAge: autoLogin ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000, // 유효 기간 (ms)
+    };
+
+    // 쿠키에 JWT 저장
+    res.cookie("authToken", token, cookieOptions);
+
+    // 응답 메시지 반환
     return res.status(200).json({
       message: "로그인 성공",
       success: true,
-      token,
     });
   } catch (error) {
     console.error("Login Error: ", error.message);
@@ -269,6 +272,9 @@ exports.deleteUser = async (req, res) => {
     return res.status(404).send("사용자 정보를 찾을 수 없습니다.");
   }
 
+  // 쿠키 삭제: 쿠키의 만료일을 과거로 설정
+  res.clearCookie("authToken", { httpOnly: true, secure: true });
+
   // 삭제 성공 응답
   res
     .status(200)
@@ -276,7 +282,6 @@ exports.deleteUser = async (req, res) => {
 };
 
 //파일 업로드
-
 exports.dynamicUpload = async (req, res) => {
   try {
     console.log("Uploaded file info:", req.file);
@@ -287,5 +292,29 @@ exports.dynamicUpload = async (req, res) => {
   } catch (error) {
     console.error("File upload error:", error);
     res.status(500).send("파일 업로드에 실패했습니다.");
+  }
+};
+
+// /users/logout
+//로그아웃
+exports.logout = (req, res) => {
+  try {
+    // 쿠키 삭제: 동일한 쿠키 이름(authToken)과 경로, 옵션 설정
+    res.cookie("authToken", "", {
+      httpOnly: false, // 동일하게 설정
+      secure: false, // 동일하게 설정
+      maxAge: 0, // 만료 시간 0으로 설정
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "로그아웃되었습니다.",
+    });
+  } catch (error) {
+    console.error("로그아웃 처리 중 오류:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
   }
 };

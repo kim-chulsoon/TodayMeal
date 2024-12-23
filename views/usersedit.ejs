@@ -28,15 +28,15 @@
         <form name="edit" class="edit" onsubmit="return editClick()">
           <div class="profileSection">
             <img
-              src="/static/img/icons/profile.png"
+              src="<%= user.profileImage || '/static/img/icons/profile.png' %>"
               alt="프로필 이미지"
               class="profileImg"
               id="profileImage"
             />
             <br />
             <div class="profileP">
-              <p class="pId">admin1234</p>
-              <p class="pName">당근볶음</p>
+              <p class="pId"><%= user.userId %></p>
+              <p class="pName"><%= user.name %></p>
             </div>
             <br />
             <!-- 숨겨진 파일 선택창 -->
@@ -62,6 +62,7 @@
             name="userId2"
             class="userId2"
             placeholder=" 아이디"
+            value="<%= user.userId %>"
             readonly
           />
 
@@ -93,6 +94,7 @@
             name="userName"
             class="userName"
             placeholder="  이름"
+            value="<%= user.name %>"
             required
           />
           <br />
@@ -100,6 +102,7 @@
             type="date"
             name="userBirth"
             class="Birth"
+            value="<%= user.birthdate %>"
             min="1970-01-01"
             max="2018-12-31"
             required
@@ -119,40 +122,18 @@
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
 
-      document.addEventListener("DOMContentLoaded", async () => {
-        const token = localStorage.getItem("authToken");
-
-        if (!token) {
-          alert("로그인이 필요합니다.");
-          document.location.href = "/";
-          return;
-        }
-
+      // 로그아웃
+      async function logout() {
         try {
-          const res = await axios.get("/users/edit", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (!res.data.success) {
-            alert("사용자 정보를 불러올 수 없습니다.");
-            return;
-          }
-
-          const user = res.data.user;
-
-          // 데이터를 사용해 동적으로 콘텐츠 생성
-          document.querySelector(".pId").innerText = user.userId;
-          document.querySelector(".pName").innerText = user.name;
-          document.querySelector("#profileImage").src =
-            user.profileImage || "/static/img/icons/profile.png";
-          document.querySelector(".userId2").value = user.userId;
-          document.querySelector(".userName").value = user.name;
-          document.querySelector(".Birth").value = user.birthdate;
-        } catch (err) {
-          console.error("Error fetching user edit page:", err);
-          alert("서버 오류 발생. 다시 시도해주세요.");
+          await axios.post("/users/logout"); // 로그아웃 요청
+          alert("로그아웃되었습니다.");
+          document.location.href = "/";
+          console.log("로그아웃");
+        } catch (error) {
+          console.error("로그아웃 오류:", error);
+          alert("로그아웃 중 오류가 발생했습니다.");
         }
-      });
+      }
 
       // 프로필 사진 업로드
       function triggerFileInput() {

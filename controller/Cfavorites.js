@@ -33,7 +33,7 @@ exports.favorites = async (req, res) => {
       ],
     });
 
-    return res.status(200).json({ success: true, favoriteVideos });
+    return res.render("favorites", { success: true, favoriteVideos });
   } catch (error) {
     console.error("즐겨찾기 데이터 가져오기 실패:", error.message);
     res.status(500).json({ success: false, message: "서버 오류 발생" });

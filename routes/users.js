@@ -5,16 +5,16 @@ const uploadDetail = require("../middlewares/uploadDetail"); // Multer 설정 �
 const authenticateToken = require("../middlewares/jwtAuth");
 
 // GET
-router.get("/", controller.users); // users
+router.get("/", authenticateToken, controller.users); // users
 router.get("/login", controller.login); // login
 router.get("/edit", authenticateToken, controller.edit); // usersedit
 router.get("/register", controller.register); // register
-router.get("/details", authenticateToken, controller.getUserInfo);
 
 // POST
 router.post("/login", controller.userLogin); //login post
 router.post("/register", controller.userRegister); //register post
 router.post("/registerIdCheck", controller.checkUserId);
+router.post("/logout", controller.logout);
 router.post(
   "/dynamicUpload",
   uploadDetail.single("dynamicFile"),
