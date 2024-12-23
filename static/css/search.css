@@ -125,6 +125,10 @@ main > .container .item .thumbnail {
   width: 100%;
 }
 
+main > .container .item .thumbnail > img {
+  border-radius: 10px;
+}
+
 /* 영상제목 */
 main > .container .item .title {
   width: 100%;

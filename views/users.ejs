@@ -118,7 +118,7 @@
       }
 
       //서버에 유저 정보 요청
-      $ajax({
+      $.ajax({
         type: "GET",
         url: "users/details", //회원 정보 라우터
         headers: {
@@ -128,7 +128,7 @@
           if (res.success) {
             // 아이디와 이름 프로필 이미지 채우기
             document.querySelector(".userId").innerText = res.user.userId;
-            document.querySelector(".userPw").innerText = res.user.name;
+            document.querySelector(".userName").innerText = res.user.name;
             document.querySelector(".profileImg").src = res.user.profileImage;
           } else {
             alert("유저 정보를 불러올 수 없습니다. 다시 로그인해주세요.");
