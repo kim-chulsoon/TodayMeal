@@ -69,15 +69,18 @@ exports.detail = async (req, res) => {
 // POST notes
 exports.Notes = async (req, res) => {
   try {
-    const { ingredients, recipe, title, videoId } = req.body;
+    const { ingredients, recipe, title, videoId, thumbnailUrl, channelTitle } =
+      req.body;
     const user = req.user; // authenticateToken 미들웨어에서 설정
-
+    console.log("썸네일", thumbnailUrl);
     // Video 조회 또는 생성
     let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
     if (!video) {
       video = await Videos.create({
         title: title,
         youtubeUrl: videoId,
+        thumbnailUrl: thumbnailUrl,
+        channelTitle: channelTitle,
       });
     }
 

@@ -85,6 +85,12 @@
       document.querySelector(".title h3").innerText = "로그인";
       // 모바일 메뉴
       document.querySelector(".mgnb").style.display = "none";
+      //로그아웃
+      function logout() {
+        localStorage.clear();
+        document.location.href = "/";
+        console.log("로그아웃");
+      }
 
       async function login() {
         const form = document.forms["loginForm"];

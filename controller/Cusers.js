@@ -18,6 +18,44 @@ exports.login = (req, res) => {
   res.render("login");
 };
 
+/* GET /users/details */
+exports.getUserInfo = async (req, res) => {
+  try {
+    const user = req.user || null; // 인증된 사용자 정보 가져오기
+
+    const userId = user.id;
+    console.log("유저userid", userId);
+    if (!user) {
+      console.error("User is not authenticated.");
+      return res.json({ success: false, message: "로그인이 필요합니다." });
+    }
+
+    // User 테이블에서 사용자 정보 조회
+    const userData = await User.findOne({
+      where: { id: userId },
+      attributes: ["id", "userId", "name", "profileImage", "birthdate"], // 반환할 필드 지정
+    });
+
+    if (!userData) {
+      // 사용자가 데이터베이스에 존재하지 않는 경우
+      return res
+        .status(404)
+        .json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
+    }
+
+    // 사용자 정보 반환
+    res.json({
+      success: true,
+      user: userData,
+    });
+  } catch (error) {
+    console.error("사용자 정보 조회 중 오류:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다." });
+  }
+};
+
 /* GET /users/edit */
 exports.edit = async (req, res) => {
   try {

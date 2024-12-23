@@ -118,6 +118,13 @@
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
 
+      //로그아웃
+      function logout() {
+        localStorage.clear();
+        document.location.href = "/";
+        console.log("로그아웃");
+      }
+
       document.addEventListener("DOMContentLoaded", async () => {
         const token = localStorage.getItem("authToken");
 
@@ -139,6 +146,8 @@
           const user = res.data.user;
 
           // 데이터를 사용해 동적으로 콘텐츠 생성
+          document.querySelector(".pId").innerText = user.userId;
+          document.querySelector(".pName").innerText = user.name;
           document.querySelector("#profileImage").src =
             user.profileImage || "/static/img/icons/profile.png";
           document.querySelector(".userId2").value = user.userId;
