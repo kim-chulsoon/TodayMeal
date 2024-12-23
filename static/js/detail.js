@@ -5,11 +5,9 @@ const form = document.forms["bookmark"];
 let ingEditor;
 let rcpEditor;
 
-
 // 로그인 검증을 위한 토큰값 불러오기
 document.addEventListener("DOMContentLoaded", () => {
   loginCheak(getAuthToken());
-
 });
 
 // 영상 설명 더보기/숨기기
@@ -30,7 +28,6 @@ more.addEventListener("click", () => {
     moreText.innerText = "더보기";
   }
 });
-
 
 // 메모 보이기 안보이기
 function loginCheak(token) {
@@ -58,15 +55,12 @@ function loginCheak(token) {
 }
 
 // 북마크 토글 애니메이션 및 상태설정
-function toggleBookmark() {
-
+async function toggleBookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
-
   console.log(
     document.querySelector("#bookmarkBtn").getAttribute("data-status"),
   );
-
 
   try {
     if (btn.classList.contains("bookmarkButton-off")) {
@@ -254,7 +248,8 @@ function initializeEditors() {
     Underline,
   } = window.CKEDITOR;
 
-  const LICENSE_KEY = "your_license_key_here"; // 실제 라이선스 키로 교체하세요
+  const LICENSE_KEY =
+    "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjYyNzUxOTksImp0aSI6IjIwMjBhMDJkLWQ0MWQtNGRiMS05MmQzLTkxMjg1NWVmYjc4ZiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCJdLCJ2YyI6IjkyYjAyYjc4In0.3JMMpSOpGBDPeDgKM2ongwDdBCfEqNZARRITKn9KFtfMuo0zN9RnVR9gp4_9L6GEaIAEIOaXz2jpU6Aucfv-wQ"; // 실제 라이선스 키로 교체하세요
 
   const ingDataConfig = {
     toolbar: {
