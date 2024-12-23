@@ -33,7 +33,6 @@ more.addEventListener("click", () => {
 function loginCheak(token) {
   const loginAlert = document.querySelector("main > .memoBox > .loginAlert");
   const form = document.querySelectorAll("main > .memoBox .memoItem");
-  console.log(form);
   if (token) {
     // 로그인 했을때
     console.log("로그인");
