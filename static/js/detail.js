@@ -37,10 +37,83 @@ more.addEventListener("click", () => {
   }
 });
 
-// 토글 애니메이션
-function toggle_bookmark() {
-  let btn = document.querySelector(".bookmark");
-  btn.classList.toggle("bookmarkButton-off");
+
+// 북마크 토글 애니메이션 및 상태설정
+
+async function toggle_bookmark() {
+  const btnIocn = document.querySelector("#bookmarkBtn i");
+  const btn = document.querySelector("#bookmarkBtn");
+
+  console.log(
+    document.querySelector("#bookmarkBtn").getAttribute("data-status"),
+  );
+
+
+  try {
+    if (btn.classList.contains("bookmarkButton-off")) {
+      const videoId = document.getElementById("videoId").value;
+      // 북마크를 안했을 때
+      btn.setAttribute("data-status", true); // 북마크 활성화
+      btnIocn.classList.remove("fa-regular");
+      btn.classList.add("bookmarkButton-on");
+      btn.classList.remove("bookmarkButton-off");
+      btnIocn.classList.add("fa-solid");
+
+      // 북마크 추가 요청
+      const response = await axios.post(
+        "/favorites/save",
+        { videoId }, // 요청 본문 데이터
+        {
+          headers: { Authorization: `Bearer ${getAuthToken()}` },
+        },
+      );
+
+      if (response.status === 201) {
+        console.log("북마크가 성공적으로 저장되었습니다!");
+        alert("북마크가 성공적으로 저장되었습니다!");
+      } else {
+        throw new Error("북마크 저장 실패");
+      }
+    } else {
+      // 북마크를 한 상태일 때
+      const videoId = document.getElementById("videoId").value;
+      btn.setAttribute("data-status", false); // 북마크 비활성화
+      btn.classList.remove("bookmarkButton-on");
+      btnIocn.classList.remove("fa-solid");
+      btn.classList.add("bookmarkButton-off");
+      btnIocn.classList.add("fa-regular");
+
+      // 북마크 삭제 요청
+      const response = await axios.delete("/favorites/delete", {
+        data: { videoId }, // DELETE 요청의 데이터는 `data` 속성에 넣어야 함
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      });
+
+      if (response.status === 200) {
+        console.log("북마크가 성공적으로 삭제되었습니다!");
+        alert("북마크가 성공적으로 삭제되었습니다!");
+      } else {
+        throw new Error("북마크 삭제 실패");
+      }
+    }
+  } catch (error) {
+    console.error("북마크 처리 중 오류 발생:", error.response?.data || error);
+    alert("북마크 처리 중 문제가 발생했습니다.");
+    // 오류 발생 시 버튼 상태 복구
+    if (btn.getAttribute("data-status") === "true") {
+      btn.setAttribute("data-status", false);
+      btn.classList.remove("bookmarkButton-on");
+      btnIocn.classList.remove("fa-solid");
+      btn.classList.add("bookmarkButton-off");
+      btnIocn.classList.add("fa-regular");
+    } else {
+      btn.setAttribute("data-status", true);
+      btn.classList.remove("bookmarkButton-off");
+      btnIocn.classList.remove("fa-regular");
+      btn.classList.add("bookmarkButton-on");
+      btnIocn.classList.add("fa-solid");
+    }
+  }
 }
 
 // 재료메모 폼 변환

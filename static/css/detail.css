@@ -97,6 +97,30 @@ main .container .description .recipeHead {
   margin-top: 15px;
 }
 
+/* 북마크 아이콘 */
+.bookmarkButton-off i {
+  color: #333; /* 기본 아이콘 색상 */
+  transition: color 0.3s ease;
+}
+
+.bookmarkButton-on i {
+  color: red;
+  animation: heartBeat 0.3s;
+}
+
+/* 하트 튀어오르게끔 스케일조정*/
+@keyframes heartBeat {
+  0% {
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* 북마크 */
 main .container .description .bookmarkButton-off {
   display: flex;
@@ -111,12 +135,6 @@ main .container .description .bookmarkButton-off {
   font-weight: bold;
   color: #000;
   cursor: pointer;
-}
-
-/* 북마크 아이콘 */
-main .container .description .bookmarkButton-off i {
-  width: 16px;
-  color: red;
 }
 
 main .container .description .bookmarkButton-on {
@@ -135,21 +153,6 @@ main .container .description .bookmarkButton-on {
 }
 
 main .container .description .bookmarkButton-off:active i {
-}
-
-/* 북마크 아이콘 */
-main .container .description .bookmarkButton-on i {
-  width: 16px;
-  color: red;
-}
-
-@keyframes effect {
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1.2);
-  }
 }
 
 /* 메인 */
@@ -267,6 +270,10 @@ main > .container .item .creator {
 
 main > .memoBox > .memoItem {
   margin: 30px 0px;
+}
+
+main > .memoBox > .memoItem .btnClose {
+  width: auto;
 }
 
 main > .memoBox > .memoItem > .title {
