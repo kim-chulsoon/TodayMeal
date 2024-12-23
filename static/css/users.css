@@ -78,11 +78,6 @@
   align-items: center;
 }
 
-.box2 a {
-  display: flex;
-  align-items: center;
-}
-
 .box2 span {
   font-size: 16px;
   position: absolute;

@@ -26,6 +26,9 @@
     <!-- footer -->
     <link rel="stylesheet" href="/static/css/footer.css" />
 
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
+
     <title>회원 정보</title>
   </head>
   <body>
@@ -78,13 +81,11 @@
             </a>
             <div class="box2" onclick="logout()">
               <span>로그아웃</span>
-              <a href="/users/logout">
-                <img
-                  src="/static/img/icons/arrow_right2.png"
-                  alt="로그아웃"
-                  class="box2img"
-                />
-              </a>
+              <img
+                src="/static/img/icons/arrow_right2.png"
+                alt="로그아웃"
+                class="box2img"
+              />
             </div>
             <div class="box2" onclick="confirmClick()">
               <span>회원탈퇴</span>
@@ -114,6 +115,7 @@
 
       if (!token) {
         alert("로그인이 필요합니다.");
+        document.location.href = "/";
         return;
       }
 
@@ -176,7 +178,7 @@
       }
     }
 
-    //로그아웃
+    //로그아웃 // 삭제?
     function logout() {
       localStorage.clear();
       document.location.href = "/";
