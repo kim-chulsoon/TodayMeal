@@ -332,19 +332,23 @@ main > .memoBox > .memoItem .memoButtons {
 }
 
 /* 로그인 알림창 */
-main > .memoBox > .loginAlert {
+main > .memoBox > .loginAlert-On {
   position: absolute;
   width: 300px;
-  height: 400px;
+  height: 250px;
   left: 50%;
   padding: 20px;
   box-sizing: border-box;
   transform: translateX(-50%);
-  border: 1px solid #000;
+  border: 1px solid var(--color-boder);
   background-color: white;
   z-index: 2;
   text-align: center;
   border-radius: 5px;
+}
+
+main > .memoBox > .loginAlert-Off {
+  display: none;
 }
 
 main > .memoBox > .memoItem.blur {
@@ -352,10 +356,11 @@ main > .memoBox > .memoItem.blur {
   pointer-events: none; /* 클릭 및 포커스 비활성화 */
 }
 
-main > .memoBox > .loginAlert > .buttonBox a {
+main > .memoBox > .loginAlert-On > .buttonBox a {
   display: inline-block;
-  padding: 8px 14px;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
+  font-weight: bold;
 }
 
 /* footer PC만 노출 */

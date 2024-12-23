@@ -5,7 +5,11 @@ const form = document.forms["bookmark"];
 let ingEditor;
 let rcpEditor;
 
-console.log(document.querySelector(".btn btnOpen registr"));
+// 로그인 검증을 위한 토큰값 불러오기
+document.addEventListener("DOMContentLoaded", () => {
+  loginCheak(getAuthToken());
+});
+
 // 영상 설명 더보기/숨기기
 more.addEventListener("click", () => {
   const subtitle = document.querySelector(".subtitle");
@@ -25,8 +29,33 @@ more.addEventListener("click", () => {
   }
 });
 
+// 메모 보이기 안보이기
+function loginCheak(token) {
+  const loginAlert = document.querySelector("main > .memoBox > .loginAlert");
+  const form = document.querySelectorAll("main > .memoBox .memoItem");
+  console.log(form);
+  if (token) {
+    // 로그인 했을때
+    console.log("로그인");
+
+    if (loginAlert.classList.contains("loginAlert-On")) {
+      // 블러와 알림을 없앤다
+      loginAlert.classList.remove("loginAlert-On");
+      loginAlert.classList.add("loginAlert-Off");
+      form[0].classList.remove("blur");
+      form[1].classList.remove("blur");
+    }
+  } else {
+    if (loginAlert.classList.contains("loginAlert-Off")) {
+      // 숨김
+      loginAlert.classList.add("loginAlert-On");
+      loginAlert.classList.remove("loginAlert-Off");
+    }
+  }
+}
+
 // 북마크 토글 애니메이션 및 상태설정
-function toggle_bookmark() {
+function toggleBookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
   console.log(

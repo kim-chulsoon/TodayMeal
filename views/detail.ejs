@@ -3,8 +3,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘은 뭐 먹지?</title>
-    <!-- css 초기화 -->
-    <!-- <link rel="stylesheet" href="/static/css/resset.css" /> -->
     <!-- common CSS -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
@@ -76,7 +74,7 @@
                   id="bookmarkBtn"
                   class="bookmarkButton-off"
                   data-status=fasle
-                  onclick="toggle_bookmark();"
+                  onclick="toggleBookmark();"
                 >
                   <i class="fa-regular fa-heart"></i>북마크
                 </button>
@@ -93,8 +91,10 @@
           </div>
         </div>
       </div>
+      
       <div class="memoBox">
-        <div style="display: none;" class="loginAlert">
+        <!-- 로그인이 안됐을때 메모작성을 막기 위한 로그인 알림창 -->
+        <div class="loginAlert loginAlert-On">
           <h3>지금 로그인하고<br> 메모 기능을 사용해보세요!</h3>
           <p>간편하게 재료와 레시피를 나의 스타일에 맞게 작성할 수 있습니다.</p>
           <div class="buttonBox">
@@ -103,7 +103,7 @@
           </div>
         </div>
         <!-- 재료 메모박스 -->
-        <div class="memoItem  ing">
+        <div class="memoItem blur ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
@@ -130,7 +130,7 @@
         <!-- 재료 메모박스 끝 -->
 
         <!-- 레시피 메모박스 -->
-        <div class="memoItem  rcp">
+        <div class="memoItem blur rcp">
           <p class="title">레시피 메모장</p>
           <form  class="rcpForm-Open" name="memo" method="post">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
@@ -188,5 +188,6 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 		<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 		<script src="/static/js/detail.js"></script>
+    <script src="/static/js/auth.js"></script>
   </body>
 </html>
