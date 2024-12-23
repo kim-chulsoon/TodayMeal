@@ -1,24 +1,15 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
-// require("dotenv").config(); // app.js에서 이미 설정되었으므로 제거
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
 const authenticateToken = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    // Authorization 헤더가 없는 경우
-    req.user = null; // 사용자 정보를 null로 설정
-    return next(); // 요청을 컨트롤러로 넘김
-  }
-
-  const token = authHeader.split(" ")[1];
+  const token = req.cookies.authToken; // 수정: 쿠키에서 토큰 읽기
 
   if (!token) {
-    // Authorization 헤더는 있지만 토큰이 없는 경우
-    req.user = null;
-    return next();
+    // 토큰이 없는 경우
+    req.user = null; // 사용자 정보를 null로 설정
+    return next(); // 요청을 컨트롤러로 넘김
   }
 
   try {

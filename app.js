@@ -5,6 +5,9 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 const multer = require("multer");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
+// 쿠키 파서 설정
+app.use(cookieParser()); // 쿠키 파서 등록
 
 // 미들웨어
 app.set("view engine", "ejs");

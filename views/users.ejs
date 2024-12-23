@@ -46,14 +46,14 @@
             <!-- 프로필사진 이름 -->
             <div class="userPic">
               <img
-                src="/static/img/icons/profile.png"
+                src="<%= user.profileImage || '/static/img/icons/profile.png' %>"
                 alt="profileimage"
                 class="profileImg"
               />
             </div>
             <div class="userP">
-              <p class="userId">admin1234</p>
-              <p class="userName">당근볶음</p>
+              <p class="userId"><%= user.userId %></p>
+              <p class="userName"><%= user.name %></p>
             </div>
           </div>
 
@@ -107,64 +107,17 @@
     // .title!!!!!!!
     document.querySelector(".title h3").innerText = "내정보";
 
-    //토큰 받기
-    $(document).ready(function () {
-      const token = localStorage.getItem("authToken"); //토큰 가져오기
-
-      console.log(token);
-
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        document.location.href = "/";
-        return;
-      }
-
-      //서버에 유저 정보 요청
-      $.ajax({
-        type: "GET",
-        url: "users/details", //회원 정보 라우터
-        headers: {
-          Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-        },
-        success: function (res) {
-          if (res.success) {
-            // 아이디와 이름 프로필 이미지 채우기
-            document.querySelector(".userId").innerText = res.user.userId;
-            document.querySelector(".userName").innerText = res.user.name;
-            document.querySelector(".profileImg").src = res.user.profileImage;
-          } else {
-            alert("유저 정보를 불러올 수 없습니다. 다시 로그인해주세요.");
-          }
-        },
-        error: function (err) {
-          console.error("Error fetching user details:", err);
-          alert("서버 오류가 발생했습니다.");
-        },
-      });
-    });
-
     // 회원 탈퇴
     // 회원 탈퇴 함수
     function confirmClick() {
       if (confirm("회원을 탈퇴하시겠습니까?")) {
-        const token = localStorage.getItem("authToken"); //토큰 가져오기
-
-        if (!token) {
-          alert("로그인이 필요합니다.");
-          return;
-        }
-
         // Ajax 요청
         $.ajax({
           type: "DELETE",
           url: "/users/delete", // 회원 탈퇴 라우트
-          headers: {
-            Authorization: `Bearer ${token}`, // 토큰
-          },
           success: function (res) {
             if (res.success) {
               alert("회원 탈퇴가 완료되었습니다.");
-              localStorage.removeItem("authToken"); // 로컬 스토리지 토큰 삭제
               document.location.href = "/"; // 홈으로
             } else {
               alert("회원 탈퇴 중 오류가 발생했습니다.");
@@ -178,11 +131,25 @@
       }
     }
 
-    //로그아웃
-    function logout() {
-      localStorage.clear();
-      document.location.href = "/";
-      console.log("로그아웃");
+    async function logout() {
+      try {
+        // 로그아웃 요청 전송
+        const response = await axios.post(
+          "/users/logout",
+          {},
+          { withCredentials: true },
+        );
+
+        if (response.status === 200) {
+          alert("로그아웃되었습니다.");
+          document.location.href = "/"; // 홈으로 리디렉션
+        } else {
+          alert("로그아웃에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("로그아웃 오류:", error);
+        alert("서버 오류가 발생했습니다.");
+      }
     }
   </script>
 </html>

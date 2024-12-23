@@ -112,7 +112,6 @@
 
           if (res.success) {
             console.log("Token :", res.token);
-            localStorage.setItem("authToken", res.token); // 'authToken'으로 통일
             alert("로그인 성공!");
             window.location.href = "/";
           } else {

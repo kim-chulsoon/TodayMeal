@@ -62,7 +62,7 @@
       <div class="container">
         <% favoriteVideos.forEach(favorite => { %>
           <div class="item">
-            <a href="<%= favorite.Video.youtubeUrl %>" target="_blank">
+            <a href="/detail?videoId=<%= favorite.Video.youtubeUrl %>" target="_blank">
               <div class="thumbnail">
                 <img src="<%= favorite.Video.thumbnailUrl %>" alt="<%= favorite.Video.title %> 썸네일" />
               </div>

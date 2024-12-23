@@ -7,7 +7,9 @@ let rcpEditor;
 
 // 로그인 검증을 위한 토큰값 불러오기
 document.addEventListener("DOMContentLoaded", () => {
-  loginCheak(getAuthToken());
+  const token = document.cookie.includes("authToken=");
+  console.log("로그인검증", token);
+  loginCheak(token);
 });
 
 // 영상 설명 더보기/숨기기
@@ -54,9 +56,10 @@ function loginCheak(token) {
 }
 
 // 북마크 토글 애니메이션 및 상태설정
-async function toggleBookmark() {
+async function toggle_bookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
+
   console.log(
     document.querySelector("#bookmarkBtn").getAttribute("data-status"),
   );
@@ -76,7 +79,7 @@ async function toggleBookmark() {
         "/favorites/save",
         { videoId }, // 요청 본문 데이터
         {
-          headers: { Authorization: `Bearer ${getAuthToken()}` },
+          withCredentials: true, // 쿠키를 포함하여 요청
         },
       );
 
@@ -98,7 +101,7 @@ async function toggleBookmark() {
       // 북마크 삭제 요청
       const response = await axios.delete("/favorites/delete", {
         data: { videoId }, // DELETE 요청의 데이터는 `data` 속성에 넣어야 함
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        withCredentials: true,
       });
 
       if (response.status === 200) {
@@ -162,19 +165,12 @@ function rcpForm() {
   }
 }
 
-// 토큰 가져오기 함수
-function getAuthToken() {
-  return localStorage.getItem("authToken");
-}
-
 // 노트 데이터 가져오기
 async function fetchCurrentNote(videoId) {
   try {
     const response = await axios.get(`/notes`, {
       params: { videoId },
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-      },
+      withCredentials: true, // 쿠키를 포함하도록 설정
     });
 
     if (response.data.success) {
@@ -658,9 +654,9 @@ async function saveOrUpdateMemo(data, noteType) {
       const payload =
         noteType === "ingredients" ? { ingredients: data } : { recipe: data };
       const response = await axios.patch(`/notes/${currentNote.id}`, payload, {
+        withCredentials: true, // 쿠키를 포함하도록 설정
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // JSON 데이터임을 명시
         },
       });
 
@@ -688,8 +684,8 @@ async function saveOrUpdateMemo(data, noteType) {
         thumbnailUrl,
       };
       const response = await axios.post("/notes", payload, {
+        withCredentials: true, // 쿠키를 포함하도록 설정
         headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
           "Content-Type": "application/json",
         },
       });
