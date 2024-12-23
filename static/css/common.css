@@ -44,7 +44,15 @@ img {
   background-color: var(--color-brand);
 }
 
+.btnOpen:hover {
+  background-color: #f67867;
+}
+
 .btnClose {
   color: #a0a0a0;
   background-color: #dfdede;
+}
+
+.btnClose:hover {
+  background-color: #d2d1d1;
 }
