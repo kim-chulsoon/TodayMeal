@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <!-- <link rel="stylesheet" href="/static/css/resset.css" /> -->
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/css/detail.css" />
+
+  <!-- edit -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css" crossorigin>
+
+  <!-- cdn -->
+   <script
+      src="https://kit.fontawesome.com/6dd6eb0895.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
+        <div class="headMenu">
+          <div class="backMove">
+            <a href="/"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
+            /></a>
+          </div>
+          <div class="title">
+            <h3>뒤로가기</h3>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="item">
+          <div class="thumbnail">
+            <iframe
+              src="https://www.youtube.com/embed/<%= video.videoId %>"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <div class="description">
+            <div class="recipeHead">
+              <h3 class="title"><%= video.title %></h3>
+              <!-- 북마크 -->
+              <form action="post" name="bookmark">
+                <button
+                  type="button"
+                  class="bookmark bookmarkButton-off"
+                  onclick="toggle_bookmark();"
+                >
+                  <i class="fa-regular fa-heart"></i>북마크
+                </button>
+              </form>
+            </div>
+
+            <p class="creator"><%= video.channelTitle %></p>
+            <p class="subtitle subtitle-off"><%= video.description %></p>
+            <div class="moreLine">
+              <div></div>
+              <p>더보기</p>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="memoBox">
+        <div class="memoItem">
+
+          <form class="ingrForm" name="memo" method="post">
+              <p class="title">재료메모장</p>
+              <div id="ingData"></div>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
+          <!--<form name="memo" method="post" action="/detail/notes">
+            <input type="hidden" name="videoId" value="<%= video.videoId %>" />
+            <input type="hidden" name="title" value="<%= video.title %>" />
+            <label>
+              <p>재료메모장</p>
+
+              <textarea class="ingredientTextarea" name="ingredients" id="ingredients"><%- notes.length > 0 && notes[0].ingredients ? notes[0].ingredients.trim() : '' %></textarea>
+            </label>
+          -->
+            <div class="memoButtons">
+              <button type="button" class="btn btnClose">취소</button>
+              <button type="button" class="btn btnOpen" >수정</button>
+            </div>
+          </form>
+        </div>
+        <div class="memoItem">
+          <form class="rcprForm" name="memo" method="post">
+              <p class="title">레시피 메모장</p>
+              <div id="rcpData"></div>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
+            <div class="memoButtons">
+              <button class="btn btnClose">취소</button>
+              <button type="button" class="btn btnOpen">수정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
+		<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
+		<script src="/static/js/detail.js"></script>
+  </body>
+</html>

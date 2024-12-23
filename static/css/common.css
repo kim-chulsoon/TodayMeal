@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "SUIT-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  /* color */
+  --color-brand: #ff8675;
+  --color-boder: #cecece;
+  --color-content: #000;
+  --color-subtitle: #747474;
+}
+
+* {
+  /* 링크에 대한 설정 */
+  text-decoration: none;
+  color: #000;
+}
+
+body {
+  font-family: "SUIT-Regular";
+}
+
+img {
+  width: 100%;
+}
+
+.btn {
+  width: 80px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 공용 버튼 */
+.btnOpen {
+  color: #fff;
+  background-color: var(--color-brand);
+}
+
+.btnClose {
+  color: #a0a0a0;
+  background-color: #dfdede;
+}

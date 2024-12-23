@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/css/search.css" />
+    <!-- pagination CSS -->
+    <link rel="stylesheet" href="/static/css/pagination.css" />
+
+    <!-- AXIOS -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Js -->
+    <script src="/static/js/search.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
+      </div>
+      <div class="inner">
+        <div class="searchBox">
+          <!-- 서치 폼 -->
+          <form action="/search/video" name="keyword" method="get">
+            <input
+              type="text"
+              name="keyword"
+              placeholder="요리 또는 재료를 검색하세요"
+              onkeyup="search_enter(event);"
+            />
+            <span class="searchIcon" onclick="search_click();"
+              ><img src="/static/img/icons/i_search.png" alt="검색"
+            /></span>
+          </form>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bestTitle">
+
+        <p>검색결과</p>
+      </div>
+      <div class="container">
+        <% if (videos && videos.length > 0) { %>
+          <% videos.forEach(video => { %>
+        <div class="item">
+          <a href="/detail?videoId=<%= video.videoId %>" >
+            <div class="thumbnail">
+              <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
+            </div>
+            <div class="description">
+              <h3 class="title"><%= video.title %></h3>
+              <p class="creator"><%= video.channelTitle %></p>
+              <p class="subtitle"><%= video.description %></p>
+            </div>
+          </a>
+        </div>
+        <% }); %>
+        
+
+        <div class="pageBox">
+          <ul class="pagination">
+            <% if (prevPageToken) { %>
+            <li class="page-item arrowLeft">
+             
+                <a href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"><img src="/static/img/icons/ArrowLeft2.png" alt=""
+                  /></a>
+             
+            </li>
+            <% } %>
+            <% if (nextPageToken) { %>
+            <li class="page-item arrowRight">
+             
+                <a><img src="/static/img/icons/ArrowLeft2.png" alt=""
+                  /></a>
+                <a href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"><img src="/static/img/icons/ArrowRight2.png" alt=""
+                  /></a>
+              
+            </li>
+            <% } %>
+          </ul>
+        </div>
+
+      <% } else { %>
+        <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
+      <% } %>
+      </div>
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
+    <script>
+      function test() {
+        axios({
+          method: "get",
+          url: "/",
+          data: {},
+        })
+          .then((res) => {})
+          .catch((err) => {
+            console.log();
+          });
+      }
+    </script>
+  </body>
+</html>

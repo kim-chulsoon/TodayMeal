@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <!-- cdn,font,jquery   -->
+    <!-- jquery CDN -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <!-- googlrFont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!--   css -->
+    <!-- common  -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <!-- 회원가입 -->
+    <link rel="stylesheet" href="/static/css/register.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="/static/css/footer.css" />
+  </head>
+  <body>
+    <!-- header include -->
+    <%-include("./includes/header") %>
+
+    <main>
+      <div class="regiDiv">
+        <form
+          name="register"
+          class="register"
+          onsubmit="return registerClick()"
+        >
+          <input
+            type="text"
+            name="userId"
+            class="userId"
+            placeholder=" 아이디"
+          />
+          <button type="button" class="userIdB" onclick="idCheck()">
+            확인
+          </button>
+          <p class="idP">영문 소문자, 숫자를 포함한 5 ~ 12자리</p>
+          <div class="pwBox">
+            <input
+              type="password"
+              name="userPw1"
+              class="userPw"
+              id="userPw1"
+              placeholder="  패스워드"
+            />
+
+            <span class="check1" style="display: none"
+              ><img src="/static/img/icons/icons-check.png" alt="check"
+            /></span>
+          </div>
+
+          <p class="pwP">영문 소/대문자, 숫자, !@#$ 포함 5 ~ 15자</p>
+
+          <div class="pwBox">
+            <input
+              type="password"
+              name="userPw2"
+              class="userPw"
+              id="userPw2"
+              placeholder="  패스워드 확인"
+            />
+
+            <span class="check2" style="display: none"
+              ><img src="/static/img/icons/icons-check.png" alt="check"
+            /></span>
+          </div>
+
+          <input
+            type="text"
+            name="userName"
+            class="userName"
+            placeholder="  이름"
+          />
+          <br />
+          <input
+            type="date"
+            name="userBirth"
+            class="Birth"
+            value="1993-03-03"
+            min="1970-01-01"
+            max="2018-12-31"
+          />
+          <br />
+          <button type="button" class="registerB" onclick="registerClick()">
+            가입
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!-- footer -->
+    <%- include("./includes/footer") %>
+
+    <script>
+      // .title!!!!!!!
+      document.querySelector(".title h3").innerText = "회원가입";
+      // 모바일 메뉴
+      document.querySelector(".mgnb").style.display = "none";
+
+      let isIdCheck = false; // 아이디 중복 확인 결과
+
+      function idCheck() {
+        const form = document.forms["register"];
+        const inputId = form.userId.value.trim();
+        const idP = document.querySelector(".idP");
+
+        //아이디 유효성 검사
+        const reg = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{5,12}$/; //정규식
+        const isChecked = reg.test(inputId);
+
+        if (inputId === "") {
+          idP.innerText = "아이디를 입력해주세요";
+          idP.style.color = "red";
+          return false;
+        }
+
+        if (!isChecked) {
+          idP.innerText =
+            "아이디는 영문 소문자, 숫자를 포함한 5 ~ 12여야 합니다.";
+          idP.style.color = "red";
+          return false;
+        } else {
+          idP.innerText = "영문 소문자, 숫자를 포함한 5 ~ 12자리";
+          idP.style.color = "rgba(160, 160, 160, 1)";
+        }
+
+        // 중복 아이디 체크
+        $.ajax({
+          type: "post",
+          url: "/users/registerIdCheck", //여기 수정 필요
+          data: { userId: inputId },
+          success: function (res) {
+            if (res.success) {
+              idP.innerText = "사용 가능한 아이디입니다.";
+              idP.style.color = "rgba(160, 160, 160, 1)"; //원래 색으로
+              isIdCheck = true; //아이디가 중복 확인
+              console.log("아이디 중복 확인");
+            } else {
+              idP.innerText = "이미 사용 중인 아이디입니다.";
+              idP.style.color = "red";
+              console.log("아이디 중복 체크 실패");
+            }
+          },
+          error: function (error) {
+            console.log(error);
+          },
+        });
+      }
+
+      //회원가입
+      function registerClick() {
+        const form = document.forms["register"];
+        const userId = form.userId.value.trim();
+        const userPw1 = form.userPw1.value;
+        const userPw2 = form.userPw2.value;
+        const userName = form.userName.value.trim();
+        const userBirth = form.userBirth.value;
+
+        //아이디 중복 확인
+        if (!isIdCheck) {
+          alert("아이디 중복 확인을 해주세요");
+          return false;
+        }
+
+        // 모든 항목 검사
+        if (
+          userId === "" ||
+          userPw1 === "" ||
+          userPw2 === "" ||
+          userName === "" ||
+          userBirth === ""
+        ) {
+          alert("모든 항목을 입력해주세요");
+          return false;
+        }
+
+        //비밀번호 유효성
+        const regPw =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$])[A-Za-z\d!@#$]{5,15}$/;
+        const isCheckedPw = regPw.test(userPw1);
+
+        if (!isCheckedPw) {
+          alert(
+            "비밀번호는 영문 소/대문자, 숫자, !@#$ 포함 5 ~ 15자여야 합니다.",
+          );
+          return false;
+        }
+
+        //비밀번호 확인
+        if (userPw1 !== userPw2) {
+          alert("비밀번호가 일치하지 않습니다.");
+          return false;
+        }
+
+        // 폼 전송
+        //post
+        $.ajax({
+          type: "post",
+          url: "/users/register",
+          data: {
+            userId: userId,
+            userPw: userPw1,
+            userName: userName,
+            userBirth: userBirth,
+          },
+          success: function (res) {
+            if (res.success) {
+              // 성공 시 로그인 페이지로 이동  /users/login
+              document.location.href = "/users/login";
+            } else {
+              alert("회원가입 실패했습니다.");
+            }
+          },
+          error: function (error) {
+            console.log(error);
+          },
+        });
+      }
+    </script>
+    <!-- 비밀번호 확인  span -->
+    <script defer src="/static/js/register.js"></script>
+  </body>
+</html>

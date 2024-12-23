@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오늘은 뭐 먹지?</title>
+    <!-- css 초기화 -->
+    <link rel="stylesheet" href="/static/css/resset.css" />
+    <!-- common CSS -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- index CSS -->
+    <link rel="stylesheet" href="/static/css/favarites.css" />
+    <!-- pagination CSS -->
+    <link rel="stylesheet" href="/static/css/pagination.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+    
+    <!-- Js -->
+    
+    <script src="/static/js/search.js" defer></script>
+    <script src="/static/js/favorites.js" defer></script>
+    
+
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="logoBox">
+          <a class="logoTitle" href="/"
+            ><img src="/static/img/logo/b_logo.png" alt="로고" />
+            <span>오늘은 뭐 먹지?</span></a
+          >
+          <div class="gnb">
+            <!-- 로그인시  태그변경 -->
+            <% if(!true){ %>
+            <a href="/users/login">내정보</a>
+            <a href="/users/login">로그아웃</a>
+            <%}else{%>
+            <a href="/users/login">로그인</a>
+            <a href="/users/login">회원가입</a>
+            <%} %>
+          </div>
+        </div>
+        <div class="headMenu">
+          <div class="backMove">
+            <a href="/"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
+            /></a>
+          </div>
+          <div class="title">
+            <h3>뒤로가기</h3>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="bestTitle">
+        <h2>나의 북마크</h2>
+      </div>
+      <div class="container">
+        <% favoriteVideos.forEach(favorite => { %>
+          <div class="item">
+            <a href="<%= favorite.Video.youtubeUrl %>" target="_blank">
+              <div class="thumbnail">
+                <img src="<%= favorite.Video.thumbnailUrl %>" alt="<%= favorite.Video.title %> 썸네일" />
+              </div>
+              <div class="description">
+                <h3 class="title"><%= favorite.Video.title %></h3>
+                <p class="creator"><%= favorite.Video.channelTitle %></p>
+                <!-- <p class="subtitle"><%= favorite.Video.description %></p> -->
+              </div>
+            </a>
+          </div>
+        <% }) %>
+      </div>
+      
+      
+    <footer>
+      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
+    </footer>
+    <div class="mgnb">
+      <div class="menubox">
+        <div class="menu">
+          <a href="/"><img src="/static/img/icons/Home.png" alt="홈버튼" /></a>
+        </div>
+        <div class="menu">
+          <a href="/favorites"
+            ><img src="/static/img/icons/Heart.png" alt="즐겨찾기"
+          /></a>
+        </div>
+        <div class="menu">
+          <!-- 로그인시  태그변경 -->
+          <% if(!true){ %>
+          <a href="users/login"
+            ><img src="/static/img/icons/Login.png" alt="로그인"
+          /></a>
+          <%}else{%>
+          <a href="users/logout"
+            ><img src="/static/img/icons/Profile.png" alt="프로필"
+          /></a>
+          <%} %>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

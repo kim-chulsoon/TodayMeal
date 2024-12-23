@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "SUIT-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  /* 링크에 대한 설정 */
+  text-decoration: none;
+  color: #000;
+}
+
+body {
+  font-family: "SUIT-Regular";
+}
+
+.content {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+p {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 30px 0px;
+}
+
+a {
+  display: inline-block;
+  width: 80%;
+  height: 50px;
+  line-height: 50px;
+  max-width: 300px;
+
+  background-color: #ff8675;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}

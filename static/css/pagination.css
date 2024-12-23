@@ -1,0 +1,29 @@
+main > .pageBox {
+  width: 240px;
+  margin: 0 auto;
+}
+
+main > .pageBox > .pagination {
+  display: flex;
+  justify-content: space-around;
+}
+
+.page-item {
+  width: 20px;
+  margin-top: 60px;
+}
+
+.pagination .atv {
+  background-color: var(--color-brand);
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #fff;
+}
+.pagination .atv a {
+  background-color: var(--color-brand);
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #fff;
+}
