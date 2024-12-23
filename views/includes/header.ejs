@@ -6,22 +6,12 @@
         ><img src="/static/img/logo/b_logo.png" alt="로고" />
         <span>오늘은 뭐 먹지?</span></a
       >
-      <div class="gnb">
+      <div id="gnb">
         <!-- 로그인시  태그변경 -->
-        <% if(!true){ %>
-        <a href="/users">내정보</a>
-        <!-- 로그아웃 수정 -->
-        <a href="#" onclick="logout()">로그아웃</a>
-        <%}else{%>
-        <a href="/users/login">로그인</a>
-        <a href="/users/register">회원가입</a>
-        <%} %>
       </div>
     </div>
     <div class="headMenu">
       <div class="backMove">
-        <!--  ^^^^^^^^^^^^^^^^^^^^^^^^ src 수정!!!!!!!!!!!!!^^^^^ -->
-        <!-- <a href="/"><img src="../../static/img/Arrow - Left.png" alt="" /></a> -->
         <a href="#" onClick="history.back()"
           ><img src="../../static/img/icons/ArrowLeft2.png" alt=""
         /></a>
