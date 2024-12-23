@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Notes, Videos } = require("../models");
+const { Notes, Videos, User } = require("../models");
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
 // GET detail
@@ -70,10 +70,10 @@ exports.detail = async (req, res) => {
 exports.Notes = async (req, res) => {
   try {
     const { ingredients, recipe, title, videoId } = req.body;
-    const user_id = req.session.user_id || 1;
+    const user = req.user; // authenticateToken 미들웨어에서 설정
 
+    // Video 조회 또는 생성
     let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
-
     if (!video) {
       video = await Videos.create({
         title: title,
@@ -81,16 +81,19 @@ exports.Notes = async (req, res) => {
       });
     }
 
+    // Notes 생성
     await Notes.create({
-      userId: user_id,
+      userId: user.id,
       videoId: video.id,
       ingredients: ingredients,
       recipe: recipe,
     });
 
-    res.redirect(`/detail?videoId=${videoId}`);
+    res
+      .status(201)
+      .json({ success: true, message: "메모가 성공적으로 저장되었습니다." });
   } catch (err) {
-    console.log("note upload err", err.message);
-    res.status(500).send("note upload err");
+    console.error("note upload err:", err); // 전체 오류 객체를 로그로 남김
+    res.status(500).json({ success: false, message: "서버 오류 발생" });
   }
 };

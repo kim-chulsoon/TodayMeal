@@ -3,12 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- jquery CDN -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
+    <!-- jQuery CDN 제거 (Axios로 통일 예정) -->
     <!-- googlrFont -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,11 +11,20 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <!-- css -->
+    <!-- CSS -->
+    <!--   css -->
+    <!-- common  -->
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <!-- login -->
     <link rel="stylesheet" href="/static/css/login.css" />
+    <!-- footer -->
+    <link rel="stylesheet" href="/static/css/footer.css" />
     <title>로그인</title>
 
-    <!-- js -->
+    <!-- JS (jQuery 제거하고 Axios 사용) -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/static/js/login.js" defer></script>
   </head>
   <body>
@@ -33,21 +37,8 @@
       </div>
     </div>
 
-    <header>
-      <a href="#" onClick="history.back()" class="mobile">
-        <img src="/static/img/icons/Arrow - Left.png" alt="arrow" />
-      </a>
-      <p class="logo mobile">로그인</p>
-      <!-- 웹 -->
-      <a href="/" class="web logoA">
-        <img src="/static/img/logo/b_logo.png" alt="logo" class="logoImg" />
-        <span>오늘은 뭐 먹지?</span>
-      </a>
-      <div class="menu web">
-        <a href="/users/login">로그인</a>
-        <a href="/users/register">회원가입</a>
-      </div>
-    </header>
+    <!-- header include -->
+    <%-include("./includes/header") %>
 
     <div class="con">
       <div class="loginDiv">
@@ -86,49 +77,53 @@
       </div>
     </div>
 
-    <footer class="web">
-      <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
-    </footer>
+    <!-- footer -->
+    <%- include("./includes/footer") %>
 
     <script>
-      function login() {
+      // .title!!!!!!!
+      document.querySelector(".title h3").innerText = "로그인";
+      // 모바일 메뉴
+      document.querySelector(".mgnb").style.display = "none";
+
+      async function login() {
         const form = document.forms["loginForm"];
-        console.log("form.userId", form.userId.value);
-        console.log("form.userPw", form.userPw.value);
+        const userId = form.userId.value.trim();
+        const userPw = form.userPw.value.trim();
+        const autoLogin = form.autoLogin.checked;
+
         // 유효성 검사
-        if (form.userId.value.length === 0 || form.userPw.value.length === 0) {
+        if (userId.length === 0 || userPw.length === 0) {
           alert("아이디와 비밀번호를 입력해주세요");
           return;
         }
 
-        //Ajax
-        $.ajax({
-          type: "post",
-          url: "/users/login",
-          data: {
-            userId: form.userId.value,
-            userPw: form.userPw.value,
-            autoLogin: form.autoLogin.checked,
-          },
-          success: function (res) {
-            if (res.success) {
-              console.log("Token :", res.token);
-              localStorage.setItem("authToken", res.token);
-              document.location.href = "/";
-            } else {
-              alert("로그인 실패 :" + res.message);
-            }
-          },
-          error: function (error) {
-            console.log(error);
-          },
-        });
+        try {
+          const response = await axios.post("/users/login", {
+            userId,
+            userPw,
+            autoLogin,
+          });
+
+          const res = response.data;
+
+          if (res.success) {
+            console.log("Token :", res.token);
+            localStorage.setItem("authToken", res.token); // 'authToken'으로 통일
+            alert("로그인 성공!");
+            window.location.href = "/";
+          } else {
+            alert("로그인 실패: " + res.message);
+          }
+        } catch (error) {
+          console.error("로그인 오류:", error);
+          alert("로그인 중 오류가 발생했습니다.");
+        }
       }
 
-      //메인
+      // 메인 애니메이션
       function con() {
         const back = document.querySelector(".back");
-
         back.classList.add("ani");
       }
     </script>

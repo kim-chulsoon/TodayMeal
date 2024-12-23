@@ -1,0 +1,197 @@
+header {
+  width: 100%;
+  padding: 0px 1.3rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+/* 로고 */
+header > .inner > .logoBox {
+  display: none;
+  width: 100%;
+}
+
+/* PC메뉴 가리기 */
+header > .inner > .logoBox > .gnb {
+  display: none;
+}
+
+header > .inner > .logoBox > .logoTitle > img {
+  width: 40px;
+}
+
+header > .inner > .logoBox > .logoTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-content);
+}
+
+/* PC 로그인/회원가입 */
+header > .inner > .logoBox > .gnb a:last-child {
+  margin-left: 10px;
+}
+
+/* 검색 */
+header > .inner > .searchBox {
+  position: relative;
+  width: 100%;
+}
+
+header > .inner > .searchBox input {
+  width: 100%;
+  height: 50px;
+  font-size: 1rem;
+  border: 2px solid var(--color-brand);
+  border-radius: 10px;
+  margin-top: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+
+/* 아이콘 */
+header > .inner > .searchBox .searchIcon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+}
+
+/* 모바일 뒤로가기 */
+header > .inner > .headMenu {
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+}
+
+header > .inner > .headMenu > .backMove {
+  width: 48px;
+  position: absolute;
+}
+
+header > .inner > .headMenu > .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* 작은 태블릿 이상 */
+@media (min-width: 600px) {
+  header {
+    padding: 0px 2.4rem;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: center;
+  }
+
+  header > .inner > .searchBox {
+    width: 500px;
+    margin: 0 auto;
+  }
+}
+
+/* 태블릿 이상 */
+@media (min-width: 768px) {
+  header {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-sizing: border-box;
+  }
+
+  /* 로고 */
+  header > .inner > .logoBox {
+    display: block;
+    width: 100%;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    left: 0px;
+    border-bottom: 1px solid var(--color-boder);
+  }
+
+  header > .inner {
+    width: 100%;
+    height: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* 로고 */
+  header > .inner > .logoBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* PC메뉴 노출시킴 */
+  header > .inner > .logoBox > .gnb {
+    display: block;
+  }
+
+  /* 모바일 뒤로가기 */
+  header > .inner > .headMenu {
+    display: none;
+  }
+
+  /* PC 로그인/회원가입 */
+  header > .inner > .logoBox > .gnb a:last-child {
+    margin-left: 10px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: left;
+  }
+
+  header > .inner > .logoBox > .logoTitle > img {
+    width: 40px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-content);
+  }
+
+  /* 검색 */
+  header > .inner > .searchBox {
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  /* 모바일 지우기 */
+  /* .mgnb {
+      display: none;
+    } */
+}
+
+/* 데스크탑 이상 */
+@media (min-width: 1024px) {
+  header {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  header > .inner > .logoBox {
+    margin-top: 20px;
+  }
+
+  header > .inner > .logoBox > .logoTitle {
+    justify-content: center;
+  }
+}

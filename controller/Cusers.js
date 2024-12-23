@@ -19,68 +19,48 @@ exports.login = (req, res) => {
 };
 
 /* GET /users/edit */
-exports.edit = (req, res) => {
-  res.render("usersedit");
-};
-
-/* GET /users/register */
-exports.register = (req, res) => {
-  res.render("register");
-};
-
-// /** 사용자 정보 조회 */
-exports.userProfile = async (req, res) => {
+exports.edit = async (req, res) => {
   try {
-    // Authorization 헤더에서 토큰 추출
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Authorization 헤더가 필요합니다." });
+    const user = req.user || null; // 인증된 사용자 정보 가져오기
+
+    // 인증되지 않은 사용자 처리
+    if (!user) {
+      return res.render("usersedit", { users: [] });
     }
 
-    const token = authHeader.split(" ")[1]; // Bearer Token 형식
-    console.log("Authorization Header:", authHeader);
-    console.log("토큰값:", token);
-
-    if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: "토큰이 필요합니다." });
-    }
-
-    // 토큰 검증 및 사용자 ID 추출
-    let decoded;
-    try {
-      decoded = jwt.verify(token, SECRET_KEY);
-    } catch (error) {
-      console.error("JWT 검증 실패:", error.message);
-      return res
-        .status(401)
-        .json({ success: false, message: "토큰 검증 실패: " + error.message });
-    }
-
-    const userId = decoded.userId; // 토큰 페이로드의 userId 추출
-    console.log("유저id", userId);
+    const userId = user.id;
+    console.log("userid", userId);
 
     // User 테이블에서 사용자 정보 조회
-    const user = await User.findOne({
+    const userData = await User.findOne({
       where: { id: userId },
       attributes: ["id", "userId", "name", "profileImage", "birthdate"], // 반환할 필드 지정
     });
 
-    if (!user) {
+    if (!userData) {
+      // 사용자가 데이터베이스에 존재하지 않는 경우
       return res
         .status(404)
         .json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
     }
 
+    console.log("userdata", userData);
     // 사용자 정보 반환
-    res.status(200).json({ success: true, user });
+    res.json({
+      success: true,
+      user: userData,
+    });
   } catch (error) {
-    console.error("Error fetching user profile:", error);
-    res.status(500).json({ success: false, message: "서버 오류 발생" });
+    console.error("사용자 정보 조회 중 오류:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다." });
   }
+};
+
+/* GET /users/register */
+exports.register = (req, res) => {
+  res.render("register");
 };
 
 //회원가입
@@ -239,33 +219,22 @@ exports.updateUserInfo = async (req, res) => {
 
 /**회원 탈퇴 **/
 exports.deleteUser = async (req, res) => {
-  try {
-    // 로컬스토리지에 저장된 토큰 프론트엔드에서 요청 헤더에 담아 전송해야 함
-    const token = req.headers.authorization?.split(" ")[1]; // Bearer Token 형식
-    if (!token) {
-      return res.status(401).send("토큰이 필요합니다.");
-    }
+  const userId = req.user.id;
+  console.log("탈퇴유저아디:", userId);
 
-    const decoded = jwt.verify(token, SECRET_KEY); // 토큰 검증
-    const userId = decoded.userId; // 페이로드에서 사용자 ID 가져오기
+  // User 테이블에서 현재 로그인된 사용자의 데이터 삭제
+  const deleted = await User.destroy({
+    where: { id: userId },
+  });
 
-    // User 테이블에서 현재 로그인된 사용자의 데이터 삭제
-    const deleted = await User.destroy({
-      where: { id: userId },
-    });
-
-    if (!deleted) {
-      return res.status(404).send("사용자 정보를 찾을 수 없습니다.");
-    }
-
-    // 삭제 성공 응답
-    res
-      .status(200)
-      .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    res.status(500).send("서버 오류 발생");
+  if (!deleted) {
+    return res.status(404).send("사용자 정보를 찾을 수 없습니다.");
   }
+
+  // 삭제 성공 응답
+  res
+    .status(200)
+    .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
 };
 
 //파일 업로드

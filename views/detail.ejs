@@ -97,7 +97,8 @@
           <form class="ingrForm" name="memo" method="post">
               <p class="title">재료메모장</p>
               <div id="ingData"></div>
-=======
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
           <!--<form name="memo" method="post" action="/detail/notes">
             <input type="hidden" name="videoId" value="<%= video.videoId %>" />
             <input type="hidden" name="title" value="<%= video.title %>" />
@@ -106,17 +107,19 @@
 
               <textarea class="ingredientTextarea" name="ingredients" id="ingredients"><%- notes.length > 0 && notes[0].ingredients ? notes[0].ingredients.trim() : '' %></textarea>
             </label>
-
+          -->
             <div class="memoButtons">
               <button type="button" class="btn btnClose">취소</button>
               <button type="button" class="btn btnOpen" >수정</button>
-            </div>-->
+            </div>
           </form>
         </div>
         <div class="memoItem">
           <form class="rcprForm" name="memo" method="post">
               <p class="title">레시피 메모장</p>
               <div id="rcpData"></div>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
             <div class="memoButtons">
               <button class="btn btnClose">취소</button>
               <button type="button" class="btn btnOpen">수정</button>
