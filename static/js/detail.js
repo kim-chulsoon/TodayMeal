@@ -25,13 +25,29 @@ more.addEventListener("click", () => {
   }
 });
 
-// 토글 애니메이션
+// 북마크 토글 애니메이션 및 상태설정
 function toggle_bookmark() {
-  let btn = document.querySelector(".bookmark");
-  btn.addEventListener("click", () => {
-    // 현재 스타일 속성을 기반으로 토글
-    btn.classList.toggle(".ookmarkButton-off");
-  });
+  const btnIocn = document.querySelector("#bookmarkBtn i");
+  const btn = document.querySelector("#bookmarkBtn");
+  console.log(
+    document.querySelector("#bookmarkBtn").getAttribute("data-status"),
+  );
+
+  if (btn.classList.contains("bookmarkButton-off")) {
+    // 북마크를 안했을때
+    btn.setAttribute("data-status", true); // 북마크 활성화
+    btnIocn.classList.remove("fa-regular");
+    btn.classList.remove("bookmarkButton-off");
+    btn.classList.add("bookmarkButton-on");
+    btnIocn.classList.add("fa-solid");
+  } else {
+    // 북마크를 한 상태일때
+    btn.setAttribute("data-status", false); // 북마크 비활성화
+    btn.classList.remove("bookmarkButton-on");
+    btnIocn.classList.remove("fa-solid");
+    btn.classList.add("bookmarkButton-off");
+    btnIocn.classList.add("fa-regular");
+  }
 }
 
 // 재료메모 폼 변환
