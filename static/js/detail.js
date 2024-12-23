@@ -38,11 +38,13 @@ function getAuthToken() {
 async function saveIngredientsMemo(data) {
   const videoId = document.getElementById("videoId").value;
   const title = document.getElementById("title").value;
-
+  const channelTitle = document.getElementById("channelTitle").value;
+  const thumbnailUrl = document.getElementById("thumbnailUrl").value;
+  console.log(thumbnailUrl);
   try {
     const response = await axios.post(
       "/detail/notes",
-      { ingredients: data, videoId, title },
+      { ingredients: data, videoId, title, channelTitle, thumbnailUrl },
       {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
