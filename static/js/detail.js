@@ -26,6 +26,7 @@ more.addEventListener("click", () => {
 });
 
 // 북마크 토글 애니메이션 및 상태설정
+
 async function toggle_bookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
@@ -33,6 +34,7 @@ async function toggle_bookmark() {
   console.log(
     document.querySelector("#bookmarkBtn").getAttribute("data-status"),
   );
+
 
   try {
     if (btn.classList.contains("bookmarkButton-off")) {
