@@ -2,7 +2,7 @@ const axios = require("axios");
 const { Notes, Videos, User } = require("../models");
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
-// GET detail (변경 없음)
+// GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
 
@@ -66,7 +66,7 @@ exports.detail = async (req, res) => {
   }
 };
 
-// POST notes (수정됨)
+// POST notes
 exports.Notes = async (req, res) => {
   try {
     const { ingredients, recipe, title, videoId } = req.body;
@@ -93,7 +93,7 @@ exports.Notes = async (req, res) => {
       .status(201)
       .json({ success: true, message: "메모가 성공적으로 저장되었습니다." });
   } catch (err) {
-    console.log("note upload err", err.message);
+    console.error("note upload err:", err); // 전체 오류 객체를 로그로 남김
     res.status(500).json({ success: false, message: "서버 오류 발생" });
   }
 };
