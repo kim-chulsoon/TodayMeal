@@ -66,7 +66,7 @@
                 />
               </div>
             </a>
-            <a href="/users/edit" class="box2A">
+            <a href="/favorites" class="box2A">
               <div class="box2">
                 <span>즐겨찾기</span>
                 <img
@@ -180,6 +180,7 @@
     function logout() {
       localStorage.clear();
       document.location.href = "/";
+      console.log("로그아웃");
     }
   </script>
 </html>

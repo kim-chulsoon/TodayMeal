@@ -110,6 +110,12 @@
       document.querySelector(".title h3").innerText = "회원가입";
       // 모바일 메뉴
       document.querySelector(".mgnb").style.display = "none";
+      //로그아웃
+      function logout() {
+        localStorage.clear();
+        document.location.href = "/";
+        console.log("로그아웃");
+      }
 
       let isIdCheck = false; // 아이디 중복 확인 결과
 
