@@ -73,7 +73,9 @@
               <form action="post" name="bookmark">
                 <button
                   type="button"
-                  class="bookmark bookmarkButton-off"
+                  id="bookmarkBtn"
+                  class="bookmarkButton-off"
+                  data-status=fasle
                   onclick="toggle_bookmark();"
                 >
                   <i class="fa-regular fa-heart"></i>북마크
@@ -92,8 +94,10 @@
         </div>
       </div>
       <div class="memoBox">
+        <div class="blur"></div>
         <!-- 재료 메모박스 -->
         <div class="memoItem ing">
+          <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
