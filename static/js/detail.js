@@ -27,10 +27,58 @@ more.addEventListener("click", () => {
 
 // 토글 애니메이션
 function toggle_bookmark() {
+  //****원래 코드*****//
+  // let btn = document.querySelector(".bookmark");
+  // btn.addEventListener("click", () => {
+  //   // 현재 스타일 속성을 기반으로 토글
+  //   btn.classList.toggle(".ookmarkButton-off");
+  // });
+
+  //**** 즐겨찾기 추가/ 삭체 요청 추가 */
   let btn = document.querySelector(".bookmark");
-  btn.addEventListener("click", () => {
-    // 현재 스타일 속성을 기반으로 토글
-    btn.classList.toggle(".ookmarkButton-off");
+  const videoId = document.getElementById("videoId").value;
+
+  btn.addEventListener("click", async () => {
+    if (btn.disabled) return; // 중복 클릭 방지
+    btn.disabled = true;
+
+    try {
+      if (btn.classList.contains("bookmarkButton-off")) {
+        const response = await axios.post(
+          "/favorites/save",
+          { videoId },
+          {
+            headers: { Authorization: `Bearer ${getAuthToken()}` },
+          },
+        );
+        if (response.status === 201) {
+          alert("북마크가 성공적으로 저장되었습니다!");
+          btn.classList.remove("bookmarkButton-off");
+          btn.classList.add("bookmarkButton-on");
+        }
+      } else if (btn.classList.contains("bookmarkButton-on")) {
+        const response = await axios.delete(
+          "/favorites/delete",
+          { videoId },
+          {
+            headers: { Authorization: `Bearer ${getAuthToken()}` },
+          },
+        );
+        if (response.status === 200) {
+          alert("북마크가 삭제되었습니다!");
+          btn.classList.remove("bookmarkButton-on");
+          btn.classList.add("bookmarkButton-off");
+        }
+      }
+    } catch (error) {
+      console.error(
+        "북마크 처리 중 오류 발생:",
+        error.response?.data || error.message,
+      );
+      alert("북마크 처리 중 문제가 발생했습니다.");
+    } finally {
+      btn.disabled = false; // 처리 완료 후 버튼 활성화
+    }
   });
 }
 
