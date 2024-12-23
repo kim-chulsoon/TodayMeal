@@ -5,11 +5,14 @@ const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 // GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
+  const user = req.user;
 
   if (!videoId) {
     return res.render("detail", {
       video: null,
       error: "비디오 ID가 없습니다.",
+      user: user,
+      note: null,
     });
   }
 
@@ -30,6 +33,8 @@ exports.detail = async (req, res) => {
       return res.render("detail", {
         video: null,
         error: "해당 비디오를 찾을 수 없습니다.",
+        user: user,
+        note: null,
       });
     }
 
@@ -49,19 +54,22 @@ exports.detail = async (req, res) => {
       where: { youtubeUrl: videoId },
     });
 
-    let noteList = [];
+    let note = null;
 
-    if (videoRecord) {
-      noteList = await Notes.findAll({ where: { videoId: videoRecord.id } });
+    if (videoRecord && user) {
+      note = await Notes.findAll({
+        where: { videoId: videoRecord.id, userId: user.id },
+      });
     }
 
-    res.render("detail", { video, notes: noteList, error: null });
+    res.render("detail", { video, note, error: null, user });
   } catch (err) {
     console.error("YouTube API 오류:", err.message);
     res.render("detail", {
       video: null,
-      notes: null,
+      note: null,
       error: "비디오 정보를 가져올 수 없습니다.",
+      user: user,
     });
   }
 };
@@ -72,7 +80,7 @@ exports.CreateNotes = async (req, res) => {
     const { ingredients, recipe, title, videoId, thumbnailUrl, channelTitle } =
       req.body;
     const user = req.user; // authenticateToken 미들웨어에서 설정
-    console.log("썸네일", thumbnailUrl);
+
     // Video 조회 또는 생성
     let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
     if (!video) {
@@ -81,6 +89,18 @@ exports.CreateNotes = async (req, res) => {
         youtubeUrl: videoId,
         thumbnailUrl: thumbnailUrl,
         channelTitle: channelTitle,
+      });
+    }
+
+    // 노트 확인
+    let existingNotes = await Notes.findOne({
+      where: { videoId: video.id, userId: user.id },
+    });
+
+    if (existingNotes) {
+      return res.status(400).json({
+        success: false,
+        message: "이미 메모가 존재합니다. 수정하시겠습니까?",
       });
     }
 
@@ -97,7 +117,9 @@ exports.CreateNotes = async (req, res) => {
       .json({ success: true, message: "메모가 성공적으로 저장되었습니다." });
   } catch (err) {
     console.error("note upload err:", err); // 전체 오류 객체를 로그로 남김
-    res.status(500).json({ success: false, message: "서버 오류 발생" });
+    res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다" });
   }
 };
 
@@ -110,38 +132,26 @@ exports.updateNote = async (req, res) => {
   const user = req.user; // authenticateToken 미들웨어에서 설정
 
   try {
-    // 노트 조회
+    // 메모모 조회
     const note = await Notes.findOne({ where: { id: noteId } });
 
     if (!note) {
       return res
         .status(404)
-        .json({ success: false, message: "노트를 찾을 수 없습니다." });
+        .json({ success: false, message: "메모를 찾을 수 없습니다." });
     }
 
-    // 노트의 소유자 확인
+    // 메모의 소유자 확인
     if (note.userId !== user.id) {
       return res
         .status(403)
         .json({ success: false, message: "권한이 없습니다." });
     }
 
-    // 비디오 조회 또는 생성
-    let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
-    if (!video) {
-      video = await Videos.create({
-        title: title,
-        youtubeUrl: videoId,
-        thumbnailUrl: thumbnailUrl,
-        channelTitle: channelTitle,
-      });
-    }
-
     // 노트 업데이트
     await note.update({
-      videoId: video.id,
-      ingredients: ingredients,
-      recipe: recipe,
+      ingredients: ingredients !== undefined ? ingredients : note.ingredients,
+      recipe: recipe !== undefined ? recipe : note.recipe,
     });
 
     res.json({
@@ -167,7 +177,7 @@ exports.deleteNote = async (req, res) => {
     if (!note) {
       return res
         .status(404)
-        .json({ success: false, message: "노트를 찾을 수 없습니다." });
+        .json({ success: false, message: "메모를 찾을 수 없습니다." });
     }
 
     // 노트의 소유자 확인
@@ -180,7 +190,7 @@ exports.deleteNote = async (req, res) => {
     // 노트 삭제
     await note.destroy();
 
-    res.json({ success: true, message: "노트가 성공적으로 삭제되었습니다." });
+    res.json({ success: true, message: "메모가 성공적으로 삭제되었습니다." });
   } catch (err) {
     console.error("노트 삭제 오류:", err);
     res.status(500).json({ success: false, message: "서버 오류 발생" });

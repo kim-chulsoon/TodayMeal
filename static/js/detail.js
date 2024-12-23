@@ -5,13 +5,25 @@ const form = document.forms["bookmark"];
 let ingEditor;
 let rcpEditor;
 
-console.log(document.querySelector(".btn btnOpen registr"));
+// 현재 노트 데이터
+let currentNote = null;
+
+// 영상 ID 가져오기
+const videoId = document.getElementById("videoId").value;
+
+// 페이지 로드 시 노트 데이터 가져오기
+document.addEventListener("DOMContentLoaded", async () => {
+  if (videoId) {
+    await fetchCurrentNote(videoId);
+  }
+});
+
 // 영상 설명 더보기/숨기기
 more.addEventListener("click", () => {
   const subtitle = document.querySelector(".subtitle");
   const moreText = more.querySelector("p");
 
-  //   설명 더보기 버튼
+  // 설명 더보기 버튼
   if (subtitle.classList.contains("subtitle-off")) {
     // 숨김
     subtitle.classList.remove("subtitle-off");
@@ -28,15 +40,11 @@ more.addEventListener("click", () => {
 // 토글 애니메이션
 function toggle_bookmark() {
   let btn = document.querySelector(".bookmark");
-  btn.addEventListener("click", () => {
-    // 현재 스타일 속성을 기반으로 토글
-    btn.classList.toggle(".ookmarkButton-off");
-  });
+  btn.classList.toggle("bookmarkButton-off");
 }
 
 // 재료메모 폼 변환
 function ingForm() {
-  const ing = document.querySelector(".memoItem.ing");
   const ingform = document.querySelectorAll(".memoItem.ing form");
 
   if (ingform[0].classList.contains("ingForm-Open")) {
@@ -52,10 +60,8 @@ function ingForm() {
   }
 }
 
-// 재료메모 폼 변환
+// 레시피 메모 폼 변환
 function rcpForm() {
-  console.log("test");
-  const rcp = document.querySelector(".memoItem.ing");
   const rcpform = document.querySelectorAll(".memoItem.rcp form");
 
   if (rcpform[0].classList.contains("rcpForm-Open")) {
@@ -76,87 +82,570 @@ function getAuthToken() {
   return localStorage.getItem("authToken");
 }
 
-// 재료 메모 저장 함수
-async function saveIngredientsMemo(data) {
+// 노트 데이터 가져오기
+async function fetchCurrentNote(videoId) {
+  try {
+    const response = await axios.get(`/notes`, {
+      params: { videoId },
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
+
+    if (response.data.success) {
+      currentNote = response.data.note;
+      populateEditors();
+    } else {
+      currentNote = null;
+    }
+  } catch (error) {
+    console.error("노트 조회 오류:", error);
+    currentNote = null;
+  }
+}
+
+// 에디터 초기화 및 데이터 채우기
+document.addEventListener("DOMContentLoaded", () => {
+  initializeEditors();
+});
+
+// 에디터 초기화 함수
+function initializeEditors() {
+  const {
+    ClassicEditor,
+    Alignment,
+    Autoformat,
+    AutoImage,
+    Autosave,
+    BlockQuote,
+    Bold,
+    Code,
+    Essentials,
+    FindAndReplace,
+    Heading,
+    Highlight,
+    ImageBlock,
+    ImageCaption,
+    ImageInline,
+    ImageInsertViaUrl,
+    ImageResize,
+    ImageStyle,
+    ImageTextAlternative,
+    ImageToolbar,
+    Indent,
+    IndentBlock,
+    Italic,
+    Link,
+    LinkImage,
+    List,
+    ListProperties,
+    Markdown,
+    MediaEmbed,
+    Paragraph,
+    PasteFromMarkdownExperimental,
+    SpecialCharacters,
+    SpecialCharactersArrows,
+    SpecialCharactersCurrency,
+    SpecialCharactersEssentials,
+    SpecialCharactersLatin,
+    SpecialCharactersMathematical,
+    SpecialCharactersText,
+    Strikethrough,
+    Table,
+    TableCaption,
+    TableCellProperties,
+    TableColumnResize,
+    TableProperties,
+    TableToolbar,
+    TextTransformation,
+    TodoList,
+    Underline,
+  } = window.CKEDITOR;
+
+  const LICENSE_KEY = "your_license_key_here"; // 실제 라이선스 키로 교체하세요
+
+  const ingDataConfig = {
+    toolbar: {
+      items: [
+        "findAndReplace",
+        "|",
+        "heading",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "code",
+        "|",
+        "specialCharacters",
+        "link",
+        "insertImageViaUrl",
+        "mediaEmbed",
+        "insertTable",
+        "highlight",
+        "blockQuote",
+        "|",
+        "alignment",
+        "|",
+        "bulletedList",
+        "numberedList",
+        "todoList",
+        "outdent",
+        "indent",
+      ],
+      shouldNotGroupWhenFull: false,
+    },
+    plugins: [
+      Alignment,
+      Autoformat,
+      AutoImage,
+      Autosave,
+      BlockQuote,
+      Bold,
+      Code,
+      Essentials,
+      FindAndReplace,
+      Heading,
+      Highlight,
+      ImageBlock,
+      ImageCaption,
+      ImageInline,
+      ImageInsertViaUrl,
+      ImageResize,
+      ImageStyle,
+      ImageTextAlternative,
+      ImageToolbar,
+      Indent,
+      IndentBlock,
+      Italic,
+      Link,
+      LinkImage,
+      List,
+      ListProperties,
+      Markdown,
+      MediaEmbed,
+      Paragraph,
+      PasteFromMarkdownExperimental,
+      SpecialCharacters,
+      SpecialCharactersArrows,
+      SpecialCharactersCurrency,
+      SpecialCharactersEssentials,
+      SpecialCharactersLatin,
+      SpecialCharactersMathematical,
+      SpecialCharactersText,
+      Strikethrough,
+      Table,
+      TableCaption,
+      TableCellProperties,
+      TableColumnResize,
+      TableProperties,
+      TableToolbar,
+      TextTransformation,
+      TodoList,
+      Underline,
+    ],
+    heading: {
+      options: [
+        {
+          model: "paragraph",
+          title: "Paragraph",
+          class: "ck-heading_paragraph",
+        },
+        {
+          model: "heading1",
+          view: "h1",
+          title: "Heading 1",
+          class: "ck-heading_heading1",
+        },
+        {
+          model: "heading2",
+          view: "h2",
+          title: "Heading 2",
+          class: "ck-heading_heading2",
+        },
+        {
+          model: "heading3",
+          view: "h3",
+          title: "Heading 3",
+          class: "ck-heading_heading3",
+        },
+        {
+          model: "heading4",
+          view: "h4",
+          title: "Heading 4",
+          class: "ck-heading_heading4",
+        },
+        {
+          model: "heading5",
+          view: "h5",
+          title: "Heading 5",
+          class: "ck-heading_heading5",
+        },
+        {
+          model: "heading6",
+          view: "h6",
+          title: "Heading 6",
+          class: "ck-heading_heading6",
+        },
+      ],
+    },
+    image: {
+      toolbar: [
+        "toggleImageCaption",
+        "imageTextAlternative",
+        "|",
+        "imageStyle:inline",
+        "imageStyle:wrapText",
+        "imageStyle:breakText",
+        "|",
+        "resizeImage",
+      ],
+    },
+    initialData: "🌽🥬🫑<h3>재료를 입력해보세요!😊</h3>",
+    language: "ko",
+    licenseKey: LICENSE_KEY,
+    link: {
+      addTargetToExternalLinks: true,
+      defaultProtocol: "https://",
+      decorators: {
+        toggleDownloadable: {
+          mode: "manual",
+          label: "Downloadable",
+          attributes: {
+            download: "file",
+          },
+        },
+      },
+    },
+    list: {
+      properties: {
+        styles: true,
+        startIndex: true,
+        reversed: true,
+      },
+    },
+    placeholder: "🌽🥬🫑 재료를 입력해주세요!😊",
+    table: {
+      contentToolbar: [
+        "tableColumn",
+        "tableRow",
+        "mergeTableCells",
+        "tableProperties",
+        "tableCellProperties",
+      ],
+    },
+  };
+
+  const rcpDataConfig = {
+    toolbar: {
+      items: [
+        "findAndReplace",
+        "|",
+        "heading",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "code",
+        "|",
+        "specialCharacters",
+        "link",
+        "insertImageViaUrl",
+        "mediaEmbed",
+        "insertTable",
+        "highlight",
+        "blockQuote",
+        "|",
+        "alignment",
+        "|",
+        "bulletedList",
+        "numberedList",
+        "todoList",
+        "outdent",
+        "indent",
+      ],
+      shouldNotGroupWhenFull: false,
+    },
+    plugins: [
+      Alignment,
+      Autoformat,
+      AutoImage,
+      Autosave,
+      BlockQuote,
+      Bold,
+      Code,
+      Essentials,
+      FindAndReplace,
+      Heading,
+      Highlight,
+      ImageBlock,
+      ImageCaption,
+      ImageInline,
+      ImageInsertViaUrl,
+      ImageResize,
+      ImageStyle,
+      ImageTextAlternative,
+      ImageToolbar,
+      Indent,
+      IndentBlock,
+      Italic,
+      Link,
+      LinkImage,
+      List,
+      ListProperties,
+      Markdown,
+      MediaEmbed,
+      Paragraph,
+      PasteFromMarkdownExperimental,
+      SpecialCharacters,
+      SpecialCharactersArrows,
+      SpecialCharactersCurrency,
+      SpecialCharactersEssentials,
+      SpecialCharactersLatin,
+      SpecialCharactersMathematical,
+      SpecialCharactersText,
+      Strikethrough,
+      Table,
+      TableCaption,
+      TableCellProperties,
+      TableColumnResize,
+      TableProperties,
+      TableToolbar,
+      TextTransformation,
+      TodoList,
+      Underline,
+    ],
+    heading: {
+      options: [
+        {
+          model: "paragraph",
+          title: "Paragraph",
+          class: "ck-heading_paragraph",
+        },
+        {
+          model: "heading1",
+          view: "h1",
+          title: "Heading 1",
+          class: "ck-heading_heading1",
+        },
+        {
+          model: "heading2",
+          view: "h2",
+          title: "Heading 2",
+          class: "ck-heading_heading2",
+        },
+        {
+          model: "heading3",
+          view: "h3",
+          title: "Heading 3",
+          class: "ck-heading_heading3",
+        },
+        {
+          model: "heading4",
+          view: "h4",
+          title: "Heading 4",
+          class: "ck-heading_heading4",
+        },
+        {
+          model: "heading5",
+          view: "h5",
+          title: "Heading 5",
+          class: "ck-heading_heading5",
+        },
+        {
+          model: "heading6",
+          view: "h6",
+          title: "Heading 6",
+          class: "ck-heading_heading6",
+        },
+      ],
+    },
+    image: {
+      toolbar: [
+        "toggleImageCaption",
+        "imageTextAlternative",
+        "|",
+        "imageStyle:inline",
+        "imageStyle:wrapText",
+        "imageStyle:breakText",
+        "|",
+        "resizeImage",
+      ],
+    },
+    initialData: "📌🪄<h3>레시피를 입력해보세요!🧑‍🍳</h3>",
+    language: "ko",
+    licenseKey: LICENSE_KEY,
+    link: {
+      addTargetToExternalLinks: true,
+      defaultProtocol: "https://",
+      decorators: {
+        toggleDownloadable: {
+          mode: "manual",
+          label: "Downloadable",
+          attributes: {
+            download: "file",
+          },
+        },
+      },
+    },
+    list: {
+      properties: {
+        styles: true,
+        startIndex: true,
+        reversed: true,
+      },
+    },
+    placeholder: "📌🪄레시피를 입력해주세요!🧑‍🍳",
+    table: {
+      contentToolbar: [
+        "tableColumn",
+        "tableRow",
+        "mergeTableCells",
+        "tableProperties",
+        "tableCellProperties",
+      ],
+    },
+  };
+
+  // 재료 에디터 초기화
+  ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
+    .then((editor) => {
+      ingEditor = editor;
+      if (currentNote && currentNote.ingredients) {
+        ingEditor.setData(currentNote.ingredients);
+      }
+
+      document
+        .querySelector(".memoItem.ing .registr")
+        .addEventListener("click", async () => {
+          const editorData = ingEditor.getData();
+          await saveOrUpdateMemo(editorData, "ingredients");
+        });
+    })
+    .catch((error) => {
+      console.error("CKEditor 초기화 오류 (재료):", error);
+    });
+
+  // 레시피 에디터 초기화
+  ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig)
+    .then((editor) => {
+      rcpEditor = editor;
+      if (currentNote && currentNote.recipe) {
+        rcpEditor.setData(currentNote.recipe);
+      }
+
+      document
+        .querySelector(".memoItem.rcp .registr")
+        .addEventListener("click", async () => {
+          const editorData = rcpEditor.getData();
+          await saveOrUpdateMemo(editorData, "recipe");
+        });
+    })
+    .catch((error) => {
+      console.error("CKEditor 초기화 오류 (레시피):", error);
+    });
+}
+
+// 에디터에 데이터 채우기 함수
+function populateEditors() {
+  if (currentNote) {
+    if (currentNote.ingredients) {
+      ingEditor.setData(currentNote.ingredients);
+    }
+    if (currentNote.recipe) {
+      rcpEditor.setData(currentNote.recipe);
+    }
+  }
+}
+
+// 메모 생성 또는 수정 함수
+async function saveOrUpdateMemo(data, noteType) {
   const videoId = document.getElementById("videoId").value;
   const title = document.getElementById("title").value;
   const channelTitle = document.getElementById("channelTitle").value;
   const thumbnailUrl = document.getElementById("thumbnailUrl").value;
-  console.log(thumbnailUrl);
+
   try {
-    const response = await axios.post(
-      "/detail/notes",
-      { ingredients: data, videoId, title, channelTitle, thumbnailUrl },
-      {
+    if (currentNote) {
+      // Update existing note
+      const payload =
+        noteType === "ingredients" ? { ingredients: data } : { recipe: data };
+      const response = await axios.patch(`/notes/${currentNote.id}`, payload, {
         headers: {
           Authorization: `Bearer ${getAuthToken()}`,
           "Content-Type": "application/json",
         },
-      },
-    );
+      });
 
-    if (response.status === 201 || response.status === 200) {
-      // 수정폼 닫음
-      ingForm();
-      alert("재료 메모가 성공적으로 저장되었습니다.");
-
-      window.location.reload();
+      if (response.status === 200) {
+        alert(
+          `${
+            noteType === "ingredients" ? "재료" : "레시피"
+          } 메모가 성공적으로 업데이트되었습니다.`,
+        );
+        window.location.reload();
+      } else {
+        alert(
+          `${
+            noteType === "ingredients" ? "재료" : "레시피"
+          } 메모 업데이트에 실패했습니다.`,
+        );
+      }
     } else {
-      alert("재료 메모 저장에 실패했습니다.");
+      // Create new note
+      const payload = {
+        [noteType]: data,
+        videoId,
+        title,
+        channelTitle,
+        thumbnailUrl,
+      };
+      const response = await axios.post("/notes", payload, {
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 201 || response.status === 200) {
+        alert(
+          `${
+            noteType === "ingredients" ? "재료" : "레시피"
+          } 메모가 성공적으로 저장되었습니다.`,
+        );
+        window.location.reload();
+      } else {
+        alert(
+          `${
+            noteType === "ingredients" ? "재료" : "레시피"
+          } 메모 저장에 실패했습니다.`,
+        );
+      }
     }
   } catch (error) {
-    console.error("재료 메모 저장 오류:", error);
-    alert("재료 메모 저장 중 오류가 발생했습니다.");
+    console.error(
+      `${
+        noteType === "ingredients" ? "재료" : "레시피"
+      } 메모 저장/업데이트 오류:`,
+      error,
+    );
+    alert(
+      `${
+        noteType === "ingredients" ? "재료" : "레시피"
+      } 메모 저장/업데이트 중 오류가 발생했습니다.`,
+    );
   }
+}
+
+// 재료 메모 저장 함수
+async function saveIngredients(data) {
+  await saveOrUpdateMemo(data, "ingredients");
 }
 
 // 레시피 메모 저장 함수
-async function saveRecipeMemo(data) {
-  const videoId = document.getElementById("videoId").value;
-  const title = document.getElementById("title").value;
-
-  try {
-    const response = await axios.post(
-      "/detail/notes",
-      { recipe: data, videoId, title },
-      {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-
-    if (response.status === 201 || response.status === 200) {
-      // 수정폼 닫음
-      rcpForm();
-      alert("레시피 메모가 성공적으로 저장되었습니다.");
-      window.location.reload();
-    } else {
-      alert("레시피 메모 저장에 실패했습니다.");
-    }
-  } catch (error) {
-    console.error("레시피 메모 저장 오류:", error);
-    alert("레시피 메모 저장 중 오류가 발생했습니다.");
-  }
-}
-
-// 재료수정
-function ingMemo(data) {
-  axios({
-    method: "post",
-    url: "/",
-    data: { ingredients: data },
-  });
-}
-
-// 레시피수정
-function rcpMemo(data) {
-  axios({
-    method: "post",
-    url: "/",
-    data: { recipe: data },
-  });
+async function saveRecipe(data) {
+  await saveOrUpdateMemo(data, "recipe");
 }
 
 // 메모창 초기화 버튼
@@ -166,430 +655,3 @@ function ingReset() {
 function rcpReset() {
   rcpEditor.setData("");
 }
-
-// 에디터 설정값
-
-const {
-  ClassicEditor,
-  Alignment,
-  Autoformat,
-  AutoImage,
-  Autosave,
-  BlockQuote,
-  Bold,
-  Code,
-  Essentials,
-  FindAndReplace,
-  Heading,
-  Highlight,
-  ImageBlock,
-  ImageCaption,
-  ImageInline,
-  ImageInsertViaUrl,
-  ImageResize,
-  ImageStyle,
-  ImageTextAlternative,
-  ImageToolbar,
-  Indent,
-  IndentBlock,
-  Italic,
-  Link,
-  LinkImage,
-  List,
-  ListProperties,
-  Markdown,
-  MediaEmbed,
-  Paragraph,
-  PasteFromMarkdownExperimental,
-  SpecialCharacters,
-  SpecialCharactersArrows,
-  SpecialCharactersCurrency,
-  SpecialCharactersEssentials,
-  SpecialCharactersLatin,
-  SpecialCharactersMathematical,
-  SpecialCharactersText,
-  Strikethrough,
-  Table,
-  TableCaption,
-  TableCellProperties,
-  TableColumnResize,
-  TableProperties,
-  TableToolbar,
-  TextTransformation,
-  TodoList,
-  Underline,
-} = window.CKEDITOR;
-
-const LICENSE_KEY =
-  "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3MzU5NDg3OTksImp0aSI6IjVmOWE0ZGQyLWMzYzQtNDg5Mi1iY2QwLTViM2M5ODA1ZDk1OCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImNkNzM5MjZkIn0.9WN2-KluRHp_8-XGw6Pv49HIK2wRp7VfIAYOc3XW_0dt5Qa3qZbeEJdZ7KkggkoevWri-sL6FF7eoteWbmYtyw";
-
-const ingDataConfig = {
-  toolbar: {
-    items: [
-      "findAndReplace",
-      "|",
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "code",
-      "|",
-      "specialCharacters",
-      "link",
-      "insertImageViaUrl",
-      "mediaEmbed",
-      "insertTable",
-      "highlight",
-      "blockQuote",
-      "|",
-      "alignment",
-      "|",
-      "bulletedList",
-      "numberedList",
-      "todoList",
-      "outdent",
-      "indent",
-    ],
-    shouldNotGroupWhenFull: false,
-  },
-  plugins: [
-    Alignment,
-    Autoformat,
-    AutoImage,
-    Autosave,
-    BlockQuote,
-    Bold,
-    Code,
-    Essentials,
-    FindAndReplace,
-    Heading,
-    Highlight,
-    ImageBlock,
-    ImageCaption,
-    ImageInline,
-    ImageInsertViaUrl,
-    ImageResize,
-    ImageStyle,
-    ImageTextAlternative,
-    ImageToolbar,
-    Indent,
-    IndentBlock,
-    Italic,
-    Link,
-    LinkImage,
-    List,
-    ListProperties,
-    Markdown,
-    MediaEmbed,
-    Paragraph,
-    PasteFromMarkdownExperimental,
-    SpecialCharacters,
-    SpecialCharactersArrows,
-    SpecialCharactersCurrency,
-    SpecialCharactersEssentials,
-    SpecialCharactersLatin,
-    SpecialCharactersMathematical,
-    SpecialCharactersText,
-    Strikethrough,
-    Table,
-    TableCaption,
-    TableCellProperties,
-    TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextTransformation,
-    TodoList,
-    Underline,
-  ],
-  heading: {
-    options: [
-      {
-        model: "paragraph",
-        title: "Paragraph",
-        class: "ck-heading_paragraph",
-      },
-      {
-        model: "heading1",
-        view: "h1",
-        title: "Heading 1",
-        class: "ck-heading_heading1",
-      },
-      {
-        model: "heading2",
-        view: "h2",
-        title: "Heading 2",
-        class: "ck-heading_heading2",
-      },
-      {
-        model: "heading3",
-        view: "h3",
-        title: "Heading 3",
-        class: "ck-heading_heading3",
-      },
-      {
-        model: "heading4",
-        view: "h4",
-        title: "Heading 4",
-        class: "ck-heading_heading4",
-      },
-      {
-        model: "heading5",
-        view: "h5",
-        title: "Heading 5",
-        class: "ck-heading_heading5",
-      },
-      {
-        model: "heading6",
-        view: "h6",
-        title: "Heading 6",
-        class: "ck-heading_heading6",
-      },
-    ],
-  },
-  image: {
-    toolbar: [
-      "toggleImageCaption",
-      "imageTextAlternative",
-      "|",
-      "imageStyle:inline",
-      "imageStyle:wrapText",
-      "imageStyle:breakText",
-      "|",
-      "resizeImage",
-    ],
-  },
-  initialData: "🌽🥬🫑<h3>재료를 입력해보세요!😊</h3>",
-  language: "ko",
-  licenseKey: LICENSE_KEY,
-  link: {
-    addTargetToExternalLinks: true,
-    defaultProtocol: "https://",
-    decorators: {
-      toggleDownloadable: {
-        mode: "manual",
-        label: "Downloadable",
-        attributes: {
-          download: "file",
-        },
-      },
-    },
-  },
-  list: {
-    properties: {
-      styles: true,
-      startIndex: true,
-      reversed: true,
-    },
-  },
-  placeholder: "🌽🥬🫑 재료를 입력해주세요!😊",
-  table: {
-    contentToolbar: [
-      "tableColumn",
-      "tableRow",
-      "mergeTableCells",
-      "tableProperties",
-      "tableCellProperties",
-    ],
-  },
-};
-ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
-  .then((editor) => {
-    ingEditor = editor;
-    document
-      .querySelector(".memoBox .ingForm-Open .btnOpen.registr")
-      .addEventListener("click", async () => {
-        const editorData = editor.getData();
-        await saveIngredientsMemo(editorData);
-      });
-  })
-  .catch((error) => {
-    console.error("CKEditor 초기화 오류 (재료):", error);
-  });
-
-const rcpDataConfig = {
-  toolbar: {
-    items: [
-      "findAndReplace",
-      "|",
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "code",
-      "|",
-      "specialCharacters",
-      "link",
-      "insertImageViaUrl",
-      "mediaEmbed",
-      "insertTable",
-      "highlight",
-      "blockQuote",
-      "|",
-      "alignment",
-      "|",
-      "bulletedList",
-      "numberedList",
-      "todoList",
-      "outdent",
-      "indent",
-    ],
-    shouldNotGroupWhenFull: false,
-  },
-  plugins: [
-    Alignment,
-    Autoformat,
-    AutoImage,
-    Autosave,
-    BlockQuote,
-    Bold,
-    Code,
-    Essentials,
-    FindAndReplace,
-    Heading,
-    Highlight,
-    ImageBlock,
-    ImageCaption,
-    ImageInline,
-    ImageInsertViaUrl,
-    ImageResize,
-    ImageStyle,
-    ImageTextAlternative,
-    ImageToolbar,
-    Indent,
-    IndentBlock,
-    Italic,
-    Link,
-    LinkImage,
-    List,
-    ListProperties,
-    Markdown,
-    MediaEmbed,
-    Paragraph,
-    PasteFromMarkdownExperimental,
-    SpecialCharacters,
-    SpecialCharactersArrows,
-    SpecialCharactersCurrency,
-    SpecialCharactersEssentials,
-    SpecialCharactersLatin,
-    SpecialCharactersMathematical,
-    SpecialCharactersText,
-    Strikethrough,
-    Table,
-    TableCaption,
-    TableCellProperties,
-    TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextTransformation,
-    TodoList,
-    Underline,
-  ],
-  heading: {
-    options: [
-      {
-        model: "paragraph",
-        title: "Paragraph",
-        class: "ck-heading_paragraph",
-      },
-      {
-        model: "heading1",
-        view: "h1",
-        title: "Heading 1",
-        class: "ck-heading_heading1",
-      },
-      {
-        model: "heading2",
-        view: "h2",
-        title: "Heading 2",
-        class: "ck-heading_heading2",
-      },
-      {
-        model: "heading3",
-        view: "h3",
-        title: "Heading 3",
-        class: "ck-heading_heading3",
-      },
-      {
-        model: "heading4",
-        view: "h4",
-        title: "Heading 4",
-        class: "ck-heading_heading4",
-      },
-      {
-        model: "heading5",
-        view: "h5",
-        title: "Heading 5",
-        class: "ck-heading_heading5",
-      },
-      {
-        model: "heading6",
-        view: "h6",
-        title: "Heading 6",
-        class: "ck-heading_heading6",
-      },
-    ],
-  },
-  image: {
-    toolbar: [
-      "toggleImageCaption",
-      "imageTextAlternative",
-      "|",
-      "imageStyle:inline",
-      "imageStyle:wrapText",
-      "imageStyle:breakText",
-      "|",
-      "resizeImage",
-    ],
-  },
-  initialData: "📌🪄<h3>레시피를 입력해보세요!🧑‍🍳</h3>",
-  language: "ko",
-  licenseKey: LICENSE_KEY,
-  link: {
-    addTargetToExternalLinks: true,
-    defaultProtocol: "https://",
-    decorators: {
-      toggleDownloadable: {
-        mode: "manual",
-        label: "Downloadable",
-        attributes: {
-          download: "file",
-        },
-      },
-    },
-  },
-  list: {
-    properties: {
-      styles: true,
-      startIndex: true,
-      reversed: true,
-    },
-  },
-  placeholder: "Type or paste your content here!",
-  table: {
-    contentToolbar: [
-      "tableColumn",
-      "tableRow",
-      "mergeTableCells",
-      "tableProperties",
-      "tableCellProperties",
-    ],
-  },
-};
-
-ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig)
-  .then((editor) => {
-    rcpEditor = editor;
-    document
-      .querySelector(".memoBox .rcpForm-Open .btnOpen.registr")
-      .addEventListener("click", async () => {
-        const editorData = editor.getData();
-        await saveRecipeMemo(editorData);
-      });
-  })
-  .catch((error) => {
-    console.error("CKEditor 초기화 오류 (레시피):", error);
-  });
