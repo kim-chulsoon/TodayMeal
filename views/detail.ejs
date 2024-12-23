@@ -92,40 +92,53 @@
         </div>
       </div>
       <div class="memoBox">
-        <div class="memoItem">
+        <!-- 재료 메모박스 -->
+        <div class="memoItem ing">
+          <form class="ingForm-Open" name="memo" method="post">
+            <input type="hidden" id="videoId" value="<%= video.videoId %>">
+            <input type="hidden" id="title" value="<%= video.title %>">
+            <div id="ingData"></div>
+          <div class="memoButtons">
+            <button type="button" class="btn btnClose" onclick="ingReset()" >내용 초기화</button>
+            <button type="button" class="btn btnClose" onclick="ingForm();">수정취소</button>
+            <button type="button" class="btn btnOpen registr" >등록</button>
+          </div>
+        </form>
 
-          <form class="ingrForm" name="memo" method="post">
-              <p class="title">재료메모장</p>
-              <div id="ingData"></div>
-              <input type="hidden" id="videoId" value="<%= video.videoId %>">
-              <input type="hidden" id="title" value="<%= video.title %>">
-          <!--<form name="memo" method="post" action="/detail/notes">
-            <input type="hidden" name="videoId" value="<%= video.videoId %>" />
-            <input type="hidden" name="title" value="<%= video.title %>" />
-            <label>
-              <p>재료메모장</p>
+        <!-- 재료 뷰 -->
+        <form  class="ingForm" name="memo" method="post">
+          <textarea class="ingredientTextarea" name="" id="" readonly>🌽🥬🫑재료s를 입력해보세요!😊</textarea>
+          <div class="memoButtons">
+            <button type="button" class="btn btnOpen" onclick="ingForm();" >수정</button>
+          </div>
+        </form> 
 
-              <textarea class="ingredientTextarea" name="ingredients" id="ingredients"><%- notes.length > 0 && notes[0].ingredients ? notes[0].ingredients.trim() : '' %></textarea>
-            </label>
-          -->
-            <div class="memoButtons">
-              <button type="button" class="btn btnClose">취소</button>
-              <button type="button" class="btn btnOpen" >수정</button>
-            </div>
-          </form>
         </div>
-        <div class="memoItem">
-          <form class="rcprForm" name="memo" method="post">
-              <p class="title">레시피 메모장</p>
+        <!-- 재료 메모박스 끝 -->
+
+        <!-- 레시피 메모박스 -->
+        <div class="memoItem rcp">
+          <p class="title">레시피 메모장</p>
+          <form  class="rcpForm-Open" name="memo" method="post">
+            <input type="hidden" id="videoId" value="<%= video.videoId %>">
+            <input type="hidden" id="title" value="<%= video.title %>">
               <div id="rcpData"></div>
-              <input type="hidden" id="videoId" value="<%= video.videoId %>">
-              <input type="hidden" id="title" value="<%= video.title %>">
             <div class="memoButtons">
-              <button class="btn btnClose">취소</button>
-              <button type="button" class="btn btnOpen">수정</button>
+              <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
+            <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
+              <button type="button" class="btn btnOpen registr" >등록</button>
             </div>
           </form>
+          <!-- 레시피 뷰 -->
+          <form  class="rcpForm" name="memo" method="post">
+            <textarea class="RecipeTextarea" name="" id="" readonly>📌🪄레시피를 입력해보세요!🧑‍🍳</textarea>
+            <div class="memoButtons">
+              <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
+            </div>
+          </form> 
         </div>
+
+         <!-- 레시피 메모박스 끝 -->
       </div>
     </main>
     <footer>
