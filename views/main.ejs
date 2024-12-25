@@ -4,6 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘은 뭐 먹지?</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지?" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지?" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
+
+    <title>오늘은 뭐 먹지?</title>
     <!-- css 초기화 -->
     <link rel="stylesheet" href="/static/css/resset.css" />
     <!-- common CSS -->
@@ -12,7 +34,9 @@
     <link rel="stylesheet" href="/static/css/index.css" />
 
     <!-- Js -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/js/search.js" defer></script>
+    <script src="/static/js/main.js" defer></script>
   </head>
   <body>
     <header>
@@ -24,21 +48,21 @@
           >
 
           <div class="gnb">
-            <!-- 로그인시  태그변경 -->
-            <% if(!true){ %>
-            <a href="/users/login">내정보</a>
-            <a href="/users/login">로그아웃</a>
-            <%}else{%>
-            <a href="/users/login">로그인</a>
-            <a href="/users/login">회원가입</a>
-            <%} %>
+            <!-- 로그인 -->
+            <div class="login-On">
+              <a href="/users">내정보</a>
+              <a href="#none" onclick="logout();">로그아웃</a>
+            </div>
+            <div class="login-Off">
+              <a href="/users/login">로그인</a>
+              <a href="/users/register">회원가입</a>
+            </div>
           </div>
         </div>
       </div>
       <div class="inner">
         <div class="searchBox">
           <!-- 서치 폼 -->
-
           <form name="search" method="get" action="/search/video">
             <input
               type="text"
@@ -89,15 +113,16 @@
         </div>
         <div class="menu">
           <!-- 로그인시  태그변경 -->
-          <% if(!true){ %>
-          <a href="users/login"
-            ><img src="/static/img/icons/Login.png" alt="로그인"
-          /></a>
-          <%}else{%>
-          <a href="users/logout"
-            ><img src="/static/img/icons/Profile.png" alt="프로필"
-          /></a>
-          <%} %>
+          <div class="login-On">
+            <a href="users/"
+              ><img src="/static/img/icons/Profile.png" alt="프로필"
+            /></a>
+          </div>
+          <div class="login-Off">
+            <a href="users/login"
+              ><img src="/static/img/icons/Login.png" alt="로그인"
+            /></a>
+          </div>
         </div>
       </div>
     </div>
