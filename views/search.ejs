@@ -25,7 +25,6 @@
     />
     <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
 
-
     <!-- css 초기화 -->
     <link rel="stylesheet" href="/static/css/resset.css" />
     <!-- common CSS -->
@@ -82,7 +81,7 @@
       <div class="container">
         <% if (videos && videos.length > 0) { %> <% videos.forEach(video => { %>
         <div class="item">
-          <a href="/detail?videoId=<%= video.videoId %>">
+          <a target="_self" href="/detail?videoId=<%= video.videoId %>">
             <div class="thumbnail">
               <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
             </div>

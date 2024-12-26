@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function checkLoginStatus(status) {
   const loginOn = document.querySelectorAll(".login-On");
   const loginOff = document.querySelectorAll(".login-Off");
-  console.log(loginOn);
   if (status) {
     // 로그인을 했을 때
     loginOn.forEach((item) => {

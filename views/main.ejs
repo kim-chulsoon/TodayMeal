@@ -33,10 +33,14 @@
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/css/index.css" />
 
+    <!-- CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
     <!-- Js -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/js/search.js" defer></script>
     <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/mainRandom.js" defer></script>
   </head>
   <body>
     <header>
@@ -60,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div class="inner">
+      <div class="inner search">
         <div class="searchBox">
           <!-- 서치 폼 -->
           <form name="search" method="get" action="/search/video">
@@ -74,6 +78,13 @@
               ><img src="/static/img/icons/i_search.png" alt="검색"
             /></span>
           </form>
+          <div class="recDish">
+            <button type="button">삼겹살</button>
+            <button type="button">김치찜</button>
+            <button type="button">쌈밥</button>
+            <button type="button">오꼬노미야끼</button>
+            <button type="button">햄버거</button>
+          </div>
         </div>
       </div>
     </header>
@@ -84,7 +95,7 @@
       <div class="container">
         <% if (videos && videos.length > 0) { %> <% videos.forEach(video => { %>
         <div class="item">
-          <a href="/detail?videoId=<%= video.videoId %>" target="_blank">
+          <a href="/detail?videoId=<%= video.videoId %>" target="_self">
             <div class="thumbnail">
               <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
             </div>

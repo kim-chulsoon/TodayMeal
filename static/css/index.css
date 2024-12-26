@@ -89,7 +89,20 @@ header > .inner > .searchBox input {
 header > .inner > .searchBox .searchIcon {
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  top: 20px;
+  cursor: pointer;
+}
+
+/* 검색 추천 */
+header .recDish {
+  text-align: center;
+}
+
+header .recDish button {
+  display: inline-block;
+  margin: 10px 5px;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
@@ -228,9 +241,12 @@ footer {
 
   header > .inner {
     width: 100%;
-    height: 80px;
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  header > .inner.search {
+    margin-top: 80px;
   }
 
   /* 로고 */
