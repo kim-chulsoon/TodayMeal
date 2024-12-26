@@ -196,8 +196,9 @@ function getAuthToken() {
 
 // 노트 데이터 가져오기
 async function fetchCurrentNote(videoId) {
+  let currentNote;
   try {
-    const response = await axios.get(`/notes`, {
+    const response = await axios.get(`/detail`, {
       params: { videoId },
       headers: {
         Authorization: `Bearer ${getAuthToken()}`,
@@ -206,7 +207,6 @@ async function fetchCurrentNote(videoId) {
 
     if (response.data.success) {
       currentNote = response.data.note;
-      populateEditors();
     } else {
       currentNote = null;
     }
@@ -625,16 +625,19 @@ function initializeEditors() {
   ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
     .then((editor) => {
       ingEditor = editor;
-      if (currentNote && currentNote.ingredients) {
-        ingEditor.setData(currentNote.ingredients);
-      }
 
-      document
-        .querySelector(".memoItem.ing .registr")
-        .addEventListener("click", async () => {
+      // 재료 저장 버튼에 *별도의* 이벤트 리스너 추가
+      const ingSaveBtn = document.querySelector(".memoItem.ing .registr");
+      if (ingSaveBtn) {
+        ingSaveBtn.addEventListener("click", async () => {
           const editorData = ingEditor.getData();
           await saveOrUpdateMemo(editorData, "ingredients");
         });
+      } else {
+        console.error(
+          "재료 저장 버튼(.memoItem.ing .registr)을 찾을 수 없습니다.",
+        );
+      }
     })
     .catch((error) => {
       console.error("CKEditor 초기화 오류 (재료):", error);
@@ -644,16 +647,19 @@ function initializeEditors() {
   ClassicEditor.create(document.querySelector("#rcpData"), rcpDataConfig)
     .then((editor) => {
       rcpEditor = editor;
-      if (currentNote && currentNote.recipe) {
-        rcpEditor.setData(currentNote.recipe);
-      }
 
-      document
-        .querySelector(".memoItem.rcp .registr")
-        .addEventListener("click", async () => {
+      // 레시피 저장 버튼에 *별도의* 이벤트 리스너 추가
+      const rcpSaveBtn = document.querySelector(".memoItem.rcp .registr");
+      if (rcpSaveBtn) {
+        rcpSaveBtn.addEventListener("click", async () => {
           const editorData = rcpEditor.getData();
           await saveOrUpdateMemo(editorData, "recipe");
         });
+      } else {
+        console.error(
+          "레시피 저장 버튼(.memoItem.rcp .registr)을 찾을 수 없습니다.",
+        );
+      }
     })
     .catch((error) => {
       console.error("CKEditor 초기화 오류 (레시피):", error);
@@ -672,84 +678,138 @@ function populateEditors() {
   }
 }
 
-// 메모 생성 또는 수정 함수
+// 메모 생성 또는 수정 함수 (디버그 로그 추가 버전)
 async function saveOrUpdateMemo(data, noteType) {
+  console.log("[DEBUG] saveOrUpdateMemo 호출됨:", data, noteType);
+
   const videoId = document.getElementById("videoId").value;
   const title = document.getElementById("title").value;
   const channelTitle = document.getElementById("channelTitle").value;
   const thumbnailUrl = document.getElementById("thumbnailUrl").value;
 
-  try {
-    if (currentNote) {
-      // Update existing note
-      const payload =
-        noteType === "ingredients" ? { ingredients: data } : { recipe: data };
-      const response = await axios.patch(`/notes/${currentNote.id}`, payload, {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type": "application/json",
-        },
-      });
+  console.log("[DEBUG] videoId:", videoId);
+  console.log("[DEBUG] title:", title);
+  console.log("[DEBUG] channelTitle:", channelTitle);
+  console.log("[DEBUG] thumbnailUrl:", thumbnailUrl);
 
-      if (response.status === 200) {
-        alert(
-          `${
-            noteType === "ingredients" ? "재료" : "레시피"
-          } 메모가 성공적으로 업데이트되었습니다.`,
+  try {
+    const payload = {
+      [noteType]: data,
+      videoId,
+      title,
+      channelTitle,
+      thumbnailUrl,
+    };
+
+    console.log("[DEBUG] 전송할 payload:", payload);
+
+    const response = await axios.post("/detail/notes", payload, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("[DEBUG] 서버 응답 status:", response.status);
+    console.log("[DEBUG] 서버 응답 data:", response.data);
+
+    if (response.data.success) {
+      console.log("[DEBUG] 서버 응답 success:", response.data.success);
+      alert(response.data.message || "메모가 저장되었습니다.");
+
+      const updatedNote = response.data.note;
+      console.log("[DEBUG] updatedNote:", updatedNote);
+
+      // 폼 전환 후 DOM 조작을 위한 Promise 기반 함수
+      const updateReadonlyArea = (selector, noteContent, defaultMessage) => {
+        return new Promise((resolve) => {
+          // requestAnimationFrame을 사용하여 렌더링 완료 후 실행 보장
+          requestAnimationFrame(() => {
+            const readOnlyArea = document.querySelector(selector);
+            if (readOnlyArea) {
+              readOnlyArea.value = noteContent || defaultMessage;
+              resolve(); // 성공적으로 업데이트 완료 시 resolve 호출
+            } else {
+              console.error(
+                defaultMessage.split("입력")[0] +
+                  " textarea를 찾을 수 없습니다!",
+              ); // 에러 메시지 개선
+              resolve(); // 엘리먼트를 찾지 못해도 resolve 호출하여 다음 코드 진행
+            }
+          });
+        });
+      };
+
+      if (noteType === "ingredients") {
+        ingForm();
+        await updateReadonlyArea(
+          ".memoItem.ing .ingForm textarea",
+          updatedNote.ingredients,
+          "🫑재료를 입력해보세요!",
         );
-        window.location.reload();
-      } else {
-        alert(
-          `${
-            noteType === "ingredients" ? "재료" : "레시피"
-          } 메모 업데이트에 실패했습니다.`,
+      } else if (noteType === "recipe") {
+        rcpForm();
+        await updateReadonlyArea(
+          ".memoItem.rcp .rcpForm textarea",
+          updatedNote.recipe,
+          "🪄레시피를 입력해보세요!‍",
         );
       }
     } else {
-      // Create new note
-      const payload = {
-        [noteType]: data,
-        videoId,
-        title,
-        channelTitle,
-        thumbnailUrl,
-      };
-      const response = await axios.post("/notes", payload, {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 201 || response.status === 200) {
-        alert(
-          `${
-            noteType === "ingredients" ? "재료" : "레시피"
-          } 메모가 성공적으로 저장되었습니다.`,
-        );
-        window.location.reload();
-      } else {
-        alert(
-          `${
-            noteType === "ingredients" ? "재료" : "레시피"
-          } 메모 저장에 실패했습니다.`,
-        );
-      }
+      // 중복 제거
+      console.error(
+        "[DEBUG] 응답은 성공(success)이 false입니다:",
+        response.data,
+      );
+      alert(response.data.message || "메모 저장/업데이트 실패"); // 서버에서 메시지가 있으면 사용
     }
   } catch (error) {
-    console.error(
-      `${
-        noteType === "ingredients" ? "재료" : "레시피"
-      } 메모 저장/업데이트 오류:`,
-      error,
-    );
-    alert(
-      `${
-        noteType === "ingredients" ? "재료" : "레시피"
-      } 메모 저장/업데이트 중 오류가 발생했습니다.`,
-    );
+    console.error("[DEBUG] 메모 저장/업데이트 오류 발생:", error);
+
+    if (error.response) {
+      console.error("[DEBUG] error.response.status:", error.response.status);
+      console.error("[DEBUG] error.response.data:", error.response.data);
+    } else {
+      console.error("[DEBUG] error.message:", error.message);
+    }
+
+    alert("메모 저장/업데이트 중 오류가 발생했습니다.");
   }
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+  let currentNote = null;
+  try {
+    const videoId = document.getElementById("videoId").value;
+    if (videoId) {
+      currentNote = await fetchCurrentNote(videoId);
+      populateEditors();
+    }
+
+    // 재료 저장 버튼 이벤트 리스너
+    const ingSaveBtn = document.querySelector(".ing-registr");
+    if (ingSaveBtn && !ingSaveBtn.eventListenerAdded) {
+      ingSaveBtn.addEventListener("click", async () => {
+        const editorData = ingEditor ? ingEditor.getData() : "";
+        await saveOrUpdateMemo(editorData, "ingredients");
+      });
+      ingSaveBtn.eventListenerAdded = true;
+    }
+
+    // 레시피 저장 버튼 이벤트 리스너
+    const rcpSaveBtn = document.querySelector(".rcp-registr");
+    if (rcpSaveBtn && !rcpSaveBtn.eventListenerAdded) {
+      rcpSaveBtn.addEventListener("click", async () => {
+        const editorData = rcpEditor ? rcpEditor.getData() : "";
+        await saveOrUpdateMemo(editorData, "recipe");
+      });
+      rcpSaveBtn.eventListenerAdded = true;
+    }
+  } catch (error) {
+    // catch 블록 추가 및 위치 수정
+    console.error("DOMContentLoaded 이벤트 리스너 오류:", error);
+  }
+});
 
 // 재료 메모 저장 함수
 async function saveIngredients(data) {

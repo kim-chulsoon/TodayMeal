@@ -57,7 +57,7 @@ exports.detail = async (req, res) => {
     let note = null;
 
     if (videoRecord && user) {
-      note = await Notes.findAll({
+      note = await Notes.findOne({
         where: { videoId: videoRecord.id, userId: user.id },
       });
     }
@@ -74,93 +74,94 @@ exports.detail = async (req, res) => {
   }
 };
 
-// POST notes
-exports.CreateNotes = async (req, res) => {
+// POST Notes
+exports.createOrUpdateNotes = async (req, res) => {
   try {
+    // 1. 요청 본문(req.body)에서 recipe 데이터 처리
+    if (req.body.recipe) {
+      // recipe 데이터가 존재하는지 확인
+      if (typeof req.body.recipe !== "string") {
+        // recipe가 문자열 타입이 아닌 경우 (객체 또는 배열일 가능성 높음)
+        try {
+          // JSON.stringify()를 사용하여 문자열로 변환 시도
+          req.body.recipe = JSON.stringify(req.body.recipe);
+        } catch (jsonError) {
+          // JSON 변환 중 오류 발생 시 (예: 순환 참조)
+          console.error("JSON 변환 오류:", jsonError); // 서버 콘솔에 오류 기록
+          return res.status(400).json({
+            // 클라이언트에게 400 Bad Request 응답 전송
+            success: false,
+            message:
+              "잘못된 레시피 데이터 형식입니다. 객체나 배열은 문자열 형태로 전송해야 합니다.",
+            error: jsonError.message, // 오류 메시지 포함
+          });
+        }
+      }
+    } else {
+      // recipe가 undefined 또는 null인 경우, 빈 문자열로 설정하여 DB에 저장
+      req.body.recipe = "";
+    }
+
+    // 2. 요청 본문에서 데이터 추출 (recipe는 위에서 처리되었음)
     const { ingredients, recipe, title, videoId, thumbnailUrl, channelTitle } =
       req.body;
-    const user = req.user; // authenticateToken 미들웨어에서 설정
+    const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
 
-    // Video 조회 또는 생성
+    // 3. 비디오 정보 조회 또는 생성
     let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
     if (!video) {
       video = await Videos.create({
-        title: title,
+        title,
         youtubeUrl: videoId,
-        thumbnailUrl: thumbnailUrl,
-        channelTitle: channelTitle,
+        thumbnailUrl,
+        channelTitle,
       });
     }
 
-    // 노트 확인
-    let existingNotes = await Notes.findOne({
+    // 4. 기존 노트 조회
+    let existingNote = await Notes.findOne({
       where: { videoId: video.id, userId: user.id },
     });
 
-    if (existingNotes) {
-      return res.status(400).json({
-        success: false,
-        message: "이미 메모가 존재합니다. 수정하시겠습니까?",
+    // 5. 노트 생성 또는 업데이트
+    if (!existingNote) {
+      // 5-1. 기존 노트가 없으면 새로 생성
+      const newNote = await Notes.create({
+        userId: user.id,
+        videoId: video.id,
+        ingredients,
+        recipe, // 위에서 문자열로 변환되었거나 빈 문자열임
       });
-    }
-
-    // Notes 생성
-    await Notes.create({
-      userId: user.id,
-      videoId: video.id,
-      ingredients: ingredients,
-      recipe: recipe,
-    });
-
-    res
-      .status(201)
-      .json({ success: true, message: "메모가 성공적으로 저장되었습니다." });
-  } catch (err) {
-    console.error("note upload err:", err); // 전체 오류 객체를 로그로 남김
-    res
-      .status(500)
-      .json({ success: false, message: "서버 오류가 발생했습니다" });
-  }
-};
-
-// PATCH notes
-
-exports.updateNote = async (req, res) => {
-  const noteId = req.params.id;
-  const { ingredients, recipe, title, videoId, thumbnailUrl, channelTitle } =
-    req.body;
-  const user = req.user; // authenticateToken 미들웨어에서 설정
-
-  try {
-    // 메모모 조회
-    const note = await Notes.findOne({ where: { id: noteId } });
-
-    if (!note) {
       return res
-        .status(404)
-        .json({ success: false, message: "메모를 찾을 수 없습니다." });
-    }
-
-    // 메모의 소유자 확인
-    if (note.userId !== user.id) {
+        .status(201)
+        .json({
+          success: true,
+          message: "메모가 생성되었습니다.",
+          note: newNote,
+        });
+    } else {
+      // 5-2. 기존 노트가 있으면 업데이트
+      await existingNote.update({
+        ingredients:
+          ingredients !== undefined ? ingredients : existingNote.ingredients,
+        recipe: recipe !== undefined ? recipe : existingNote.recipe, // 위에서 문자열로 변환되었거나 기존 값 유지
+      });
       return res
-        .status(403)
-        .json({ success: false, message: "권한이 없습니다." });
+        .status(200)
+        .json({
+          success: true,
+          message: "메모가 업데이트되었습니다.",
+          note: existingNote,
+        });
     }
-
-    // 노트 업데이트
-    await note.update({
-      ingredients: ingredients !== undefined ? ingredients : note.ingredients,
-      recipe: recipe !== undefined ? recipe : note.recipe,
-    });
-
-    res.json({
-      success: true,
-      message: "노트가 성공적으로 업데이트되었습니다.",
-    });
   } catch (err) {
-    console.error("노트 업데이트 오류:", err);
-    res.status(500).json({ success: false, message: "서버 오류 발생" });
+    // 6. 오류 처리
+    console.error("createOrUpdateNotes 오류:", err);
+    return res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+      error: err.message, // 오류 메시지 포함 (디버깅에 유용)
+    });
   }
 };
 

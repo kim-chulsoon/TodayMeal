@@ -45,9 +45,10 @@
     <script defer src="/static/js/login_menu.js"></script>
 
     <!-- 메모 데이터 프론트로 전달 -->
-  <script>
-    // const currentNote = <%#= note ? JSON.stringify(note) : 'null' %>;
-  </script>
+    <script>
+      const noteStr = "<%= note ? JSON.stringify(note) : 'null' %>";
+      const currentNote = noteStr === 'null' ? null : JSON.parse(noteStr);
+    </script>
 
   </head>
   <body>
@@ -132,8 +133,7 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <textarea class="ingredientTextarea" name="" id="" readonly>
-            <%= note && note.ingredients ? note.ingredients : "🌽🥬🫑재료를 입력해보세요!😊" %>
+          <textarea class="ingredientTextarea" readonly>
           </textarea>
           <div class="memoButtons">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
@@ -155,12 +155,12 @@
               <button type="button" class="btn btnClose" >메모 삭제</button>
               <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
             <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
-            <button type="button" class="btn btnOpen registr" onclick="saveIngredients()">등록</button>
+            <button type="button" class="btn btnOpen registr" >등록</button>
             </div>
           </form>
           <!-- 레시피 뷰 -->
           <form  class="rcpForm" name="memo" method="post">
-            <textarea class="RecipeTextarea" name="" id="" readonly>📌🪄레시피를 입력해보세요!🧑‍🍳</textarea>
+            <textarea class="RecipeTextarea" readonly></textarea>
             <div class="memoButtons">
               <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
             </div>
