@@ -90,6 +90,7 @@ form > input {
   height: 50px;
   border: 1px solid lightgray;
   font-size: 16px;
+  text-indent: 10px;
 }
 /* radius */
 .userId {
@@ -108,7 +109,6 @@ form > button {
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
-  font-family: "Noto Sans KR", serif;
 }
 .loginB {
   background-color: #ff8675;

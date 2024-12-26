@@ -33,6 +33,7 @@ form > .pwP {
 input {
   font-size: 16px;
   margin-bottom: 10px;
+  text-indent: 10px;
 }
 
 .userId {
@@ -115,12 +116,15 @@ span > img {
   border: 1px solid lightgray;
 }
 
-.Birth {
+input[type="date"] {
   width: 353px;
   height: 50px;
   border-radius: 5px;
   border: 1px solid lightgray;
+  font-size: 16px;
+  box-sizing: border-box;
   color: rgba(160, 160, 160, 1);
+  text-indent: 3px;
 }
 
 .registerB {
@@ -139,9 +143,7 @@ span > img {
   display: none;
 }
 
-/* 웹 */
-
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .mobile {
     display: none;
   }
@@ -149,15 +151,42 @@ span > img {
     display: block;
   }
 
+  .mobileTitle {
+    width: 100%;
+    height: 24px;
+    position: relative;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
   /* 추가 */
   .regiDiv {
     width: 100%;
     height: 100%;
-    /* position: relative; */
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 200px;
+  }
+}
+
+/* 웹 */
+
+@media (min-width: 1024px) {
+  .mobileTitle {
+    width: 100%;
+    height: 24px;
+    position: relative;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
   }
 }
