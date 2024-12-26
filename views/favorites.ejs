@@ -36,11 +36,8 @@
 
     <!-- CDN -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
     <!-- Js -->
     <script src="/static/js/favorites.js" defer></script>
-    
-
   </head>
   <body>
     <header>
@@ -80,22 +77,46 @@
       </div>
       <div class="container">
         <% favoriteVideos.forEach(favorite => { %>
-          <div class="item">
-            <a href="/detail?videoId=<%= favorite.Video.youtubeUrl %>" target="_blank">
-              <div class="thumbnail">
-                <img src="<%= favorite.Video.thumbnailUrl %>" alt="<%= favorite.Video.title %> 썸네일" />
-              </div>
-              <div class="description">
-                <h3 class="title"><%= favorite.Video.title %></h3>
-                <p class="creator"><%= favorite.Video.channelTitle %></p>
-                <!-- <p class="subtitle"><%= favorite.Video.description %></p> -->
-              </div>
-            </a>
-          </div>
+        <div class="item">
+          <a
+            href="/detail?videoId=<%= favorite.Video.youtubeUrl %>"
+            target="_blank"
+          >
+            <div class="thumbnail">
+              <img
+                src="<%= favorite.Video.thumbnailUrl %>"
+                alt="<%= favorite.Video.title %> 썸네일"
+              />
+            </div>
+            <div class="description">
+              <h3 class="title"><%= favorite.Video.title %></h3>
+              <p class="creator"><%= favorite.Video.channelTitle %></p>
+              <!-- <p class="subtitle"><%= favorite.Video.description %></p> -->
+            </div>
+          </a>
+        </div>
         <% }) %>
+
+        <div class="pageBox">
+          <ul class="pagination">
+            <li class="page-item arrowLeft">
+              <a href="/"
+                ><img src="/static/img/icons/ArrowLeft2.png" alt="이전" /><span
+                  >이전</span
+                ></a
+              >
+            </li>
+            <li class="page-item arrowRight">
+              <a href="/"
+                ><span>다음</span
+                ><img src="/static/img/icons/ArrowRight2.png" alt="다음"
+              /></a>
+            </li>
+          </ul>
+        </div>
       </div>
-      
-      
+    </main>
+
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
@@ -124,6 +145,5 @@
         </div>
       </div>
     </div>
-    
   </body>
 </html>
