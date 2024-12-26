@@ -37,19 +37,6 @@
     <!-- footer -->
     <link rel="stylesheet" href="/static/css/footer.css" />
 
-    <!-- jquery CDN -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <!-- googlrFont -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
     <!-- css -->
     <!-- common  -->
     <link rel="stylesheet" href="/static/css/common.css" />
@@ -68,11 +55,12 @@
     <%-include("./includes/header") %>
 
     <main>
+      <div class="web mobileTitle">
+        <p>내 정보</p>
+      </div>
+
       <div class="con">
         <div class="userBox">
-          <div class="web mobileTitle">
-            <p>내 정보</p>
-          </div>
           <!-- 프로필 박스1 -->
           <div class="userBox1">
             <!-- 프로필사진 이름 -->
@@ -84,8 +72,8 @@
               />
             </div>
             <div class="userP">
-              <p class="userId"><%= user.userId %></p>
-              <p class="userName"><%= user.name %></p>
+              <p class="userPId"><%= user.userId %></p>
+              <p class="userPName"><%= user.name %></p>
             </div>
           </div>
 
@@ -141,25 +129,23 @@
 
     // 회원 탈퇴
     // 회원 탈퇴 함수
-    function confirmClick() {
+    async function confirmClick() {
       if (confirm("회원을 탈퇴하시겠습니까?")) {
-        // Ajax 요청
-        $.ajax({
-          type: "DELETE",
-          url: "/users/delete", // 회원 탈퇴 라우트
-          success: function (res) {
-            if (res.success) {
-              alert("회원 탈퇴가 완료되었습니다.");
-              document.location.href = "/"; // 홈으로
-            } else {
-              alert("회원 탈퇴 중 오류가 발생했습니다.");
-            }
-          },
-          error: function (err) {
-            console.error("회원 탈퇴 오류:", err);
-            alert("서버 오류가 발생했습니다.");
-          },
-        });
+        try {
+          const response = await axios.delete("/users/delete", {
+            withCredentials: true,
+          });
+
+          if (response.data.success) {
+            alert("회원 탈퇴가 완료되었습니다.");
+            document.location.href = "/"; // 홈으로
+          } else {
+            alert("회원 탈퇴 중 오류가 발생했습니다.");
+          }
+        } catch (error) {
+          console.error("회원 탈퇴 오류:", error);
+          alert("서버 오류가 발생했습니다.");
+        }
       }
     }
 

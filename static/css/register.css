@@ -26,6 +26,7 @@ form > p {
 input {
   font-size: 16px;
   margin-bottom: 10px;
+  text-indent: 10px;
 }
 
 .userId {
@@ -85,12 +86,15 @@ span > img {
   border: 1px solid lightgray;
 }
 
-.Birth {
+input[type="date"] {
   width: 353px;
   height: 50px;
   border-radius: 5px;
   border: 1px solid lightgray;
+  font-size: 16px;
+  box-sizing: border-box;
   color: rgba(160, 160, 160, 1);
+  text-indent: 3px;
 }
 
 .registerB {
@@ -106,10 +110,6 @@ span > img {
 
 /* 모바일 none */
 .web {
-  display: none;
-}
-
-footer {
   display: none;
 }
 

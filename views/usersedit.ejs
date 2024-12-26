@@ -44,6 +44,9 @@
     <%-include("./includes/header") %>
 
     <main>
+      <div class="web mobileTitle">
+        <p>정보 수정</p>
+      </div>
       <div class="regiDiv">
         <form name="edit" class="edit" onsubmit="return editClick()">
           <div class="profileSection">
@@ -81,7 +84,7 @@
             type="text"
             name="userId2"
             class="userId2"
-            placeholder=" 아이디"
+            placeholder="아이디"
             value="<%= user.userId %>"
             readonly
           />
@@ -92,7 +95,7 @@
               name="userPw1"
               class="userPw"
               id="userPw1"
-              placeholder="  패스워드"
+              placeholder="패스워드"
               required
             />
           </div>
@@ -104,7 +107,7 @@
               name="userPw2"
               class="userPw"
               id="userPw2"
-              placeholder="  패스워드 확인"
+              placeholder="패스워드 확인"
               required
             />
           </div>
@@ -113,7 +116,7 @@
             type="text"
             name="userName"
             class="userName"
-            placeholder="  이름"
+            placeholder="이름"
             value="<%= user.name %>"
             required
           />
