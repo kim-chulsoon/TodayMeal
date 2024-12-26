@@ -2,7 +2,29 @@
 <html lang="ko">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>오늘은 뭐 먹지?</title>
+    <title>오늘은 뭐 먹지? - <%= video.title %></title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지? - <%= video.title %>" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지? - <%= video.title %>" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
+
+
     <!-- common CSS -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
@@ -19,6 +41,9 @@
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
+
     <!-- 메모 데이터 프론트로 전달 -->
   <script>
     // const currentNote = <%#= note ? JSON.stringify(note) : 'null' %>;
@@ -26,36 +51,8 @@
 
   </head>
   <body>
-    <header>
-      <div class="inner">
-        <div class="logoBox">
-          <a class="logoTitle" href="/"
-            ><img src="/static/img/logo/b_logo.png" alt="로고" />
-            <span>오늘은 뭐 먹지?</span></a
-          >
-          <div class="gnb">
-            <!-- 로그인시  태그변경 -->
-            <% if(!true){ %>
-            <a href="/users/login">내정보</a>
-            <a href="/users/login">로그아웃</a>
-            <%}else{%>
-            <a href="/users/login">로그인</a>
-            <a href="/users/login">회원가입</a>
-            <%} %>
-          </div>
-        </div>
-        <div class="headMenu">
-          <div class="backMove">
-            <a href="/"
-              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
-            /></a>
-          </div>
-          <div class="title">
-            <h3>뒤로가기</h3>
-          </div>
-        </div>
-      </div>
-    </header>
+    <!-- header include -->
+    <%-include("./includes/header") %>
     <main>
       <div class="container">
         <div class="item">
@@ -188,15 +185,16 @@
         </div>
         <div class="menu">
           <!-- 로그인시  태그변경 -->
-          <% if(!true){ %>
-          <a href="users/login"
-            ><img src="/static/img/icons/Login.png" alt="로그인"
-          /></a>
-          <%}else{%>
-          <a href="users/logout"
-            ><img src="/static/img/icons/Profile.png" alt="프로필"
-          /></a>
-          <%} %>
+          <div class="login-On">
+            <a href="users/"
+              ><img src="/static/img/icons/Profile.png" alt="프로필"
+            /></a>
+          </div>
+          <div class="login-Off">
+            <a href="users/login"
+              ><img src="/static/img/icons/Login.png" alt="로그인"
+            /></a>
+          </div>
         </div>
       </div>
     </div>

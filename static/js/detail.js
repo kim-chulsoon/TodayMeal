@@ -7,8 +7,8 @@ let rcpEditor;
 
 // 로그인 검증을 위한 토큰값 불러오기
 document.addEventListener("DOMContentLoaded", () => {
-  const token = document.cookie.includes("authToken=");
-  loginCheak(token);
+  loginCheak(document.cookie.includes("authToken="));
+  checkLoginStatus(document.cookie.includes("authToken="));
 });
 
 // 영상 설명 더보기/숨기기
@@ -33,6 +33,29 @@ more.addEventListener("click", () => {
   }
 });
 
+// 접속시 로그인 여부 체크처리
+function checkLoginStatus(status) {
+  const loginOn = document.querySelectorAll(".login-On");
+  const loginOff = document.querySelectorAll(".login-Off");
+  console.log(loginOn);
+  if (status) {
+    // 로그인을 했을 때
+    loginOn.forEach((item) => {
+      item.style.display = "block";
+    });
+    loginOff.forEach((item) => {
+      item.style.display = "none";
+    });
+  } else {
+    loginOn.forEach((item) => {
+      item.style.display = "none";
+    });
+    loginOff.forEach((item) => {
+      item.style.display = "block";
+    });
+  }
+}
+
 // 메모 보이기 안보이기
 function loginCheak(token) {
   const loginAlert = document.querySelector("main > .memoBox > .loginAlert");
@@ -56,38 +79,39 @@ function loginCheak(token) {
 }
 
 // 북마크 토글 애니메이션 및 상태설정
-async function toggle_bookmark() {
+async function toggleBookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
 
-  console.log(
-    document.querySelector("#bookmarkBtn").getAttribute("data-status"),
-  );
-
   try {
     if (btn.classList.contains("bookmarkButton-off")) {
-      const videoId = document.getElementById("videoId").value;
-      // 북마크를 안했을 때
-      btn.setAttribute("data-status", true); // 북마크 활성화
-      btnIocn.classList.remove("fa-regular");
-      btn.classList.add("bookmarkButton-on");
-      btn.classList.remove("bookmarkButton-off");
-      btnIocn.classList.add("fa-solid");
+      // 로그인 여부 체크
+      if (document.cookie.includes("authToken=")) {
+        const videoId = document.getElementById("videoId").value;
+        // 북마크를 안했을 때
+        btn.setAttribute("data-status", true); // 북마크 활성화
+        btnIocn.classList.remove("fa-regular");
+        btn.classList.add("bookmarkButton-on");
+        btn.classList.remove("bookmarkButton-off");
+        btnIocn.classList.add("fa-solid");
 
-      // 북마크 추가 요청
-      const response = await axios.post(
-        "/favorites/save",
-        { videoId }, // 요청 본문 데이터
-        {
-          withCredentials: true, // 쿠키를 포함하여 요청
-        },
-      );
+        // 북마크 추가 요청
+        const response = await axios.post(
+          "/favorites/save",
+          { videoId }, // 요청 본문 데이터
+          {
+            headers: { Authorization: `Bearer ${getAuthToken()}` },
+          },
+        );
 
-      if (response.status === 201) {
-        console.log("북마크가 성공적으로 저장되었습니다!");
-        alert("북마크가 성공적으로 저장되었습니다!");
+        if (response.status === 201) {
+          console.log("북마크가 성공적으로 저장되었습니다!");
+          alert("북마크가 성공적으로 저장되었습니다!");
+        } else {
+          throw new Error("북마크 저장 실패");
+        }
       } else {
-        throw new Error("북마크 저장 실패");
+        alert("로그인 후 이용가능합니다");
       }
     } else {
       // 북마크를 한 상태일 때
@@ -101,7 +125,7 @@ async function toggle_bookmark() {
       // 북마크 삭제 요청
       const response = await axios.delete("/favorites/delete", {
         data: { videoId }, // DELETE 요청의 데이터는 `data` 속성에 넣어야 함
-        withCredentials: true,
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
       });
 
       if (response.status === 200) {
@@ -165,12 +189,19 @@ function rcpForm() {
   }
 }
 
+// 토큰 가져오기 함수
+function getAuthToken() {
+  return localStorage.getItem("authToken");
+}
+
 // 노트 데이터 가져오기
 async function fetchCurrentNote(videoId) {
   try {
     const response = await axios.get(`/notes`, {
       params: { videoId },
-      withCredentials: true, // 쿠키를 포함하도록 설정
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
     });
 
     if (response.data.success) {
@@ -654,9 +685,9 @@ async function saveOrUpdateMemo(data, noteType) {
       const payload =
         noteType === "ingredients" ? { ingredients: data } : { recipe: data };
       const response = await axios.patch(`/notes/${currentNote.id}`, payload, {
-        withCredentials: true, // 쿠키를 포함하도록 설정
         headers: {
-          "Content-Type": "application/json", // JSON 데이터임을 명시
+          Authorization: `Bearer ${getAuthToken()}`,
+          "Content-Type": "application/json",
         },
       });
 
@@ -684,8 +715,8 @@ async function saveOrUpdateMemo(data, noteType) {
         thumbnailUrl,
       };
       const response = await axios.post("/notes", payload, {
-        withCredentials: true, // 쿠키를 포함하도록 설정
         headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
           "Content-Type": "application/json",
         },
       });
