@@ -92,34 +92,31 @@
             </div>
           </a>
         </div>
-        <% }); %>
-
-        <div class="pageBox">
-          <ul class="pagination">
-            <!-- <%# if (prevPageToken) { %> -->
-            <li class="page-item arrowLeft">
-              <a
-                href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"
-                ><img src="/static/img/icons/ArrowLeft2.png" alt="" /><span
-                  >이전</span
-                ></a
-              >
-            </li>
-            <%# } %> <% if (nextPageToken) { %>
-            <li class="page-item arrowRight">
-              <a
-                href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"
-                ><span>다음</span
-                ><img src="/static/img/icons/ArrowRight2.png" alt=""
-              /></a>
-            </li>
-            <% } %>
-          </ul>
-        </div>
-
-        <% } else { %>
+        <% }); %> <% } else { %>
         <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
         <% } %>
+      </div>
+      <div class="pageBox">
+        <ul class="pagination">
+          <!-- <%# if (prevPageToken) { %> -->
+          <li class="page-item arrowLeft">
+            <a
+              href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt="" /><span
+                >이전</span
+              ></a
+            >
+          </li>
+          <%# } %> <% if (nextPageToken) { %>
+          <li class="page-item arrowRight">
+            <a
+              href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"
+              ><span>다음</span
+              ><img src="/static/img/icons/ArrowRight2.png" alt=""
+            /></a>
+          </li>
+          <% } %>
+        </ul>
       </div>
     </main>
     <footer>
@@ -138,7 +135,7 @@
         <div class="menu">
           <!-- 로그인시  태그변경 -->
           <div class="login-On">
-            <a href="users/"
+            <a href="/users/"
               ><img src="/static/img/icons/Profile.png" alt="프로필"
             /></a>
           </div>

@@ -119,6 +119,10 @@ main {
 }
 
 /* 검색결과 */
+main > .bestTitle {
+  display: none;
+}
+
 main .bestTitle h2 {
   font-size: 1.3rem;
   font-weight: bold;
@@ -303,6 +307,9 @@ footer {
   }
 
   /* 검색 */
+  main > .bestTitle {
+    display: block;
+  }
   header > .inner > .searchBox {
     margin: 0 auto;
     margin-top: 40px;
