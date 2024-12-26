@@ -7,6 +7,9 @@ let rcpEditor;
 
 // 로그인 검증을 위한 토큰값 불러오기
 document.addEventListener("DOMContentLoaded", () => {
+  // 모바일 타이틀 재지정
+  document.querySelector(".headMenu h3").textContent = "상세보기";
+
   loginCheak(document.cookie.includes("authToken="));
   checkLoginStatus(document.cookie.includes("authToken="));
 });
@@ -37,7 +40,6 @@ more.addEventListener("click", () => {
 function checkLoginStatus(status) {
   const loginOn = document.querySelectorAll(".login-On");
   const loginOff = document.querySelectorAll(".login-Off");
-  console.log(loginOn);
   if (status) {
     // 로그인을 했을 때
     loginOn.forEach((item) => {

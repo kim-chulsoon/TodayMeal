@@ -1,32 +1,33 @@
 main > .pageBox {
   width: 240px;
   margin: 0 auto;
+  margin-bottom: 100px;
 }
 
-main > .container > .pageBox > .pagination {
+main > .pageBox > .pagination {
   display: flex;
   text-align: center;
   justify-content: center;
   margin-top: 60px;
 }
 
-main > .container > .pageBox .page-item {
+main > .pageBox .page-item {
   display: inline-block;
   width: 100px;
   margin: 0px 20px;
 }
 
-main > .container > .pageBox .page-item a {
+main > .pageBox .page-item a {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-main > .container > .pageBox .page-item img {
+main > .pageBox .page-item img {
   width: 40px;
 }
 
-main > .container > .pageBox .page-item span {
+main > .pageBox .page-item span {
   width: 40px;
 }
 
