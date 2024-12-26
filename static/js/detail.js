@@ -8,7 +8,6 @@ let rcpEditor;
 // 로그인 검증을 위한 토큰값 불러오기
 document.addEventListener("DOMContentLoaded", () => {
   const token = document.cookie.includes("authToken=");
-  console.log("로그인검증", token);
   loginCheak(token);
 });
 
@@ -17,17 +16,20 @@ more.addEventListener("click", () => {
   const subtitle = document.querySelector(".subtitle");
   const moreText = more.querySelector("p");
 
-  // 설명 더보기 버튼
-  if (subtitle.classList.contains("subtitle-off")) {
-    // 숨김
-    subtitle.classList.remove("subtitle-off");
-    subtitle.classList.add("subtitle-on");
-    moreText.innerText = "간단히";
-  } else {
-    // 늘림
-    subtitle.classList.remove("subtitle-on");
-    subtitle.classList.add("subtitle-off");
-    moreText.innerText = "더보기";
+  // 크기를 초과했을때만 작동하도록
+  if (subtitle.clientHeight >= 110) {
+    // 설명 더보기 버튼
+    if (subtitle.classList.contains("subtitle-off")) {
+      // 숨김
+      subtitle.classList.remove("subtitle-off");
+      subtitle.classList.add("subtitle-on");
+      moreText.innerText = "간단히";
+    } else {
+      // 늘림
+      subtitle.classList.remove("subtitle-on");
+      subtitle.classList.add("subtitle-off");
+      moreText.innerText = "더보기";
+    }
   }
 });
 
@@ -37,8 +39,6 @@ function loginCheak(token) {
   const form = document.querySelectorAll("main > .memoBox .memoItem");
   if (token) {
     // 로그인 했을때
-    console.log("로그인");
-
     if (loginAlert.classList.contains("loginAlert-On")) {
       // 블러와 알림을 없앤다
       loginAlert.classList.remove("loginAlert-On");

@@ -57,14 +57,12 @@
     </header>
     <main>
       <div class="bestTitle">
-
         <p>검색결과</p>
       </div>
       <div class="container">
-        <% if (videos && videos.length > 0) { %>
-          <% videos.forEach(video => { %>
+        <% if (videos && videos.length > 0) { %> <% videos.forEach(video => { %>
         <div class="item">
-          <a href="/detail?videoId=<%= video.videoId %>" >
+          <a href="/detail?videoId=<%= video.videoId %>">
             <div class="thumbnail">
               <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
             </div>
@@ -76,35 +74,35 @@
           </a>
         </div>
         <% }); %>
-        
 
         <div class="pageBox">
           <ul class="pagination">
-            <% if (prevPageToken) { %>
+            <!-- <%# if (prevPageToken) { %> -->
             <li class="page-item arrowLeft">
-             
-                <a href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"><img src="/static/img/icons/ArrowLeft2.png" alt=""
-                  /></a>
-             
+              <a
+                href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"
+                ><img src="/static/img/icons/ArrowLeft2.png" alt="" /><span
+                  >이전</span
+                ></a
+              >
             </li>
-            <% } %>
-            <% if (nextPageToken) { %>
+            <%# } %> <% if (nextPageToken) { %>
             <li class="page-item arrowRight">
-             
-                <a><img src="/static/img/icons/ArrowLeft2.png" alt=""
-                  /></a>
-                <a href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"><img src="/static/img/icons/ArrowRight2.png" alt=""
-                  /></a>
-              
+              <a
+                href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"
+                ><span>다음</span
+                ><img src="/static/img/icons/ArrowRight2.png" alt=""
+              /></a>
             </li>
             <% } %>
           </ul>
         </div>
 
-      <% } else { %>
+        <% } else { %>
         <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
-      <% } %>
+        <% } %>
       </div>
+    </main>
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
