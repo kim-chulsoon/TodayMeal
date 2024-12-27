@@ -133,7 +133,7 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <textarea class="ingredientTextarea" readonly>
+          <textarea class="ingredientTextarea" readonly contenteditable="true">
           </textarea>
           <div class="memoButtons">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
@@ -160,11 +160,15 @@
           </form>
           <!-- 레시피 뷰 -->
           <form  class="rcpForm" name="memo" method="post">
-            <textarea class="RecipeTextarea" readonly></textarea>
+            <textarea class="RecipeTextarea" readonly contenteditable="true"></textarea>
             <div class="memoButtons">
               <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
             </div>
-          </form> 
+          </form>
+          <!-- 전체메모 삭제 -->
+          <form method="post" class="delAllMemo">
+            <button type="button" class="btn btnClose" onclick="delAllMemo()">전체메모 삭제</button>
+          </form>
         </div>
 
          <!-- 레시피 메모박스 끝 -->
