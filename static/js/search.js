@@ -1,8 +1,11 @@
 const form = document.forms["search"];
+const searchForm = document.forms["keyword"];
 
 document.addEventListener("DOMContentLoaded", () => {
   // 로그인체크
   checkLoginStatus(document.cookie.includes("authToken="));
+  // 검색한값 Search창에서 유지
+  searchKeyword();
 });
 
 // 접속시 로그인 여부 체크처리
@@ -26,6 +29,14 @@ function checkLoginStatus(status) {
       item.style.display = "block";
     });
   }
+}
+
+function searchKeyword() {
+  // URL 쿼리값 가져오기
+  const queryString = window.location.search;
+  // 쿼리값을 파싱함
+  const urlParams = new URLSearchParams(queryString);
+  searchForm.keyword.value = urlParams.get("keyword");
 }
 
 // 엔터입력
