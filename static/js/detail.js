@@ -58,8 +58,37 @@ function checkLoginStatus(status) {
   }
 }
 
-// 전체 메모삭제
-function delAllMemo() {}
+// 전체 메모 삭제
+function delAllMemo() {
+  // videoId 가져오기
+  const videoId = document.getElementById("videoId").value;
+
+  // 확인창
+  const confirmDelete = confirm("정말로 모든 메모를 삭제하시겠습니까?");
+  if (!confirmDelete) return;
+
+  axios
+    .post(
+      "detail/notes/delete",
+      { videoId }, // 요청 본문
+      {
+        withCredentials: true, // 쿠키를 전송할 수 있도록 설정
+      },
+    )
+    .then((response) => {
+      if (response.data.success) {
+        alert("모든 메모가 삭제되었습니다.");
+        // 페이지 새로고침
+        window.location.reload();
+      } else {
+        alert("메모 삭제 중 오류가 발생했습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("메모 삭제 중 오류가 발생했습니다.");
+    });
+}
 
 // 메모 보이기 안보이기
 function loginCheak(token) {
