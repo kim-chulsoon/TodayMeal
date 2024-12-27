@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loginCheak(document.cookie.includes("authToken="));
   checkLoginStatus(document.cookie.includes("authToken="));
 
-  // HTML 변환
+  // HTML 태그 사용을 위한 코드 변환
   const testaDiv = document.querySelector(".ingredientTextarea");
   const decodedHTML = testaDiv.textContent; // 엔티티를 디코딩
   testaDiv.innerHTML = decodedHTML; // 디코딩된 값을 innerHTML로 설정
@@ -771,7 +771,6 @@ function initializeEditors() {
   ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
     .then((editor) => {
       ingEditor = editor;
-
       // 재료 저장 버튼에 *별도의* 이벤트 리스너 추가
       const ingSaveBtn = document.querySelector(".memoItem.ing .registr");
       if (ingSaveBtn) {

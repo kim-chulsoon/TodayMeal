@@ -135,8 +135,8 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <div class="ingredientTextarea"><%= note.ingredients %></div>
-          <div class="memoButtons" contenteditable="true">
+          <div class="ingredientTextarea"><%= note.ingredients || 'null' %></div>
+          <div class="memoButtons" >
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
           </div>
         </form>
@@ -154,7 +154,7 @@
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
               <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
-              <div id="rcpData"><%= note.ingredients %></div>
+              <div id="rcpData"><%= note.ingredients || "null" %></div>
             <% } else { %>
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
 
