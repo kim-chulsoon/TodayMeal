@@ -451,7 +451,7 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "🌽🥬🫑<h3>재료를 입력해보세요!😊</h3>",
+    initialData: "<h3>🌽🥬🫑재료를 입력해보세요!😊</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -623,7 +623,7 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "📌🪄<h3>레시피를 입력해보세요!🧑‍🍳</h3>",
+    initialData: "<h3>📌🪄레시피를 입력해보세요!🧑‍🍳</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
