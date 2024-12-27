@@ -31,11 +31,13 @@ function checkLoginStatus(status) {
 }
 
 function searchKeyword() {
-  // URL 쿼리값 가져오기
-  const queryString = window.location.search;
-  // 쿼리값을 파싱함
-  const urlParams = new URLSearchParams(queryString);
-  searchForm.keyword.value = urlParams.get("keyword");
+  try {
+    // URL 쿼리값 가져오기
+    const queryString = window.location.search;
+    // 쿼리값을 파싱함
+    const urlParams = new URLSearchParams(queryString);
+    searchForm.keyword.value = urlParams.get("keyword");
+  } catch {}
 }
 
 // 엔터입력

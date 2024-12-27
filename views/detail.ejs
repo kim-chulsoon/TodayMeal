@@ -98,7 +98,7 @@
       
       <div class="memoBox">
         <!-- 로그인이 안됐을때 메모작성을 막기 위한 로그인 알림창 -->
-        <div class="loginAlert loginAlert-On">
+        <div class="loginAlert loginAlert-Off">
           <h3>지금 로그인하고<br> 메모 기능을 사용해보세요!</h3>
           <p>간편하게 재료와 레시피를 나의 스타일에 맞게 작성할 수 있습니다.</p>
           <div class="buttonBox">
@@ -107,7 +107,7 @@
           </div>
         </div>
         <!-- 재료 메모박스 -->
-        <div class="memoItem blur ing">
+        <div class="memoItem ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
             <% if(note) { %>
@@ -145,7 +145,7 @@
         <!-- 재료 메모박스 끝 -->
 
         <!-- 레시피 메모박스 -->
-        <div class="memoItem blur rcp">
+        <div class="memoItem rcp">
           <p class="title">레시피 메모장</p>
 <% console.log('notee',note) %>
           <form class="rcpForm-Open" name="memo" method="post">
@@ -174,6 +174,7 @@
           
           <!-- 레시피 뷰 -->
           <form  class="rcpForm" name="memo" method="post">
+
             <textarea class="RecipeTextarea" readonly contenteditable="false">
               <%= note.recipe %>
             </textarea>

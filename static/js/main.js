@@ -47,9 +47,12 @@ function checkLoginStatus(status) {
 function loginPopup() {
   //로그인 모달
   const em = document.querySelector(".roundPopup");
+  const bg = document.querySelector(".roundPopupBG");
   em.style.bottom = "80px";
+  bg.style.bottom = "0px";
   setTimeout(() => {
     em.style.bottom = "-60px";
+    bg.style.bottom = "-400px";
   }, 5000);
 }
 
