@@ -22,7 +22,7 @@ function getNextApiKey() {
 // GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
-  const user = req.user;
+  const user = req.user || null;
   console.log("User:", user);
   if (!videoId) {
     console.log("Video ID가 없습니다.");

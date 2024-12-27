@@ -116,14 +116,16 @@ exports.deleteBookmark = async (req, res) => {
   }
 };
 
-/** GET /favorites/status  */
-// 즐겨찾기 상태 확인 컨트롤러
-
-/** GET /favorites/status  */
+/** GET /favorites/status */
 // 즐겨찾기 상태 확인 컨트롤러
 exports.checkFavoriteStatus = async (req, res) => {
   const { videoId } = req.query; // 클라이언트에서 보낸 videoId 파라미터
   console.log("즐겨찾기 VideoID", videoId);
+
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: "로그인되지 않았습니다." });
+  }
+
   const userId = req.user.id; // 로그인된 사용자 ID (미들웨어로부터 전달받음)
 
   try {
@@ -142,14 +144,21 @@ exports.checkFavoriteStatus = async (req, res) => {
 
     // 결과 반환
     if (favorite) {
-      res.status(200).json({ isBookmarked: true }); // 북마크된 상태
+      res.status(200).json({
+        isBookmarked: true, // 북마크된 상태
+        userId: userId, // 사용자 ID 반환
+      });
     } else {
-      res.status(200).json({ isBookmarked: false }); // 북마크되지 않은 상태
+      res.status(200).json({
+        isBookmarked: false, // 북마크되지 않은 상태
+        userId: userId, // 사용자 ID 반환
+      });
     }
   } catch (error) {
     console.error("즐겨찾기 상태 확인 중 오류 발생:", error);
-    res
-      .status(500)
-      .json({ message: "즐겨찾기 상태 확인 중 오류가 발생했습니다." });
+    res.status(500).json({
+      message: "즐겨찾기 상태 확인 중 오류가 발생했습니다.",
+      userId: userId, // 오류 시에도 사용자 ID 반환
+    });
   }
 };
