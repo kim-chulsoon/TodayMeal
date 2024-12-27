@@ -117,6 +117,8 @@ function loginCheak(token) {
       // 숨김
       loginAlert.classList.add("loginAlert-On");
       loginAlert.classList.remove("loginAlert-Off");
+      form[0].classList.add("blur");
+      form[1].classList.add("blur");
     }
   }
 }
@@ -534,7 +536,8 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "<h1>🥬🌽재료를 입력해보세요!</h1>",
+    initialData:
+      "<h1>🥬🌽재료를 입력해보세요!</h1><h3>HTML 마크업, 이미지, 리스트 등 다양한 문서 속성을 지원합니다!</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -738,7 +741,8 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "<h1>🥬🌽레시피를 입력해보세요!</h1>",
+    initialData:
+      "<h1>🍎🍒🔥레시피를 입력해보세요!</h1><h3>HTML 마크업, 이미지, 리스트 등 다양한 문서 속성을 지원합니다!</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
