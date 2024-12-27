@@ -170,6 +170,7 @@ exports.createOrUpdateNotes = async (req, res) => {
 
     // 5. 노트 생성 또는 업데이트
     if (!existingNote) {
+      let video = await Videos.findOne({ where: { videoId: video.id } });
       // 5-1. 기존 노트가 없으면 새로 생성
       const newNote = await Notes.create({
         userId: user.id,
@@ -177,10 +178,11 @@ exports.createOrUpdateNotes = async (req, res) => {
         ingredients,
         recipe, // 위에서 문자열로 변환되었거나 빈 문자열임
       });
-      return res.status(201).json({
+      return res.render("detail", {
         success: true,
         message: "메모가 생성되었습니다.",
         note: newNote,
+        video,
       });
     } else {
       // 5-2. 기존 노트가 있으면 업데이트
@@ -189,10 +191,11 @@ exports.createOrUpdateNotes = async (req, res) => {
           ingredients !== undefined ? ingredients : existingNote.ingredients,
         recipe: recipe !== undefined ? recipe : existingNote.recipe, // 위에서 문자열로 변환되었거나 기존 값 유지
       });
-      return res.status(200).json({
+      return res.render("detail", {
         success: true,
         message: "메모가 업데이트되었습니다.",
         note: existingNote,
+        video,
       });
     }
   } catch (err) {

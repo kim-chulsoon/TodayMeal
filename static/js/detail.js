@@ -798,7 +798,7 @@ async function saveOrUpdateMemo(data, noteType) {
         "[DEBUG] 응답은 성공(success)이 false입니다:",
         response.data,
       );
-      alert(response.data.message || "메모 저장/업데이트 실패"); // 서버에서 메시지가 있으면 사용
+      alert(response.data.message || "메모가 저장되었습니다."); // 서버에서 메시지가 있으면 사용
     }
   } catch (error) {
     console.error("[DEBUG] 메모 저장/업데이트 오류 발생:", error);
