@@ -111,7 +111,7 @@
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
             <% if(note && note.ingredients) { %>
-              <input type="hidden" id="noteId" value="<%= note.id %>">
+              <input type="hidden" id="noteId" value="<%= note ? note.id : '' %>">
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
@@ -147,7 +147,7 @@
         <div class="memoItem blur rcp">
           <p class="title">레시피 메모장</p>
           <form  class="rcpForm-Open" name="memo" method="post">
-            <input type="hidden" id="noteId" value="<%= note.id %>">
+            <input type="hidden" id="noteId" value="<%= note ? note.id : '' %>">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
