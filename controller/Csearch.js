@@ -1,12 +1,25 @@
 const models = require("../models/index");
-// youtube api key
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+// API 키 목록
+const API_KEYS = [
+  process.env.YOUTUBE_API_KEY1,
+  process.env.YOUTUBE_API_KEY2,
+  process.env.YOUTUBE_API_KEY3,
+];
+let currentKeyIndex = 0;
+
 const axios = require("axios");
 
 /* GET /search */
 exports.search = (req, res) => {
   res.render("search", { videos: null, error: null });
 };
+
+// API 키 순환 함수
+function getNextApiKey() {
+  const apiKey = API_KEYS[currentKeyIndex];
+  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+  return apiKey;
+}
 
 /* GET /video/search */
 exports.searchVideo = async (req, res) => {
@@ -35,7 +48,7 @@ exports.searchVideo = async (req, res) => {
           type: "video",
           videoDuration: "medium",
           maxResults,
-          key: YOUTUBE_API_KEY,
+          key: getNextApiKey(), // API 키 순환 적용
           pageToken: pageToken,
         },
       },
@@ -44,7 +57,7 @@ exports.searchVideo = async (req, res) => {
     const { items, nextPageToken, prevPageToken } = response.data;
 
     const videos = items.map((item) => ({
-      videoId: item.id.videoId, // 추가
+      videoId: item.id.videoId,
       title: item.snippet.title,
       description: item.snippet.description,
       channelTitle: item.snippet.channelTitle,
@@ -62,6 +75,20 @@ exports.searchVideo = async (req, res) => {
     });
   } catch (err) {
     console.log("youtube api err", err.message);
-    res.status(500).send("youtube api err");
+
+    // API 키 변경 및 재시도
+    currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+    if (currentKeyIndex === 0) {
+      return res.render("search", {
+        videos: [],
+        error:
+          "YouTube API 키가 모두 소진되었습니다. 잠시 후 다시 시도해주세요.",
+        query,
+        nextPageToken: null,
+        prevPageToken: null,
+      });
+    }
+
+    return exports.searchVideo(req, res); // 다음 API 키로 재시도
   }
 };

@@ -1,6 +1,23 @@
 const axios = require("axios");
 const { Notes, Videos, User } = require("../models");
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
+// API 키 목록
+const API_KEYS = [
+  process.env.YOUTUBE_API_KEY1,
+  process.env.YOUTUBE_API_KEY2,
+  process.env.YOUTUBE_API_KEY3,
+];
+let currentKeyIndex = 0;
+
+// 간단한 캐시 객체
+const cache = {};
+
+// API 키 순환 함수
+function getNextApiKey() {
+  const apiKey = API_KEYS[currentKeyIndex];
+  currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+  return apiKey;
+}
 
 // GET detail
 exports.detail = async (req, res) => {
@@ -16,6 +33,17 @@ exports.detail = async (req, res) => {
     });
   }
 
+  // 캐싱된 결과가 있으면 반환
+  if (cache[videoId]) {
+    console.log(`캐싱된 결과 사용: ${videoId}`);
+    return res.render("detail", {
+      video: cache[videoId].video,
+      note: cache[videoId].note || null,
+      error: null,
+      user,
+    });
+  }
+
   try {
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/videos",
@@ -23,7 +51,7 @@ exports.detail = async (req, res) => {
         params: {
           part: "snippet,contentDetails,statistics",
           id: videoId,
-          key: YOUTUBE_API_KEY,
+          key: getNextApiKey(),
         },
       },
     );
@@ -50,6 +78,7 @@ exports.detail = async (req, res) => {
       likeCount: item.statistics.likeCount || 0,
     };
 
+    // Video 조회
     const videoRecord = await Videos.findOne({
       where: { youtubeUrl: videoId },
     });
@@ -57,20 +86,30 @@ exports.detail = async (req, res) => {
     let note = null;
 
     if (videoRecord && user) {
-      note = await Notes.findOne({
+      note = await Notes.findAll({
         where: { videoId: videoRecord.id, userId: user.id },
       });
     }
 
+    // 캐시에 저장
+    cache[videoId] = { video, note };
+
     res.render("detail", { video, note, error: null, user });
   } catch (err) {
     console.error("YouTube API 오류:", err.message);
-    res.render("detail", {
-      video: null,
-      note: null,
-      error: "비디오 정보를 가져올 수 없습니다.",
-      user: user,
-    });
+
+    // API 키 순환 및 재시도
+    currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+    if (currentKeyIndex === 0) {
+      return res.render("detail", {
+        video: null,
+        note: null,
+        error: "비디오 정보를 가져올 수 없습니다.",
+        user: user,
+      });
+    }
+
+    return exports.detail(req, res); // 다음 API 키로 재시도
   }
 };
 
@@ -132,13 +171,11 @@ exports.createOrUpdateNotes = async (req, res) => {
         ingredients,
         recipe, // 위에서 문자열로 변환되었거나 빈 문자열임
       });
-      return res
-        .status(201)
-        .json({
-          success: true,
-          message: "메모가 생성되었습니다.",
-          note: newNote,
-        });
+      return res.status(201).json({
+        success: true,
+        message: "메모가 생성되었습니다.",
+        note: newNote,
+      });
     } else {
       // 5-2. 기존 노트가 있으면 업데이트
       await existingNote.update({
@@ -146,13 +183,11 @@ exports.createOrUpdateNotes = async (req, res) => {
           ingredients !== undefined ? ingredients : existingNote.ingredients,
         recipe: recipe !== undefined ? recipe : existingNote.recipe, // 위에서 문자열로 변환되었거나 기존 값 유지
       });
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "메모가 업데이트되었습니다.",
-          note: existingNote,
-        });
+      return res.status(200).json({
+        success: true,
+        message: "메모가 업데이트되었습니다.",
+        note: existingNote,
+      });
     }
   } catch (err) {
     // 6. 오류 처리
