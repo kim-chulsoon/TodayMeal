@@ -283,32 +283,44 @@ exports.nullifyRecipe = async (req, res) => {
 };
 
 // DELETE notes
-
 exports.deleteNote = async (req, res) => {
-  const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정
+  const { videoId } = req.body; // 클라이언트에서 전달된 videoId
 
   try {
-    // 노트 조회
-    const note = await Notes.findOne({ where: { id: noteId } });
-
-    if (!note) {
+    if (!videoId) {
       return res
-        .status(404)
-        .json({ success: false, message: "메모를 찾을 수 없습니다." });
+        .status(400)
+        .json({ success: false, message: "videoId가 필요합니다." });
     }
 
-    // 노트의 소유자 확인
-    if (note.userId !== user.id) {
+    // Video 테이블에서 youtubeUrl과 일치하는 Video ID 가져오기
+    const video = await Videos.findOne({ where: { youtubeUrl: videoId } });
+
+    if (!video) {
       return res
-        .status(403)
-        .json({ success: false, message: "권한이 없습니다." });
+        .status(404)
+        .json({ success: false, message: "해당 비디오를 찾을 수 없습니다." });
+    }
+
+    // 해당 videoId(Video ID)와 userId에 해당하는 노트 조회
+    const notes = await Notes.findAll({
+      where: { videoId: video.id, userId: user.id },
+    });
+
+    if (!notes.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "삭제할 메모가 없습니다." });
     }
 
     // 노트 삭제
-    await note.destroy();
+    await Notes.destroy({ where: { videoId: video.id, userId: user.id } });
 
-    res.json({ success: true, message: "메모가 성공적으로 삭제되었습니다." });
+    res.json({
+      success: true,
+      message: "모든 메모가 성공적으로 삭제되었습니다.",
+    });
   } catch (err) {
     console.error("노트 삭제 오류:", err);
     res.status(500).json({ success: false, message: "서버 오류 발생" });
