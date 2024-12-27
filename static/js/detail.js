@@ -704,13 +704,13 @@ function initializeEditors() {
 }
 
 // 에디터에 데이터 채우기 함수
-function populateEditors() {
-  if (currentNote) {
-    if (currentNote.ingredients) {
-      ingEditor.setData(currentNote.ingredients);
+function populateEditors(note) {
+  if (note) {
+    if (note.ingredients) {
+      ingEditor.setData(note.ingredients);
     }
-    if (currentNote.recipe) {
-      rcpEditor.setData(currentNote.recipe);
+    if (note.recipe) {
+      rcpEditor.setData(note.recipe);
     }
   }
 }
@@ -820,7 +820,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const videoId = document.getElementById("videoId").value;
     if (videoId) {
       currentNote = await fetchCurrentNote(videoId);
-      populateEditors();
+      populateEditors(currentNote);
     }
 
     // 재료 저장 버튼 이벤트 리스너
@@ -864,4 +864,110 @@ function ingReset() {
 }
 function rcpReset() {
   rcpEditor.setData("");
+}
+
+// 재료 메모 삭제 함수
+async function deleteIngredientsMemo() {
+  const noteIdElement = document.getElementById("noteId_ing");
+  if (!noteIdElement) {
+    console.error("noteId_ing 요소를 찾을 수 없습니다.");
+    alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
+    return;
+  }
+
+  const noteId = noteIdElement.value;
+  console.log("Ingredients Note ID from JS:", noteId); // 디버깅 로그 추가
+
+  if (!noteId) {
+    alert("삭제할 메모가 없습니다.");
+    return;
+  }
+
+  if (!confirm("재료 메모를 삭제하시겠습니까?")) {
+    return;
+  }
+
+  try {
+    const response = await axios.patch(
+      `/detail/notes/${noteId}/ingredients`,
+      null,
+      {
+        withCredentials: true,
+      },
+    );
+
+    if (response.data.success) {
+      alert(response.data.message);
+      // 재료 에디터 내용 초기화
+      if (ingEditor) {
+        ingEditor.setData("");
+      } else {
+        document.querySelector("#ingData").innerHTML = "";
+      }
+
+      // 재료 <textarea> 요소 다시 표시 및 내용 비우기
+      const ingredientTextarea = document.querySelector(".ingredientTextarea");
+
+      if (ingredientTextarea) {
+        ingredientTextarea.style.display = "block"; // 또는 필요한 표시 방식으로 변경
+        ingredientTextarea.textContent = ""; // 내용 비우기
+      }
+    } else {
+      alert(response.data.message || "메모 삭제에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("재료 메모 삭제 오류:", error.response?.data || error);
+    alert("재료 메모 삭제 중 오류가 발생했습니다.");
+  }
+}
+
+// 레시피 메모 삭제 함수
+async function deleteRecipeMemo() {
+  const noteIdElement = document.getElementById("noteId_rcp");
+  if (!noteIdElement) {
+    console.error("noteId_rcp 요소를 찾을 수 없습니다.");
+    alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
+    return;
+  }
+
+  const noteId = noteIdElement.value;
+  console.log("Recipe Note ID from JS:", noteId); // 디버깅 로그 추가
+
+  if (!noteId) {
+    alert("삭제할 메모가 없습니다.");
+    return;
+  }
+
+  if (!confirm("레시피 메모를 삭제하시겠습니까?")) {
+    return;
+  }
+
+  try {
+    const response = await axios.patch(`/detail/notes/${noteId}/recipe`, null, {
+      withCredentials: true,
+    });
+
+    if (response.data.success) {
+      alert(response.data.message);
+      // 에디터 내용 초기화
+      if (rcpEditor) {
+        rcpEditor.setData("");
+      } else {
+        document.querySelector("#rcpData").innerHTML = "";
+      }
+
+      // 레시피 <textarea> 요소 다시 표시 및 내용 비우기
+      const recipeTextarea = document.querySelector(".RecipeTextarea");
+
+      if (recipeTextarea) {
+        recipeTextarea.style.display = "block"; // 또는 필요한 표시 방식으로 변경
+        recipeTextarea.textContent = ""; // 내용 비우기
+      }
+    } else {
+      alert(response.data.message || "메모 삭제에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("레시피 메모 삭제 오류:", error.response?.data || error);
+    alert("레시피 메모 삭제 중 오류가 발생했습니다.");
+  }
 }

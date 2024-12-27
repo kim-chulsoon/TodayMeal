@@ -109,22 +109,18 @@
         <div class="memoItem blur ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
-            <% if(note && note.ingredients) { %>
-              <input type="hidden" id="noteId" value="<%= note.id %>">
+            <input type="hidden" id="noteId_ing" value="<%= note ? note.id : '' %>">
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
               <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
+            <% if(note && note.ingredients) { %>
               <div id="ingData"><%= note.ingredients %></div>
             <% } else { %>
-              <input type="hidden" id="videoId" value="<%= video.videoId %>">
-              <input type="hidden" id="title" value="<%= video.title %>">
-              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
-              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
               <div id="ingData"></div>
             <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" >메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="console.log('Ingredients Delete Button Clicked'); deleteIngredientsMemo()">메모 삭제</button>
               <button type="button" class="btn btnClose" onclick="ingReset()">내용 초기화</button>
               <button type="button" class="btn btnClose" onclick="ingForm();">수정취소</button>
               <button type="button" class="btn btnOpen registr">등록</button>
@@ -145,14 +141,19 @@
         <!-- 레시피 메모박스 -->
         <div class="memoItem blur rcp">
           <p class="title">레시피 메모장</p>
-          <form  class="rcpForm-Open" name="memo" method="post">
+          <form class="rcpForm-Open" name="memo" method="post">
+            <input type="hidden" id="noteId_rcp" value="<%= note ? note.id : '' %>">
             <input type="hidden" id="videoId" value="<%= video.videoId %>">
-              <input type="hidden" id="title" value="<%= video.title %>">
-              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
-              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
+            <input type="hidden" id="title" value="<%= video.title %>">
+            <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
+            <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
+            <% if(note && note.recipe) { %>
+              <div id="rcpData"><%= note.recipe %></div>
+            <% } else { %>
               <div id="rcpData"></div>
+            <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" >메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="console.log('Recipe Delete Button Clicked'); deleteRecipeMemo()">메모 삭제</button>
               <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
             <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
             <button type="button" class="btn btnOpen registr" >등록</button>

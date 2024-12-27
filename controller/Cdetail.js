@@ -23,8 +23,9 @@ function getNextApiKey() {
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
   const user = req.user;
-
+  console.log("User:", user);
   if (!videoId) {
+    console.log("Video ID가 없습니다.");
     return res.render("detail", {
       video: null,
       error: "비디오 ID가 없습니다.",
@@ -36,6 +37,7 @@ exports.detail = async (req, res) => {
   // 캐싱된 결과가 있으면 반환
   if (cache[videoId]) {
     console.log(`캐싱된 결과 사용: ${videoId}`);
+    console.log("캐시된 노트:", cache[videoId].note);
     return res.render("detail", {
       video: cache[videoId].video,
       note: cache[videoId].note || null,
@@ -58,6 +60,7 @@ exports.detail = async (req, res) => {
 
     const item = response.data.items[0];
     if (!item) {
+      console.log(`비디오를 찾을 수 없습니다: ${videoId}`);
       return res.render("detail", {
         video: null,
         error: "해당 비디오를 찾을 수 없습니다.",
@@ -86,9 +89,12 @@ exports.detail = async (req, res) => {
     let note = null;
 
     if (videoRecord && user) {
-      note = await Notes.findAll({
+      note = await Notes.findOne({
         where: { videoId: videoRecord.id, userId: user.id },
       });
+      console.log("조회된 노트:", note);
+    } else {
+      console.log("비디오 레코드나 사용자가 없습니다.");
     }
 
     // 캐시에 저장
@@ -197,6 +203,74 @@ exports.createOrUpdateNotes = async (req, res) => {
       message: "서버 오류가 발생했습니다.",
       error: err.message, // 오류 메시지 포함 (디버깅에 유용)
     });
+  }
+};
+
+// PATCH nullifyIngredients
+exports.nullifyIngredients = async (req, res) => {
+  const noteId = req.params.id;
+  const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
+
+  try {
+    // 노트 조회
+    const note = await Notes.findOne({
+      where: { id: noteId, userId: user.id },
+    });
+
+    if (!note) {
+      return res
+        .status(404)
+        .json({ success: false, message: "메모를 찾을 수 없습니다." });
+    }
+
+    // 'ingredients' 필드를 null로 설정
+    note.ingredients = null;
+    await note.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "재료 메모가 성공적으로 삭제되었습니다.",
+      note,
+    });
+  } catch (err) {
+    console.error("재료 메모 삭제 오류:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다." });
+  }
+};
+
+// PATCH nullifyRecipe
+exports.nullifyRecipe = async (req, res) => {
+  const noteId = req.params.id;
+  const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
+
+  try {
+    // 노트 조회
+    const note = await Notes.findOne({
+      where: { id: noteId, userId: user.id },
+    });
+
+    if (!note) {
+      return res
+        .status(404)
+        .json({ success: false, message: "메모를 찾을 수 없습니다." });
+    }
+
+    // 'recipe' 필드를 null로 설정
+    note.recipe = null;
+    await note.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "레시피 메모가 성공적으로 삭제되었습니다.",
+      note,
+    });
+  } catch (err) {
+    console.error("레시피 메모 삭제 오류:", err);
+    return res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다." });
   }
 };
 
