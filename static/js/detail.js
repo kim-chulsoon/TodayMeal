@@ -134,7 +134,14 @@ async function initializeBookmark() {
       withCredentials: true,
     });
 
-    if (response.data.isBookmarked) {
+    const { isBookmarked, userId } = response.data; // 서버 응답 데이터에서 isBookmarked와 userId 추출
+
+    if (!userId) {
+      console.log("로그인하지 않은 상태입니다. 북마크 초기화를 건너뜁니다.");
+      return; // userId가 없으면 초기화 중단
+    }
+
+    if (isBookmarked) {
       // 북마크 상태일 경우
       btn.setAttribute("data-status", true); // 북마크 활성화
       btn.classList.add("bookmarkButton-on");
@@ -151,7 +158,6 @@ async function initializeBookmark() {
     }
   } catch (error) {
     console.error("북마크 초기화 중 오류 발생:", error.response?.data || error);
-    alert("북마크 상태를 확인할 수 없습니다.");
   }
 }
 
