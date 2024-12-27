@@ -27,7 +27,7 @@ body {
 }
 
 .ani {
-  animation: Ani 1.3s 1 linear;
+  animation: Ani 1.5s 1 linear;
   transform: translateX(-100vw);
 }
 @keyframes Ani {

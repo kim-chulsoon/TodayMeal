@@ -17,7 +17,12 @@
   box-sizing: border-box;
 }
 
+form {
+  box-sizing: border-box;
+}
+
 form > p {
+  width: 350px;
   font-size: 14px;
   color: rgba(160, 160, 160, 1);
   margin-bottom: 10px;
@@ -27,6 +32,7 @@ input {
   font-size: 16px;
   margin-bottom: 10px;
   text-indent: 10px;
+  box-sizing: border-box;
 }
 
 .userId {
@@ -48,7 +54,7 @@ input {
 /*프로필 사진*/
 
 .userIdB {
-  width: 81px;
+  width: 80px;
   height: 50px;
   background-color: #ff8675;
   color: white;
@@ -95,6 +101,7 @@ input[type="date"] {
   box-sizing: border-box;
   color: rgba(160, 160, 160, 1);
   text-indent: 3px;
+  padding-right: 10px;
 }
 
 .registerB {
@@ -132,6 +139,7 @@ input[type="date"] {
     align-items: center;
     /* 추가 */
     margin-bottom: 160px;
+    margin-top: 100px;
     box-sizing: border-box;
     width: 100%;
   }
