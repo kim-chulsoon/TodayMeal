@@ -214,6 +214,12 @@
             return false;
           }
 
+          // 이름 길이 유효성 검사 12자 이하로만 가능
+          if (userName.length > 12) {
+            alert("이름은 12글자 이하로 입력해주세요.");
+            return false;
+          }
+
           const regPw =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$])[A-Za-z\d!@#$]{5,15}$/;
           if (!regPw.test(userPw1)) {
