@@ -1,7 +1,7 @@
 const express = require("express");
 const controller = require("../controller/Cdetail.js");
 const router = express.Router();
-const authenticateToken = require("../middlewares/authMiddleware");
+const authenticateToken = require("../middlewares/jwtAuth");
 
 // GET
 router.get("/", authenticateToken, controller.detail); // detail
