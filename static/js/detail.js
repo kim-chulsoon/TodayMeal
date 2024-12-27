@@ -741,10 +741,7 @@ async function saveOrUpdateMemo(data, noteType) {
     console.log("[DEBUG] 전송할 payload:", payload);
 
     const response = await axios.post("/detail/notes", payload, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-        "Content-Type": "application/json",
-      },
+      withCredentials: true,
     });
 
     console.log("[DEBUG] 서버 응답 status:", response.status);
@@ -869,6 +866,7 @@ function rcpReset() {
 // 재료 메모 삭제 함수
 async function deleteIngredientsMemo() {
   const noteIdElement = document.getElementById("noteId");
+
   if (!noteIdElement) {
     console.error("noteId_ing 요소를 찾을 수 없습니다.");
     ingForm();
@@ -926,7 +924,10 @@ async function deleteIngredientsMemo() {
 
 // 레시피 메모 삭제 함수
 async function deleteRecipeMemo() {
-  const noteIdElement = document.getElementById("noteId");
+  const noteIdElement = document.getElementById("noteId_rcp");
+
+  console.log("레시피 노트 id", noteIdElement);
+
   if (!noteIdElement) {
     console.error("noteId_rcp 요소를 찾을 수 없습니다.");
     rcpForm();
