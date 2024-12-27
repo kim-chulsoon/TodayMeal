@@ -135,6 +135,7 @@
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
           <textarea class="ingredientTextarea" readonly contenteditable="true">
+            <%= note.ingredients %>
           </textarea>
           <div class="memoButtons">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
@@ -173,7 +174,9 @@
           
           <!-- 레시피 뷰 -->
           <form  class="rcpForm" name="memo" method="post">
-            <textarea class="RecipeTextarea" readonly contenteditable="true"></textarea>
+            <textarea class="RecipeTextarea" readonly contenteditable="false">
+              <%= note.recipe %>
+            </textarea>
             <div class="memoButtons">
               <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
             </div>
