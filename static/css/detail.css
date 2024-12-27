@@ -331,6 +331,10 @@ main > .memoBox > .memoItem .memoButtons {
   margin-top: 20px;
 }
 
+main > .memoBox > .memoItem > .delAllMemo {
+  margin-top: -40px;
+}
+
 /* 로그인 알림창 */
 main > .memoBox > .loginAlert-On {
   position: absolute;

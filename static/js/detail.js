@@ -58,6 +58,9 @@ function checkLoginStatus(status) {
   }
 }
 
+// 전체 메모삭제
+function delAllMemo() {}
+
 // 메모 보이기 안보이기
 function loginCheak(token) {
   const loginAlert = document.querySelector("main > .memoBox > .loginAlert");
