@@ -28,15 +28,6 @@
 
     <!-- JS (jQuery 제거하고 Axios 사용) -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!--   css -->
-    <!-- common  -->
-    <link rel="stylesheet" href="/static/css/common.css" />
-    <!-- header -->
-    <link rel="stylesheet" href="/static/css/header.css" />
-    <!-- 회원가입 -->
-    <link rel="stylesheet" href="/static/css/register.css" />
-    <!-- footer -->
-    <link rel="stylesheet" href="/static/css/footer.css" />
 
     <!-- css -->
     <!-- common  -->
@@ -139,6 +130,10 @@
 
           if (response.data.success) {
             alert("회원 탈퇴가 완료되었습니다.");
+            //사파리 강제 삭제
+            document.cookie =
+              "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
             document.location.href = "/"; // 홈으로
           } else {
             alert("회원 탈퇴 중 오류가 발생했습니다.");
