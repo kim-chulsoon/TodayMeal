@@ -80,40 +80,69 @@ function loginCheak(token) {
   }
 }
 
-// 북마크 토글 애니메이션 및 상태설정
+// 페이지 로드 시 초기 북마크 상태 설정
+async function initializeBookmark() {
+  const btnIocn = document.querySelector("#bookmarkBtn i");
+  const btn = document.querySelector("#bookmarkBtn");
+  const videoId = document.getElementById("videoId").value;
+
+  try {
+    // 즐겨찾기 상태 확인 API 호출
+    const response = await axios.get(`/favorites/status`, {
+      params: { videoId }, // GET 요청의 파라미터
+      withCredentials: true,
+    });
+
+    if (response.data.isBookmarked) {
+      // 북마크 상태일 경우
+      btn.setAttribute("data-status", true); // 북마크 활성화
+      btn.classList.add("bookmarkButton-on");
+      btn.classList.remove("bookmarkButton-off");
+      btnIocn.classList.add("fa-solid");
+      btnIocn.classList.remove("fa-regular");
+    } else {
+      // 북마크 상태가 아닐 경우
+      btn.setAttribute("data-status", false); // 북마크 비활성화
+      btn.classList.add("bookmarkButton-off");
+      btn.classList.remove("bookmarkButton-on");
+      btnIocn.classList.add("fa-regular");
+      btnIocn.classList.remove("fa-solid");
+    }
+  } catch (error) {
+    console.error("북마크 초기화 중 오류 발생:", error.response?.data || error);
+    alert("북마크 상태를 확인할 수 없습니다.");
+  }
+}
+
+// 북마크 토글 애니메이션 및 상태 설정
 async function toggleBookmark() {
   const btnIocn = document.querySelector("#bookmarkBtn i");
   const btn = document.querySelector("#bookmarkBtn");
 
   try {
     if (btn.classList.contains("bookmarkButton-off")) {
-      // 로그인 여부 체크
-      if (document.cookie.includes("authToken=")) {
-        const videoId = document.getElementById("videoId").value;
-        // 북마크를 안했을 때
-        btn.setAttribute("data-status", true); // 북마크 활성화
-        btnIocn.classList.remove("fa-regular");
-        btn.classList.add("bookmarkButton-on");
-        btn.classList.remove("bookmarkButton-off");
-        btnIocn.classList.add("fa-solid");
+      const videoId = document.getElementById("videoId").value;
+      // 북마크를 안 했을 때
+      btn.setAttribute("data-status", true); // 북마크 활성화
+      btnIocn.classList.remove("fa-regular");
+      btn.classList.add("bookmarkButton-on");
+      btn.classList.remove("bookmarkButton-off");
+      btnIocn.classList.add("fa-solid");
 
-        // 북마크 추가 요청
-        const response = await axios.post(
-          "/favorites/save",
-          { videoId }, // 요청 본문 데이터
-          {
-            headers: { Authorization: `Bearer ${getAuthToken()}` },
-          },
-        );
+      // 북마크 추가 요청
+      const response = await axios.post(
+        "/favorites/save",
+        { videoId }, // 요청 본문 데이터
+        {
+          withCredentials: true, // 쿠키를 포함하여 요청
+        },
+      );
 
-        if (response.status === 201) {
-          console.log("북마크가 성공적으로 저장되었습니다!");
-          alert("북마크가 성공적으로 저장되었습니다!");
-        } else {
-          throw new Error("북마크 저장 실패");
-        }
+      if (response.status === 201) {
+        console.log("북마크가 성공적으로 저장되었습니다!");
+        alert("북마크가 성공적으로 저장되었습니다!");
       } else {
-        alert("로그인 후 이용가능합니다");
+        throw new Error("북마크 저장 실패");
       }
     } else {
       // 북마크를 한 상태일 때
@@ -127,7 +156,7 @@ async function toggleBookmark() {
       // 북마크 삭제 요청
       const response = await axios.delete("/favorites/delete", {
         data: { videoId }, // DELETE 요청의 데이터는 `data` 속성에 넣어야 함
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        withCredentials: true,
       });
 
       if (response.status === 200) {
@@ -156,6 +185,9 @@ async function toggleBookmark() {
     }
   }
 }
+
+// 페이지 로드 시 초기화 실행
+window.onload = initializeBookmark;
 
 // 재료메모 폼 변환
 function ingForm() {
