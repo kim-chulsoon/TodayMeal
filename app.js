@@ -45,7 +45,6 @@ app.use("/search", searchRouter);
 app.get("*", (req, res) => {
   res.status(404).render("404");
 });
-
 db.sequelize.sync({ force: false }).then((result) => {
   app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);

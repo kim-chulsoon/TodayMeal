@@ -135,11 +135,12 @@
 
         <!-- 재료 뷰 -->
 <form class="ingForm" name="memo" method="post">
-  <div class="ingredientTextarea"><%= note && note.ingredients ? note.ingredients : '' %></div>
+  <div class="ingredientContent"><%= note && note.ingredients ? note.ingredients : '' %></div>
   <div class="memoButtons" contenteditable="true">
     <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
   </div>
 </form>
+</div>
 
         <!-- 재료 메모박스 끝 -->
 
@@ -154,7 +155,7 @@
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
               <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
-              <div id="rcpData"><%= note.ingredients %></div>
+              <div id="rcpData"><%= note.ingredients || "null" %></div>
             <% } else { %>
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
 
@@ -173,7 +174,7 @@
           
        <!-- 레시피 뷰 -->
 <form class="rcpForm" name="memo" method="post">
-  <div class="RecipeTextarea"><%= note && note.recipe ? note.recipe : '' %></div>
+  <div class="RecipeContent"><%= note && note.recipe ? note.recipe : '' %></div>
   <div class="memoButtons">
     <button type="button" class="btn btnOpen" onclick="rcpForm();">수정</button>
   </div>

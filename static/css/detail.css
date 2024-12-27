@@ -285,30 +285,22 @@ main > .memoBox > .memoItem > .title {
   margin-bottom: 10px;
 }
 
-main > .memoBox > .memoItem .ingredientTextarea {
+main > .memoBox > .memoItem .ingredientContent {
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: none;
-  overflow-y: scroll;
+  border: 1px solid #a0a0a0;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-main > .memoBox > .memoItem .ingredientTextarea:focus {
-  outline: none;
-}
-
-main > .memoBox > .memoItem .RecipeTextarea {
+main > .memoBox > .memoItem .RecipeContent {
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: none;
-  overflow-y: scroll;
-}
-
-main > .memoBox > .memoItem .RecipeTextarea:focus {
-  outline: none;
+  border: 1px solid #a0a0a0;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 main > .memoBox > .memoItem .ingForm-Open {
