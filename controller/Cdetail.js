@@ -97,6 +97,14 @@ exports.detail = async (req, res) => {
       console.log("비디오 레코드나 사용자가 없습니다.");
     }
 
+    if (!note) {
+      note = {
+        id: null,
+        ingredients: "",
+        recipe: "",
+      };
+    }
+
     // 캐시에 저장
     cache[videoId] = { video, note };
 
