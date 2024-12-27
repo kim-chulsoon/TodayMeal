@@ -12,6 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginCheak(document.cookie.includes("authToken="));
   checkLoginStatus(document.cookie.includes("authToken="));
+
+  // HTML 변환
+  const testaDiv = document.querySelector(".ingredientTextarea");
+  const decodedHTML = testaDiv.textContent; // 엔티티를 디코딩
+  testaDiv.innerHTML = decodedHTML; // 디코딩된 값을 innerHTML로 설정
+
+  const testaDiv2 = document.querySelector(".RecipeTextarea");
+  const decodedHTML2 = testaDiv2.textContent; // 엔티티를 디코딩
+  testaDiv2.innerHTML = decodedHTML2; // 디코딩된 값을 innerHTML로 설정
 });
 
 // 영상 설명 더보기/숨기기
@@ -292,7 +301,6 @@ function initializeEditors() {
   const {
     ClassicEditor,
     Alignment,
-    Autoformat,
     AutoImage,
     Autosave,
     BlockQuote,
@@ -300,8 +308,17 @@ function initializeEditors() {
     Code,
     Essentials,
     FindAndReplace,
+    FontBackgroundColor,
+    FontColor,
+    FontFamily,
+    FontSize,
+    FullPage,
+    GeneralHtmlSupport,
     Heading,
     Highlight,
+    HorizontalLine,
+    HtmlComment,
+    HtmlEmbed,
     ImageBlock,
     ImageCaption,
     ImageInline,
@@ -317,10 +334,9 @@ function initializeEditors() {
     LinkImage,
     List,
     ListProperties,
-    Markdown,
-    MediaEmbed,
     Paragraph,
-    PasteFromMarkdownExperimental,
+    ShowBlocks,
+    SourceEditing,
     SpecialCharacters,
     SpecialCharactersArrows,
     SpecialCharactersCurrency,
@@ -346,9 +362,16 @@ function initializeEditors() {
   const ingDataConfig = {
     toolbar: {
       items: [
+        "sourceEditing",
+        "showBlocks",
         "findAndReplace",
         "|",
         "heading",
+        "|",
+        "fontSize",
+        "fontFamily",
+        "fontColor",
+        "fontBackgroundColor",
         "|",
         "bold",
         "italic",
@@ -357,12 +380,13 @@ function initializeEditors() {
         "code",
         "|",
         "specialCharacters",
+        "horizontalLine",
         "link",
         "insertImageViaUrl",
-        "mediaEmbed",
         "insertTable",
         "highlight",
         "blockQuote",
+        "htmlEmbed",
         "|",
         "alignment",
         "|",
@@ -376,7 +400,6 @@ function initializeEditors() {
     },
     plugins: [
       Alignment,
-      Autoformat,
       AutoImage,
       Autosave,
       BlockQuote,
@@ -384,8 +407,17 @@ function initializeEditors() {
       Code,
       Essentials,
       FindAndReplace,
+      FontBackgroundColor,
+      FontColor,
+      FontFamily,
+      FontSize,
+      FullPage,
+      GeneralHtmlSupport,
       Heading,
       Highlight,
+      HorizontalLine,
+      HtmlComment,
+      HtmlEmbed,
       ImageBlock,
       ImageCaption,
       ImageInline,
@@ -401,10 +433,9 @@ function initializeEditors() {
       LinkImage,
       List,
       ListProperties,
-      Markdown,
-      MediaEmbed,
       Paragraph,
-      PasteFromMarkdownExperimental,
+      ShowBlocks,
+      SourceEditing,
       SpecialCharacters,
       SpecialCharactersArrows,
       SpecialCharactersCurrency,
@@ -423,6 +454,13 @@ function initializeEditors() {
       TodoList,
       Underline,
     ],
+    fontFamily: {
+      supportAllValues: true,
+    },
+    fontSize: {
+      options: [10, 12, 14, "default", 18, 20, 22],
+      supportAllValues: true,
+    },
     heading: {
       options: [
         {
@@ -468,6 +506,16 @@ function initializeEditors() {
         },
       ],
     },
+    htmlSupport: {
+      allow: [
+        {
+          name: /^.*$/,
+          styles: true,
+          attributes: true,
+          classes: true,
+        },
+      ],
+    },
     image: {
       toolbar: [
         "toggleImageCaption",
@@ -480,7 +528,7 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "<h3>🌽🥬🫑재료를 입력해보세요!😊</h3>",
+    initialData: "<h1>🥬🌽재료를 입력해보세요!</h1>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -503,7 +551,7 @@ function initializeEditors() {
         reversed: true,
       },
     },
-    placeholder: "🌽🥬🫑 재료를 입력해주세요!😊",
+    placeholder: "Type or paste your content here!",
     table: {
       contentToolbar: [
         "tableColumn",
@@ -518,9 +566,16 @@ function initializeEditors() {
   const rcpDataConfig = {
     toolbar: {
       items: [
+        "sourceEditing",
+        "showBlocks",
         "findAndReplace",
         "|",
         "heading",
+        "|",
+        "fontSize",
+        "fontFamily",
+        "fontColor",
+        "fontBackgroundColor",
         "|",
         "bold",
         "italic",
@@ -529,12 +584,13 @@ function initializeEditors() {
         "code",
         "|",
         "specialCharacters",
+        "horizontalLine",
         "link",
         "insertImageViaUrl",
-        "mediaEmbed",
         "insertTable",
         "highlight",
         "blockQuote",
+        "htmlEmbed",
         "|",
         "alignment",
         "|",
@@ -548,7 +604,6 @@ function initializeEditors() {
     },
     plugins: [
       Alignment,
-      Autoformat,
       AutoImage,
       Autosave,
       BlockQuote,
@@ -556,8 +611,17 @@ function initializeEditors() {
       Code,
       Essentials,
       FindAndReplace,
+      FontBackgroundColor,
+      FontColor,
+      FontFamily,
+      FontSize,
+      FullPage,
+      GeneralHtmlSupport,
       Heading,
       Highlight,
+      HorizontalLine,
+      HtmlComment,
+      HtmlEmbed,
       ImageBlock,
       ImageCaption,
       ImageInline,
@@ -573,10 +637,9 @@ function initializeEditors() {
       LinkImage,
       List,
       ListProperties,
-      Markdown,
-      MediaEmbed,
       Paragraph,
-      PasteFromMarkdownExperimental,
+      ShowBlocks,
+      SourceEditing,
       SpecialCharacters,
       SpecialCharactersArrows,
       SpecialCharactersCurrency,
@@ -595,6 +658,13 @@ function initializeEditors() {
       TodoList,
       Underline,
     ],
+    fontFamily: {
+      supportAllValues: true,
+    },
+    fontSize: {
+      options: [10, 12, 14, "default", 18, 20, 22],
+      supportAllValues: true,
+    },
     heading: {
       options: [
         {
@@ -640,6 +710,16 @@ function initializeEditors() {
         },
       ],
     },
+    htmlSupport: {
+      allow: [
+        {
+          name: /^.*$/,
+          styles: true,
+          attributes: true,
+          classes: true,
+        },
+      ],
+    },
     image: {
       toolbar: [
         "toggleImageCaption",
@@ -652,7 +732,7 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "<h3>📌🪄레시피를 입력해보세요!🧑‍🍳</h3>",
+    initialData: "<h1>🥬🌽레시피를 입력해보세요!</h1>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -675,7 +755,7 @@ function initializeEditors() {
         reversed: true,
       },
     },
-    placeholder: "📌🪄레시피를 입력해주세요!🧑‍🍳",
+    placeholder: "Type or paste your content here!",
     table: {
       contentToolbar: [
         "tableColumn",

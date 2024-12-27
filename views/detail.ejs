@@ -50,6 +50,7 @@
     <script>
       const noteStr = "<%= note ? JSON.stringify(note) : 'null' %>";
       const currentNote = noteStr === 'null' ? null : JSON.parse(noteStr);
+
     </script>
   </head>
   <body>
@@ -134,10 +135,8 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <textarea class="ingredientTextarea" readonly contenteditable="true">
-            <%= note.ingredients %>
-          </textarea>
-          <div class="memoButtons">
+          <div class="ingredientTextarea"><%= note.ingredients %></div>
+          <div class="memoButtons" contenteditable="true">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
           </div>
         </form>
@@ -147,7 +146,7 @@
         <!-- 레시피 메모박스 -->
         <div class="memoItem rcp">
           <p class="title">레시피 메모장</p>
-<% console.log('notee',note) %>
+    <% console.log('notee',note) %>
           <form class="rcpForm-Open" name="memo" method="post">
             <% if (note) { %>
               <input type="hidden" id="noteId_rcp" value="<%= note.id %>">
@@ -174,10 +173,7 @@
           
           <!-- 레시피 뷰 -->
           <form  class="rcpForm" name="memo" method="post">
-
-            <textarea class="RecipeTextarea" readonly contenteditable="false">
-              <%= note.recipe %>
-            </textarea>
+            <div class="RecipeTextarea"><%= note.recipe %></div>
             <div class="memoButtons">
               <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
             </div>
