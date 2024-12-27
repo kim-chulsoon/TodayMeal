@@ -797,6 +797,7 @@ async function saveOrUpdateMemo(data, noteType) {
       );
       alert(response.data.message || "메모가 저장되었습니다."); // 서버에서 메시지가 있으면 사용
     }
+    document.location.reload();
   } catch (error) {
     console.error("[DEBUG] 메모 저장/업데이트 오류 발생:", error);
 
@@ -866,6 +867,7 @@ function rcpReset() {
 // 재료 메모 삭제 함수
 async function deleteIngredientsMemo() {
   const noteIdElement = document.getElementById("noteId");
+  console.log("s노트:", noteIdElement);
 
   if (!noteIdElement) {
     console.error("noteId_ing 요소를 찾을 수 없습니다.");
