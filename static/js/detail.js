@@ -877,7 +877,7 @@ async function deleteIngredientsMemo() {
   }
 
   const noteId = noteIdElement.value;
-  console.log("Ingredients Note ID from JS:", noteId); // 디버깅 로그 추가
+  console.log("noteId:", noteId);
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
@@ -898,7 +898,7 @@ async function deleteIngredientsMemo() {
         withCredentials: true,
       },
     );
-
+    console.log("Axios 요청:", response);
     if (response.data.success) {
       alert(response.data.message);
       // 재료 에디터 내용 초기화
@@ -919,7 +919,7 @@ async function deleteIngredientsMemo() {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("재료 메모 삭제 오류:", error.response?.data || error);
+    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("재료 메모 삭제 중 오류가 발생했습니다.");
   }
 }
@@ -971,7 +971,7 @@ async function deleteRecipeMemo() {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("레시피 메모 삭제 오류:", error.response?.data || error);
+    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("레시피 메모 삭제 중 오류가 발생했습니다.");
   }
 }
