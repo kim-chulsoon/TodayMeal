@@ -871,6 +871,7 @@ async function deleteIngredientsMemo() {
   const noteIdElement = document.getElementById("noteId_ing");
   if (!noteIdElement) {
     console.error("noteId_ing 요소를 찾을 수 없습니다.");
+    ingForm();
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
@@ -928,6 +929,7 @@ async function deleteRecipeMemo() {
   const noteIdElement = document.getElementById("noteId_rcp");
   if (!noteIdElement) {
     console.error("noteId_rcp 요소를 찾을 수 없습니다.");
+    rcpForm();
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
