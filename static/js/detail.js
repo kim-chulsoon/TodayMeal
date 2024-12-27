@@ -880,10 +880,12 @@ async function deleteIngredientsMemo() {
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
+    ingForm();
     return;
   }
 
   if (!confirm("재료 메모를 삭제하시겠습니까?")) {
+    ingForm();
     return;
   }
 
