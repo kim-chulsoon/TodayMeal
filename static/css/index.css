@@ -186,6 +186,7 @@ footer {
   bottom: 0px;
   background-color: #fff;
   border-top: 1px solid #e4e4e4;
+  z-index: 2;
 }
 
 .mgnb > .menubox {
@@ -193,6 +194,43 @@ footer {
   height: 60px;
   align-items: center;
   justify-content: space-around;
+}
+
+/* 라운드 팝업 */
+.roundPopup {
+  width: 300px;
+  height: 60px;
+  border-radius: 20px;
+  background-color: var(--color-brand);
+  position: fixed;
+  left: 50%;
+  bottom: -60px;
+  /* bottom: 80px; */
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.roundPopup > .content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roundPopup > .content > p {
+  display: inline-block;
+  color: #fff;
+  line-height: 20px;
+}
+
+.roundPopup > .content > p > .register {
+  font-weight: bold;
+  color: #fff;
+  margin-right: 5px;
 }
 
 /* 작은 태블릿 이상 */
