@@ -171,7 +171,7 @@ async function toggleBookmark() {
     }
   } catch (error) {
     console.error("북마크 처리 중 오류 발생:", error.response?.data || error);
-    alert("북마크 처리 중 문제가 발생했습니다.");
+    alert("메모를 저장해주세요!");
     // 오류 발생 시 버튼 상태 복구
     if (btn.getAttribute("data-status") === "true") {
       btn.setAttribute("data-status", false);
