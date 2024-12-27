@@ -246,7 +246,7 @@ exports.nullifyIngredients = async (req, res) => {
     console.error("재료 메모 삭제 오류:", err);
     return res
       .status(500)
-      .json({ success: false, message: "서버 오류가 발생했습니다." });
+      .json({ success: false, message: "서버 오류: " + error.message });
   }
 };
 
