@@ -170,7 +170,6 @@ exports.createOrUpdateNotes = async (req, res) => {
 
     // 5. 노트 생성 또는 업데이트
     if (!existingNote) {
-      let video = await Videos.findOne({ where: { videoId: video.id } });
       // 5-1. 기존 노트가 없으면 새로 생성
       const newNote = await Notes.create({
         userId: user.id,

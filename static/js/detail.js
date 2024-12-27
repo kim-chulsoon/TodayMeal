@@ -868,7 +868,7 @@ function rcpReset() {
 
 // 재료 메모 삭제 함수
 async function deleteIngredientsMemo() {
-  const noteIdElement = document.getElementById("noteId_ing");
+  const noteIdElement = document.getElementById("noteId");
   if (!noteIdElement) {
     console.error("noteId_ing 요소를 찾을 수 없습니다.");
     ingForm();
@@ -926,7 +926,7 @@ async function deleteIngredientsMemo() {
 
 // 레시피 메모 삭제 함수
 async function deleteRecipeMemo() {
-  const noteIdElement = document.getElementById("noteId_rcp");
+  const noteIdElement = document.getElementById("noteId");
   if (!noteIdElement) {
     console.error("noteId_rcp 요소를 찾을 수 없습니다.");
     rcpForm();
