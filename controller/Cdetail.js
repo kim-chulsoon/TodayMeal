@@ -190,7 +190,7 @@ exports.createOrUpdateNotes = async (req, res) => {
 exports.nullifyIngredients = async (req, res) => {
   const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
-
+  console.log("서버 노트 id", noteId);
   try {
     // 노트 조회
     const note = await Notes.findOne({
