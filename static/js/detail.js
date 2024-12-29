@@ -1021,6 +1021,7 @@ async function deleteIngredientsMemo() {
   }
 
   if (!confirm("재료 메모를 삭제하시겠습니까?")) {
+    // document.querySelector(".ingredientContent").innerHTML = "";
     return;
   }
 
@@ -1039,7 +1040,7 @@ async function deleteIngredientsMemo() {
       }
 
       // 재료 <textarea> 요소 다시 표시 및 내용 비우기
-      const ingredientTextarea = document.querySelector(".ingredientTextarea");
+      const ingredientTextarea = document.querySelector(".ingredientContent");
 
       if (ingredientTextarea) {
         ingredientTextarea.style.display = "block"; // 또는 필요한 표시 방식으로 변경
