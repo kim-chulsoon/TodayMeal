@@ -1,6 +1,14 @@
 const models = require("../models/index");
 const axios = require("axios");
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
+// API 키 목록
+const API_KEYS = [
+  process.env.YOUTUBE_API_KEY1,
+  process.env.YOUTUBE_API_KEY2,
+  process.env.YOUTUBE_API_KEY3,
+];
+let currentKeyIndex = 0;
+
 const keywords = [
   "한식 레시피",
   "중식 레시피",
@@ -9,21 +17,29 @@ const keywords = [
   "반찬",
   "양식 레시피",
 ];
-/* GET / */
-exports.main = async (req, res) => {
+
+// 간단한 캐시 객체
+const cache = {};
+
+// YouTube API 호출 함수
+async function getYouTubeVideos(keyword) {
+  // 캐싱된 결과가 있으면 반환
+  if (cache[keyword]) {
+    console.log(`캐싱된 결과 사용: ${keyword}`);
+    return cache[keyword];
+  }
+
   try {
-    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
-    // YouTube API 호출
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/search",
       {
         params: {
           part: "snippet",
-          q: randomKeyword,
+          q: keyword,
           type: "video",
           videoDuration: "medium",
           maxResults: 12,
-          key: YOUTUBE_API_KEY,
+          key: API_KEYS[currentKeyIndex],
         },
       },
     );
@@ -37,6 +53,36 @@ exports.main = async (req, res) => {
       videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`,
       thumbnail: item.snippet.thumbnails.high.url,
     }));
+
+    // 결과를 캐시에 저장
+    cache[keyword] = videos;
+    return videos;
+  } catch (err) {
+    console.error(
+      `API 호출 실패 (키: ${API_KEYS[currentKeyIndex]}):`,
+      err.message,
+    );
+
+    // API 키 변경
+    currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+
+    // 모든 키를 시도했음에도 실패하면 에러 반환
+    if (currentKeyIndex === 0) {
+      throw new Error("모든 API 키가 실패했습니다.");
+    }
+
+    // 다음 API 키로 재시도
+    return getYouTubeVideos(keyword);
+  }
+}
+
+/* GET / */
+exports.main = async (req, res) => {
+  try {
+    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+
+    // YouTube API 데이터 가져오기
+    const videos = await getYouTubeVideos(randomKeyword);
 
     console.log("랜덤 요리 동영상 데이터:", videos);
 

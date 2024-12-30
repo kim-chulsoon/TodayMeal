@@ -3,9 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>회원 정보 수정</title>
-    <!-- jquery CDN -->
-    <!-- googlrFont -->
+    <title>오늘은 뭐 먹지? - 회원정보수정</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지? - 회원정보수정" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지? - 회원정보수정" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--   css -->
@@ -17,25 +36,31 @@
     <link rel="stylesheet" href="/static/css/usersedit.css" />
     <!-- footer -->
     <link rel="stylesheet" href="/static/css/footer.css" />
+
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
   </head>
   <body>
     <!-- header include -->
     <%-include("./includes/header") %>
 
     <main>
+      <div class="web mobileTitle">
+        <p>정보 수정</p>
+      </div>
       <div class="regiDiv">
         <form name="edit" class="edit" onsubmit="return editClick()">
           <div class="profileSection">
             <img
-              src="/static/img/icons/profile.png"
+              src="<%= user.profileImage || '/static/img/icons/profile.png' %>"
               alt="프로필 이미지"
               class="profileImg"
               id="profileImage"
             />
             <br />
             <div class="profileP">
-              <p class="pId">admin1234</p>
-              <p class="pName">당근볶음</p>
+              <p class="pId"><%= user.userId %></p>
+              <p class="pName"><%= user.name %></p>
             </div>
             <br />
             <!-- 숨겨진 파일 선택창 -->
@@ -60,7 +85,8 @@
             type="text"
             name="userId2"
             class="userId2"
-            placeholder=" 아이디"
+            placeholder="아이디"
+            value="<%= user.userId %>"
             readonly
           />
 
@@ -70,7 +96,7 @@
               name="userPw1"
               class="userPw"
               id="userPw1"
-              placeholder="  패스워드"
+              placeholder="패스워드"
               required
             />
           </div>
@@ -82,7 +108,7 @@
               name="userPw2"
               class="userPw"
               id="userPw2"
-              placeholder="  패스워드 확인"
+              placeholder="패스워드 확인"
               required
             />
           </div>
@@ -91,7 +117,8 @@
             type="text"
             name="userName"
             class="userName"
-            placeholder="  이름"
+            placeholder="이름"
+            value="<%= user.name %>"
             required
           />
           <br />
@@ -99,6 +126,7 @@
             type="date"
             name="userBirth"
             class="Birth"
+            value="<%= user.birthdate %>"
             min="1970-01-01"
             max="2018-12-31"
             required
@@ -118,46 +146,18 @@
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
 
-      //로그아웃
-      function logout() {
-        localStorage.clear();
-        document.location.href = "/";
-        console.log("로그아웃");
-      }
-
-      document.addEventListener("DOMContentLoaded", async () => {
-        const token = localStorage.getItem("authToken");
-
-        if (!token) {
-          alert("로그인이 필요합니다.");
-          return;
-        }
-
+      // 로그아웃
+      async function logout() {
         try {
-          const res = await axios.get("/users/edit", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (!res.data.success) {
-            alert("사용자 정보를 불러올 수 없습니다.");
-            return;
-          }
-
-          const user = res.data.user;
-
-          // 데이터를 사용해 동적으로 콘텐츠 생성
-          document.querySelector(".pId").innerText = user.userId;
-          document.querySelector(".pName").innerText = user.name;
-          document.querySelector("#profileImage").src =
-            user.profileImage || "/static/img/icons/profile.png";
-          document.querySelector(".userId2").value = user.userId;
-          document.querySelector(".userName").value = user.name;
-          document.querySelector(".Birth").value = user.birthdate;
-        } catch (err) {
-          console.error("Error fetching user edit page:", err);
-          alert("서버 오류 발생. 다시 시도해주세요.");
+          await axios.post("/users/logout"); // 로그아웃 요청
+          alert("로그아웃되었습니다.");
+          document.location.href = "/";
+          console.log("로그아웃");
+        } catch (error) {
+          console.error("로그아웃 오류:", error);
+          alert("로그아웃 중 오류가 발생했습니다.");
         }
-      });
+      }
 
       // 프로필 사진 업로드
       function triggerFileInput() {
@@ -211,6 +211,12 @@
 
           if (!userId || !userPw1 || !userPw2 || !userName || !userBirth) {
             alert("모든 항목을 입력해주세요");
+            return false;
+          }
+
+          // 이름 길이 유효성 검사 12자 이하로만 가능
+          if (userName.length > 12) {
+            alert("이름은 12글자 이하로 입력해주세요.");
             return false;
           }
 

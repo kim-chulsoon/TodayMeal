@@ -17,22 +17,25 @@
 }
 
 form {
-  width: 400px;
+  width: 355px;
   height: 700px;
   position: relative;
   margin: 0 auto;
-  left: 20px;
+  box-sizing: border-box;
 }
 
 form > .pwP {
   font-size: 14px;
   color: rgba(160, 160, 160, 1);
   margin-bottom: 10px;
+  width: 350px;
 }
 
 input {
   font-size: 16px;
   margin-bottom: 10px;
+  text-indent: 10px;
+  box-sizing: border-box;
 }
 
 .userId {
@@ -48,14 +51,15 @@ input {
   height: 50px;
   border-radius: 5px;
   border: 1px solid lightgray;
-  margin-right: 10px;
   background-color: #cecece;
+  box-sizing: border-box;
 }
 /*프로필 사진*/
 .profileSection {
   text-align: center;
   margin-bottom: 20px;
   width: 353px;
+  box-sizing: border-box;
 }
 .profileP > .pId {
   font-size: 22px;
@@ -73,8 +77,8 @@ input {
 }
 
 .userProfileB {
-  width: 355px;
-  height: 52px;
+  width: 353px;
+  height: 53px;
   /* 버튼는 크기를 +2  */
   background-color: white;
   color: black;
@@ -84,22 +88,14 @@ input {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 .pwBox {
   position: relative;
   width: 353px;
   height: 50ox;
-}
-.pwBox span {
-  position: absolute;
-  left: 310px;
-  top: 15px;
-}
-
-span > img {
-  width: 20px;
-  height: 20px;
+  box-sizing: border-box;
 }
 
 .userPw {
@@ -115,12 +111,16 @@ span > img {
   border: 1px solid lightgray;
 }
 
-.Birth {
+input[type="date"] {
   width: 353px;
   height: 50px;
   border-radius: 5px;
   border: 1px solid lightgray;
+  font-size: 16px;
+  box-sizing: border-box;
   color: rgba(160, 160, 160, 1);
+  text-indent: 3px;
+  padding-right: 10px;
 }
 
 .registerB {
@@ -132,6 +132,7 @@ span > img {
   border: none;
   cursor: pointer;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 /* 모바일 none */
@@ -139,9 +140,7 @@ span > img {
   display: none;
 }
 
-/* 웹 */
-
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .mobile {
     display: none;
   }
@@ -149,15 +148,42 @@ span > img {
     display: block;
   }
 
+  .mobileTitle {
+    width: 100%;
+    height: 24px;
+    position: relative;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
   /* 추가 */
   .regiDiv {
     width: 100%;
     height: 100%;
-    /* position: relative; */
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 200px;
+  }
+}
+
+/* 웹 */
+
+@media (min-width: 1024px) {
+  .mobileTitle {
+    width: 100%;
+    height: 24px;
+    position: relative;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
   }
 }

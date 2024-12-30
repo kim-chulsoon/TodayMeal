@@ -40,7 +40,7 @@ header > .inner > .logoBox > .logoTitle {
 }
 
 /* PC 로그인/회원가입 */
-header > .inner > .logoBox > .gnb a:last-child {
+header > .inner > .logoBox > .gnb > a {
   margin-left: 10px;
 }
 
@@ -101,11 +101,13 @@ main .container .description .recipeHead {
 .bookmarkButton-off i {
   color: #333; /* 기본 아이콘 색상 */
   transition: color 0.3s ease;
+  margin-right: 2px;
 }
 
 .bookmarkButton-on i {
   color: red;
   animation: heartBeat 0.3s;
+  margin-right: 2px;
 }
 
 /* 하트 튀어오르게끔 스케일조정*/
@@ -260,6 +262,7 @@ main > .container .item .creator {
   margin-top: 10px;
   padding: 0px;
   font-size: 1rem;
+  font-weight: bold;
   color: var(--color-subtitle);
   cursor: pointer;
   /* 크기를 초과하면 ... 표시 */
@@ -282,30 +285,22 @@ main > .memoBox > .memoItem > .title {
   margin-bottom: 10px;
 }
 
-main > .memoBox > .memoItem .ingredientTextarea {
+main > .memoBox > .memoItem .ingredientContent {
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: none;
-  overflow-y: scroll;
+  border: 1px solid #a0a0a0;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-main > .memoBox > .memoItem .ingredientTextarea:focus {
-  outline: none;
-}
-
-main > .memoBox > .memoItem .RecipeTextarea {
+main > .memoBox > .memoItem .RecipeContent {
   width: 100%;
-  height: 150px;
+  min-height: 150px;
   border-radius: 5px;
-  border-color: #a0a0a0;
-  resize: none;
-  overflow-y: scroll;
-}
-
-main > .memoBox > .memoItem .RecipeTextarea:focus {
-  outline: none;
+  border: 1px solid #a0a0a0;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 main > .memoBox > .memoItem .ingForm-Open {
@@ -329,6 +324,42 @@ main > .memoBox > .memoItem .memoButtons {
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
+}
+
+main > .memoBox > .memoItem > .delAllMemo {
+  margin-top: -40px;
+}
+
+/* 로그인 알림창 */
+main > .memoBox > .loginAlert-On {
+  position: absolute;
+  width: 300px;
+  height: 250px;
+  left: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  border: 1px solid var(--color-boder);
+  background-color: white;
+  z-index: 2;
+  text-align: center;
+  border-radius: 5px;
+}
+
+main > .memoBox > .loginAlert-Off {
+  display: none;
+}
+
+main > .memoBox > .memoItem.blur {
+  filter: blur(5px); /* 블러 처리 */
+  pointer-events: none; /* 클릭 및 포커스 비활성화 */
+}
+
+main > .memoBox > .loginAlert-On > .buttonBox a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 /* footer PC만 노출 */
@@ -424,7 +455,7 @@ footer {
   }
 
   /* PC 로그인/회원가입 */
-  header > .inner > .logoBox > .gnb a:last-child {
+  header > .inner > .logoBox .gnb a:last-child {
     margin-left: 10px;
   }
 

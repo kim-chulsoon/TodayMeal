@@ -3,16 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- jQuery CDN 제거 (Axios로 통일 예정) -->
-    <!-- googlrFont -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
-      rel="stylesheet"
+    <title>오늘은 뭐 먹지? - 로그인</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
     />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지? - 로그인" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지? - 로그인" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
+
     <!-- CSS -->
-    <!--   css -->
     <!-- common  -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- header -->
@@ -21,11 +35,12 @@
     <link rel="stylesheet" href="/static/css/login.css" />
     <!-- footer -->
     <link rel="stylesheet" href="/static/css/footer.css" />
-    <title>로그인</title>
 
-    <!-- JS (jQuery 제거하고 Axios 사용) -->
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
+
+    <!-- JS (Axios 사용) -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/static/js/login.js" defer></script>
   </head>
   <body>
     <!-- 모바일 메인화면 -->
@@ -47,7 +62,7 @@
             type="text"
             name="userId"
             class="userId"
-            placeholder="  아이디"
+            placeholder="아이디"
             required
           />
           <br />
@@ -55,7 +70,7 @@
             type="password"
             name="userPw"
             class="userPw"
-            placeholder="  비밀번호"
+            placeholder="비밀번호"
             required
           />
           <br />
@@ -115,7 +130,6 @@
 
           if (res.success) {
             console.log("Token :", res.token);
-            localStorage.setItem("authToken", res.token); // 'authToken'으로 통일
             alert("로그인 성공!");
             window.location.href = "/";
           } else {

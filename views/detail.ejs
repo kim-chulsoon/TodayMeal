@@ -2,13 +2,35 @@
 <html lang="ko">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>오늘은 뭐 먹지?</title>
-    <!-- css 초기화 -->
-    <!-- <link rel="stylesheet" href="/static/css/resset.css" /> -->
+    <title>오늘은 뭐 먹지? - <%= video.title %></title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지? - <%= video.title %>" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지? - <%= video.title %>" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
+
     <!-- common CSS -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/css/detail.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
 
   <!-- edit -->
   <link rel="stylesheet" href="/static/css/style.css">
@@ -21,43 +43,19 @@
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <!-- 메모 데이터 프론트로 전달 -->
-  <script>
-    const currentNote = <%= note ? JSON.stringify(note) : 'null' %>;
-  </script>
+    <!-- header, footer script -->
+    <script defer src="/static/js/login_menu.js"></script>
 
+    <!-- 메모 데이터 프론트로 전달 -->
+    <script>
+      const noteStr = "<%= note ? JSON.stringify(note) : 'null' %>";
+      const currentNote = noteStr === 'null' ? null : JSON.parse(noteStr);
+
+    </script>
   </head>
   <body>
-    <header>
-      <div class="inner">
-        <div class="logoBox">
-          <a class="logoTitle" href="/"
-            ><img src="/static/img/logo/b_logo.png" alt="로고" />
-            <span>오늘은 뭐 먹지?</span></a
-          >
-          <div class="gnb">
-            <!-- 로그인시  태그변경 -->
-            <% if(!true){ %>
-            <a href="/users/login">내정보</a>
-            <a href="/users/login">로그아웃</a>
-            <%}else{%>
-            <a href="/users/login">로그인</a>
-            <a href="/users/login">회원가입</a>
-            <%} %>
-          </div>
-        </div>
-        <div class="headMenu">
-          <div class="backMove">
-            <a href="/"
-              ><img src="/static/img/icons/ArrowLeft2.png" alt=""
-            /></a>
-          </div>
-          <div class="title">
-            <h3>뒤로가기</h3>
-          </div>
-        </div>
-      </div>
-    </header>
+    <!-- header include -->
+    <%-include("./includes/header") %>
     <main>
       <div class="container">
         <div class="item">
@@ -81,7 +79,7 @@
                   id="bookmarkBtn"
                   class="bookmarkButton-off"
                   data-status=fasle
-                  onclick="toggle_bookmark();"
+                  onclick="toggleBookmark();"
                 >
                   <i class="fa-regular fa-heart"></i>북마크
                 </button>
@@ -98,13 +96,23 @@
           </div>
         </div>
       </div>
+      
       <div class="memoBox">
-        <div class="blur"></div>
+        <!-- 로그인이 안됐을때 메모작성을 막기 위한 로그인 알림창 -->
+        <div id="noteIdContainer" data-note-id=""></div>
+        <div class="loginAlert loginAlert-Off">
+          <h3>지금 로그인하고<br> 메모 기능을 사용해보세요!</h3>
+          <p>간편하게 재료와 레시피를 나의 스타일에 맞게 작성할 수 있습니다.</p>
+          <div class="buttonBox">
+            <a href="/users/login" class="btnOpen ">로그인</a>
+            <a href="/users/register" class="btnClose">회원가입</a>
+          </div>
+        </div>
         <!-- 재료 메모박스 -->
         <div class="memoItem ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
-            <% if(note && note.ingredients) { %>
+            <% if(note) { %>
               <input type="hidden" id="noteId" value="<%= note.id %>">
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
@@ -119,8 +127,8 @@
               <div id="ingData"></div>
             <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" >메모 삭제</button>
-              <button type="button" class="btn btnClose" onclick="ingReset()">내용 초기화</button>
+              <button type="button" class="btn btnClose" onclick="deleteIngredientsMemo();" >메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="ingReset();">내용 초기화</button>
               <button type="button" class="btn btnClose" onclick="ingForm();">수정취소</button>
               <button type="button" class="btn btnOpen registr">등록</button>
             </div>
@@ -128,41 +136,56 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <textarea class="ingredientTextarea" name="" id="" readonly>
-            <%= note && note.ingredients ? note.ingredients : "🌽🥬🫑재료를 입력해보세요!😊" %>
-          </textarea>
-          <div class="memoButtons">
+          <div class="ingredientContent"><%= note && note.ingredients ? note.ingredients : '' %></div>
+          <div class="memoButtons" contenteditable="true">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
           </div>
         </form>
-      </div>
+        </div>
+
         <!-- 재료 메모박스 끝 -->
 
         <!-- 레시피 메모박스 -->
         <div class="memoItem rcp">
           <p class="title">레시피 메모장</p>
-          <form  class="rcpForm-Open" name="memo" method="post">
-            <input type="hidden" id="videoId" value="<%= video.videoId %>">
+    <% console.log('notee',note) %>
+          <form class="rcpForm-Open" name="memo" method="post">
+            <% if (note) { %>
+              <input type="hidden" id="noteId_rcp" value="<%= note.id %>">
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
+              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
+              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
+              <div id="rcpData"><%= note.ingredients || "null" %></div>
+            <% } else { %>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
               <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
               <div id="rcpData"></div>
+            <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" >메모 삭제</button>
-              <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
-            <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
-            <button type="button" class="btn btnOpen registr" onclick="saveIngredients()">등록</button>
+              <button type="button" class="btn btnClose" onclick="deleteRecipeMemo()">메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="rcpReset()">내용 초기화</button>
+              <button type="button" class="btn btnClose" onclick="rcpForm()">수정취소</button>
+              <button type="button" class="btn btnOpen registr">등록</button>
             </div>
           </form>
-          <!-- 레시피 뷰 -->
-          <form  class="rcpForm" name="memo" method="post">
-            <textarea class="RecipeTextarea" name="" id="" readonly>📌🪄레시피를 입력해보세요!🧑‍🍳</textarea>
-            <div class="memoButtons">
-              <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
-            </div>
-          </form> 
-        </div>
+          
+       <!-- 레시피 뷰 -->
+        <form class="rcpForm" name="memo" method="post">
+          <div class="RecipeContent"><%= note && note.recipe ? note.recipe : '' %></div>
+          <div class="memoButtons">
+            <button type="button" class="btn btnOpen" onclick="rcpForm();">수정</button>
+          </div>
+        </form>
 
+          <!-- 전체메모 삭제 -->
+          <form method="post" class="delAllMemo">
+            <button type="button" class="btn btnClose" onclick="delAllMemo()">전체메모 삭제</button>
+          </form>
+        </div>
          <!-- 레시피 메모박스 끝 -->
       </div>
     </main>
@@ -181,22 +204,26 @@
         </div>
         <div class="menu">
           <!-- 로그인시  태그변경 -->
-          <% if(!true){ %>
-          <a href="users/login"
-            ><img src="/static/img/icons/Login.png" alt="로그인"
-          /></a>
-          <%}else{%>
-          <a href="users/logout"
-            ><img src="/static/img/icons/Profile.png" alt="프로필"
-          /></a>
-          <%} %>
+          <div class="login-On">
+            <a href="users/"
+              ><img src="/static/img/icons/Profile.png" alt="프로필"
+            /></a>
+          </div>
+          <div class="login-Off">
+            <a href="users/login"
+              ><img src="/static/img/icons/Login.png" alt="로그인"
+            /></a>
+          </div>
         </div>
       </div>
     </div>
+
+    
 
     <!-- edit -->
     <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>
 		<script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/translations/ko.umd.js" crossorigin></script>
 		<script src="/static/js/detail.js"></script>
+    <script src="/static/js/auth.js"></script>
   </body>
 </html>

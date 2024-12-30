@@ -4,6 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>오늘은 뭐 먹지?</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="오늘은 뭐 먹지?" />
+    <meta
+      property="og:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta property="og:image" content="/static/img/logo/seoLogo.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="오늘은 뭐 먹지?" />
+    <meta
+      name="twitter:description"
+      content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
+    />
+    <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
+
     <!-- css 초기화 -->
     <link rel="stylesheet" href="/static/css/resset.css" />
     <!-- common CSS -->
@@ -27,14 +49,15 @@
             <span>오늘은 뭐 먹지?</span></a
           >
           <div class="gnb">
-            <!-- 로그인시  태그변경 -->
-            <% if(!true){ %>
-            <a href="/users/login">내정보</a>
-            <a href="/users/login">로그아웃</a>
-            <%}else{%>
-            <a href="/users/login">로그인</a>
-            <a href="/users/login">회원가입</a>
-            <%} %>
+            <!-- 로그인 -->
+            <div class="login-On">
+              <a href="/users">내정보</a>
+              <a href="#none" onclick="logout();">로그아웃</a>
+            </div>
+            <div class="login-Off">
+              <a href="/users/login">로그인</a>
+              <a href="/users/register">회원가입</a>
+            </div>
           </div>
         </div>
       </div>
@@ -56,15 +79,10 @@
       </div>
     </header>
     <main>
-      <div class="bestTitle">
-
-        <p>검색결과</p>
-      </div>
       <div class="container">
-        <% if (videos && videos.length > 0) { %>
-          <% videos.forEach(video => { %>
+        <% if (videos && videos.length > 0) { %> <% videos.forEach(video => { %>
         <div class="item">
-          <a href="/detail?videoId=<%= video.videoId %>" >
+          <a target="_self" href="/detail?videoId=<%= video.videoId %>">
             <div class="thumbnail">
               <img src="<%= video.thumbnail %>" alt="<%= video.title %>" />
             </div>
@@ -75,36 +93,33 @@
             </div>
           </a>
         </div>
-        <% }); %>
-        
-
-        <div class="pageBox">
-          <ul class="pagination">
-            <% if (prevPageToken) { %>
-            <li class="page-item arrowLeft">
-             
-                <a href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"><img src="/static/img/icons/ArrowLeft2.png" alt=""
-                  /></a>
-             
-            </li>
-            <% } %>
-            <% if (nextPageToken) { %>
-            <li class="page-item arrowRight">
-             
-                <a><img src="/static/img/icons/ArrowLeft2.png" alt=""
-                  /></a>
-                <a href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"><img src="/static/img/icons/ArrowRight2.png" alt=""
-                  /></a>
-              
-            </li>
-            <% } %>
-          </ul>
-        </div>
-
-      <% } else { %>
+        <% }); %> <% } else { %>
         <h2>검색 결과가 없습니다. 다른 키워드를 시도해보세요.</h2>
-      <% } %>
+        <% } %>
       </div>
+      <div class="pageBox">
+        <ul class="pagination">
+          <!-- <%# if (prevPageToken) { %> -->
+          <li class="page-item arrowLeft">
+            <a
+              href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"
+              ><img src="/static/img/icons/ArrowLeft2.png" alt="" /><span
+                >이전</span
+              ></a
+            >
+          </li>
+          <%# } %> <% if (nextPageToken) { %>
+          <li class="page-item arrowRight">
+            <a
+              href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"
+              ><span>다음</span
+              ><img src="/static/img/icons/ArrowRight2.png" alt=""
+            /></a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </main>
     <footer>
       <p>Copyright 2024. Team 2TheCode All rights reserved.</p>
     </footer>
@@ -120,15 +135,16 @@
         </div>
         <div class="menu">
           <!-- 로그인시  태그변경 -->
-          <% if(!true){ %>
-          <a href="users/login"
-            ><img src="/static/img/icons/Login.png" alt="로그인"
-          /></a>
-          <%}else{%>
-          <a href="users/logout"
-            ><img src="/static/img/icons/Profile.png" alt="프로필"
-          /></a>
-          <%} %>
+          <div class="login-On">
+            <a href="/users/"
+              ><img src="/static/img/icons/Profile.png" alt="프로필"
+            /></a>
+          </div>
+          <div class="login-Off">
+            <a href="users/login"
+              ><img src="/static/img/icons/Login.png" alt="로그인"
+            /></a>
+          </div>
         </div>
       </div>
     </div>

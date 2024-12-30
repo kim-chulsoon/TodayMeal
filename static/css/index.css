@@ -89,7 +89,20 @@ header > .inner > .searchBox input {
 header > .inner > .searchBox .searchIcon {
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  top: 20px;
+  cursor: pointer;
+}
+
+/* 검색 추천 */
+header .recDish {
+  text-align: center;
+}
+
+header .recDish button {
+  display: inline-block;
+  margin: 10px 5px;
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
@@ -173,6 +186,7 @@ footer {
   bottom: 0px;
   background-color: #fff;
   border-top: 1px solid #e4e4e4;
+  z-index: 2;
 }
 
 .mgnb > .menubox {
@@ -180,6 +194,58 @@ footer {
   height: 60px;
   align-items: center;
   justify-content: space-around;
+}
+
+/* 라운드 팝업 */
+.roundPopup {
+  width: 300px;
+  height: 60px;
+  border-radius: 20px;
+  background-color: var(--color-brand);
+  position: fixed;
+  left: 50%;
+  bottom: -60px;
+  /* bottom: 80px; */
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.roundPopupBG {
+  position: fixed;
+  bottom: -400px;
+  left: 0px;
+  width: 100%;
+  height: 400px;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: all 1s;
+}
+
+.roundPopup > .content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roundPopup > .content > p {
+  display: inline-block;
+  color: #fff;
+  line-height: 20px;
+}
+
+.roundPopup > .content > p > .register {
+  font-weight: bold;
+  color: #fff;
+  margin-right: 5px;
 }
 
 /* 작은 태블릿 이상 */
@@ -228,9 +294,12 @@ footer {
 
   header > .inner {
     width: 100%;
-    height: 80px;
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  header > .inner.search {
+    margin-top: 70px;
   }
 
   /* 로고 */

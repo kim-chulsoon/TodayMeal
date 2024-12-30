@@ -27,7 +27,7 @@ body {
 }
 
 .ani {
-  animation: Ani 1.3s 1 linear;
+  animation: Ani 1.5s 1 linear;
   transform: translateX(-100vw);
 }
 @keyframes Ani {
@@ -90,6 +90,7 @@ form > input {
   height: 50px;
   border: 1px solid lightgray;
   font-size: 16px;
+  text-indent: 10px;
 }
 /* radius */
 .userId {
@@ -108,7 +109,6 @@ form > button {
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
-  font-family: "Noto Sans KR", serif;
 }
 .loginB {
   background-color: #ff8675;
