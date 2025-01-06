@@ -39,7 +39,7 @@
     <!-- header, footer script -->
     <script defer src="/static/js/login_menu.js"></script>
 
-    <!-- JS (Axios 사용) -->
+    <!-- Axios CDN -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
@@ -96,7 +96,7 @@
     <%- include("./includes/footer") %>
 
     <script>
-      // .title!!!!!!!
+      // .title 변경
       document.querySelector(".title h3").innerText = "로그인";
       // 모바일 메뉴
       document.querySelector(".mgnb").style.display = "none";
@@ -139,7 +139,6 @@
         }
       }
 
-      // 메인 애니메이션
       function con() {
         const back = document.querySelector(".back");
         back.classList.add("ani");
