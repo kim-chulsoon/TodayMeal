@@ -9,6 +9,7 @@
       name="description"
       content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
     />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="오늘은 뭐 먹지? - <%= video.title %>" />
     <meta
@@ -24,11 +25,12 @@
     />
     <meta name="twitter:image" content="/static/img/logo/seoLogo.jpg" />
 
-
     <!-- common CSS -->
     <link rel="stylesheet" href="/static/css/common.css" />
     <!-- index CSS -->
     <link rel="stylesheet" href="/static/css/detail.css" />
+    <!-- header -->
+    <link rel="stylesheet" href="/static/css/header.css" />
 
   <!-- edit -->
   <link rel="stylesheet" href="/static/css/style.css">
@@ -49,7 +51,6 @@
       const noteStr = "<%= note ? JSON.stringify(note) : 'null' %>";
       const currentNote = noteStr === 'null' ? null : JSON.parse(noteStr);
     </script>
-
   </head>
   <body>
     <!-- header include -->
@@ -120,7 +121,7 @@
               <div id="ingData"></div>
             <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" onclick="console.log('Ingredients Delete Button Clicked'); deleteIngredientsMemo()">메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="deleteIngredientsMemo()">메모 삭제</button>
               <button type="button" class="btn btnClose" onclick="ingReset()">내용 초기화</button>
               <button type="button" class="btn btnClose" onclick="ingForm();">수정취소</button>
               <button type="button" class="btn btnOpen registr">등록</button>
@@ -153,7 +154,7 @@
               <div id="rcpData"></div>
             <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" onclick="console.log('Recipe Delete Button Clicked'); deleteRecipeMemo()">메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="deleteRecipeMemo()">메모 삭제</button>
               <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
             <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
             <button type="button" class="btn btnOpen registr" >등록</button>
@@ -202,6 +203,10 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="roundPopup">
+      <h1>내용입니다</h1>
     </div>
 
     <!-- edit -->

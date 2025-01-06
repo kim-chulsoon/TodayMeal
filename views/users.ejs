@@ -10,6 +10,7 @@
       name="description"
       content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
     />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="오늘은 뭐 먹지? - 회원정보" />
     <meta
@@ -27,15 +28,6 @@
 
     <!-- JS (jQuery 제거하고 Axios 사용) -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!--   css -->
-    <!-- common  -->
-    <link rel="stylesheet" href="/static/css/common.css" />
-    <!-- header -->
-    <link rel="stylesheet" href="/static/css/header.css" />
-    <!-- 회원가입 -->
-    <link rel="stylesheet" href="/static/css/register.css" />
-    <!-- footer -->
-    <link rel="stylesheet" href="/static/css/footer.css" />
 
     <!-- css -->
     <!-- common  -->
@@ -138,6 +130,10 @@
 
           if (response.data.success) {
             alert("회원 탈퇴가 완료되었습니다.");
+            //사파리 강제 삭제
+            document.cookie =
+              "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
             document.location.href = "/"; // 홈으로
           } else {
             alert("회원 탈퇴 중 오류가 발생했습니다.");

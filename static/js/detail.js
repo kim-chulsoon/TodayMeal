@@ -142,7 +142,6 @@ async function toggleBookmark() {
       );
 
       if (response.status === 201) {
-        console.log("북마크가 성공적으로 저장되었습니다!");
         alert("북마크가 성공적으로 저장되었습니다!");
       } else {
         throw new Error("북마크 저장 실패");
@@ -163,7 +162,6 @@ async function toggleBookmark() {
       });
 
       if (response.status === 200) {
-        console.log("북마크가 성공적으로 삭제되었습니다!");
         alert("북마크가 성공적으로 삭제되었습니다!");
       } else {
         throw new Error("북마크 삭제 실패");
@@ -171,7 +169,7 @@ async function toggleBookmark() {
     }
   } catch (error) {
     console.error("북마크 처리 중 오류 발생:", error.response?.data || error);
-    alert("북마크 처리 중 문제가 발생했습니다.");
+    alert("메모를 저장해주세요!");
     // 오류 발생 시 버튼 상태 복구
     if (btn.getAttribute("data-status") === "true") {
       btn.setAttribute("data-status", false);
@@ -717,17 +715,10 @@ function populateEditors(note) {
 
 // 메모 생성 또는 수정 함수 (디버그 로그 추가 버전)
 async function saveOrUpdateMemo(data, noteType) {
-  console.log("[DEBUG] saveOrUpdateMemo 호출됨:", data, noteType);
-
   const videoId = document.getElementById("videoId").value;
   const title = document.getElementById("title").value;
   const channelTitle = document.getElementById("channelTitle").value;
   const thumbnailUrl = document.getElementById("thumbnailUrl").value;
-
-  console.log("[DEBUG] videoId:", videoId);
-  console.log("[DEBUG] title:", title);
-  console.log("[DEBUG] channelTitle:", channelTitle);
-  console.log("[DEBUG] thumbnailUrl:", thumbnailUrl);
 
   try {
     const payload = {
@@ -738,8 +729,6 @@ async function saveOrUpdateMemo(data, noteType) {
       thumbnailUrl,
     };
 
-    console.log("[DEBUG] 전송할 payload:", payload);
-
     const response = await axios.post("/detail/notes", payload, {
       headers: {
         Authorization: `Bearer ${getAuthToken()}`,
@@ -747,15 +736,10 @@ async function saveOrUpdateMemo(data, noteType) {
       },
     });
 
-    console.log("[DEBUG] 서버 응답 status:", response.status);
-    console.log("[DEBUG] 서버 응답 data:", response.data);
-
     if (response.data.success) {
-      console.log("[DEBUG] 서버 응답 success:", response.data.success);
       alert(response.data.message || "메모가 저장되었습니다.");
 
       const updatedNote = response.data.note;
-      console.log("[DEBUG] updatedNote:", updatedNote);
 
       // 폼 전환 후 DOM 조작을 위한 Promise 기반 함수
       const updateReadonlyArea = (selector, noteContent, defaultMessage) => {
@@ -876,7 +860,6 @@ async function deleteIngredientsMemo() {
   }
 
   const noteId = noteIdElement.value;
-  console.log("Ingredients Note ID from JS:", noteId); // 디버깅 로그 추가
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
@@ -931,7 +914,6 @@ async function deleteRecipeMemo() {
   }
 
   const noteId = noteIdElement.value;
-  console.log("Recipe Note ID from JS:", noteId); // 디버깅 로그 추가
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");

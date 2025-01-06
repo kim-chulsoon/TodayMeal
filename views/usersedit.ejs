@@ -10,6 +10,7 @@
       name="description"
       content="매번 고민되는 한끼를 좀 더 쉽고 간편하게 찾고 요리할 수 있도록 레시피 정보와 메모기능을 제공하는 서비스입니다."
     />
+    <link rel="icon" href="/static/img/icons/favicon.ico" />
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="오늘은 뭐 먹지? - 회원정보수정" />
     <meta
@@ -151,7 +152,6 @@
           await axios.post("/users/logout"); // 로그아웃 요청
           alert("로그아웃되었습니다.");
           document.location.href = "/";
-          console.log("로그아웃");
         } catch (error) {
           console.error("로그아웃 오류:", error);
           alert("로그아웃 중 오류가 발생했습니다.");
@@ -183,7 +183,7 @@
           })
           .then((res) => {
             document.querySelector("#profileImage").src = "\\" + res.data;
-            console.log("파일경로", "/" + res.data);
+            "파일경로", "/" + res.data;
           })
           .catch((err) => {
             console.error("File upload error:", err);
@@ -205,8 +205,6 @@
           // URL 객체를 사용해 파싱
           const parsedUrl = new URL(imgSrc);
           const relativePath = parsedUrl.pathname;
-
-          console.log("경로:", relativePath);
 
           if (!userId || !userPw1 || !userPw2 || !userName || !userBirth) {
             alert("모든 항목을 입력해주세요");

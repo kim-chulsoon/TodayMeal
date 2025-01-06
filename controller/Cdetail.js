@@ -23,9 +23,7 @@ function getNextApiKey() {
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
   const user = req.user;
-  console.log("User:", user);
   if (!videoId) {
-    console.log("Video ID가 없습니다.");
     return res.render("detail", {
       video: null,
       error: "비디오 ID가 없습니다.",
@@ -36,8 +34,6 @@ exports.detail = async (req, res) => {
 
   // 캐싱된 결과가 있으면 반환
   if (cache[videoId]) {
-    console.log(`캐싱된 결과 사용: ${videoId}`);
-    console.log("캐시된 노트:", cache[videoId].note);
     return res.render("detail", {
       video: cache[videoId].video,
       note: cache[videoId].note || null,
@@ -60,7 +56,6 @@ exports.detail = async (req, res) => {
 
     const item = response.data.items[0];
     if (!item) {
-      console.log(`비디오를 찾을 수 없습니다: ${videoId}`);
       return res.render("detail", {
         video: null,
         error: "해당 비디오를 찾을 수 없습니다.",
@@ -92,7 +87,6 @@ exports.detail = async (req, res) => {
       note = await Notes.findOne({
         where: { videoId: videoRecord.id, userId: user.id },
       });
-      console.log("조회된 노트:", note);
     } else {
       console.log("비디오 레코드나 사용자가 없습니다.");
     }

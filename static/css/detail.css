@@ -40,7 +40,7 @@ header > .inner > .logoBox > .logoTitle {
 }
 
 /* PC 로그인/회원가입 */
-header > .inner > .logoBox > .gnb a:last-child {
+header > .inner > .logoBox > .gnb > a {
   margin-left: 10px;
 }
 
@@ -101,11 +101,13 @@ main .container .description .recipeHead {
 .bookmarkButton-off i {
   color: #333; /* 기본 아이콘 색상 */
   transition: color 0.3s ease;
+  margin-right: 2px;
 }
 
 .bookmarkButton-on i {
   color: red;
   animation: heartBeat 0.3s;
+  margin-right: 2px;
 }
 
 /* 하트 튀어오르게끔 스케일조정*/
@@ -260,6 +262,7 @@ main > .container .item .creator {
   margin-top: 10px;
   padding: 0px;
   font-size: 1rem;
+  font-weight: bold;
   color: var(--color-subtitle);
   cursor: pointer;
   /* 크기를 초과하면 ... 표시 */
@@ -460,7 +463,7 @@ footer {
   }
 
   /* PC 로그인/회원가입 */
-  header > .inner > .logoBox > .gnb a:last-child {
+  header > .inner > .logoBox .gnb a:last-child {
     margin-left: 10px;
   }
 
