@@ -22,7 +22,6 @@ function getNextApiKey() {
 // GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
-
   const user = req.user;
 
   if (!videoId) {
@@ -34,9 +33,7 @@ exports.detail = async (req, res) => {
     });
   }
 
-  console.log("tttt", cache[videoId]);
   // 캐싱된 결과가 있으면 반환
-
   if (cache[videoId]) {
     return res.render("detail", {
       video: cache[videoId].video,
@@ -45,7 +42,6 @@ exports.detail = async (req, res) => {
       user,
     });
   }
-
 
   try {
     const response = await axios.get(
@@ -133,7 +129,7 @@ exports.detail = async (req, res) => {
   }
 };
 
-// POST Notes
+/* POST /detail/notes */
 exports.createOrUpdateNotes = async (req, res) => {
   try {
     // 요청 본문에서 데이터 추출
@@ -194,7 +190,7 @@ exports.createOrUpdateNotes = async (req, res) => {
   }
 };
 
-// PATCH nullifyIngredients
+/* PATCH detail/notes/:id/ingredients*/
 exports.nullifyIngredients = async (req, res) => {
   const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
@@ -228,7 +224,7 @@ exports.nullifyIngredients = async (req, res) => {
   }
 };
 
-// PATCH nullifyRecipe
+/* PATCH detail/notes/:id/recipe*/
 exports.nullifyRecipe = async (req, res) => {
   const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
@@ -262,7 +258,7 @@ exports.nullifyRecipe = async (req, res) => {
   }
 };
 
-// DELETE notes
+/* POST detail/notes/delete */
 exports.deleteNote = async (req, res) => {
   const user = req.user; // authenticateToken 미들웨어에서 설정
   const { videoId } = req.body; // 클라이언트에서 전달된 videoId

@@ -8,7 +8,7 @@ const upload = require("../app");
 // JWT 시크릿 키
 const SECRET_KEY = process.env.SECRET_KEY;
 
-/* GET /users */
+/*  GET /users */
 exports.users = async (req, res) => {
   try {
     const user = req.user || null; // 인증된 사용자 정보 가져오기
@@ -94,6 +94,7 @@ exports.register = (req, res) => {
   res.render("register");
 };
 
+/* POST /users/register */
 //회원가입
 exports.userRegister = async (req, res) => {
   try {
@@ -135,6 +136,7 @@ exports.userRegister = async (req, res) => {
   }
 };
 
+/* POST /users/registerIdCheck */
 // 중복 아이디 체크
 exports.checkUserId = async (req, res) => {
   try {
@@ -161,8 +163,8 @@ exports.checkUserId = async (req, res) => {
   }
 };
 
+/* POST /users/login */
 // 로그인
-/* POST /users/userLogin */
 exports.userLogin = async (req, res) => {
   const { userId, userPw, autoLogin } = req.body;
 
@@ -209,7 +211,7 @@ exports.userLogin = async (req, res) => {
     return res.status(500).json({ message: "서버 오류 발생" });
   }
 };
-
+/* PATCH /users */
 //회원정보 수정
 exports.updateUserInfo = async (req, res) => {
   try {
@@ -252,6 +254,7 @@ exports.updateUserInfo = async (req, res) => {
   }
 };
 
+/* DELETE /users/delete */
 /**회원 탈퇴 **/
 exports.deleteUser = async (req, res) => {
   const userId = req.user.id;
@@ -274,6 +277,7 @@ exports.deleteUser = async (req, res) => {
     .json({ success: true, message: "회원 탈퇴가 완료되었습니다." });
 };
 
+/* POST /users/dynamicUpload */
 //파일 업로드
 exports.dynamicUpload = async (req, res) => {
   try {
@@ -285,7 +289,7 @@ exports.dynamicUpload = async (req, res) => {
   }
 };
 
-// /users/logout
+/* POST /users/logout */
 //로그아웃
 exports.logout = (req, res) => {
   try {
