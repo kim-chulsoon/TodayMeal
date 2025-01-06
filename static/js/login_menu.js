@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = document.cookie.includes("authToken=");
   const gnb = document.getElementById("gnb");
   const f_menu = document.getElementById("f_menu");
-
-  console.log("토큰", token);
   if (token) {
     // 로그인 상태
     gnb.innerHTML = `
@@ -29,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function logout() {
   try {
-    // 로그아웃 요청 전송
     const response = await axios.post(
       "/users/logout",
       {},
@@ -38,7 +35,7 @@ async function logout() {
 
     if (response.status === 200) {
       alert("로그아웃되었습니다.");
-      document.location.href = "/"; // 홈으로 리디렉션
+      document.location.href = "/";
     } else {
       alert("로그아웃에 실패했습니다.");
     }
