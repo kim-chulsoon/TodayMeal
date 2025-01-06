@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 
 const { Favorites, Videos } = require("../models"); // Favorite과 Video 모델을 가져옴
 
+/* GET /favorites  */
 exports.favorites = async (req, res) => {
   try {
     const user = req.user || null; // req.user가 없으면 null로 설정
@@ -40,6 +41,7 @@ exports.favorites = async (req, res) => {
   }
 };
 
+/* POST /favorites/save  */
 // 북마크 저장
 exports.saveBookmark = async (req, res) => {
   const user = req.user;
@@ -81,6 +83,7 @@ exports.saveBookmark = async (req, res) => {
   }
 };
 
+/* POST /favorites/delete  */
 // 북마크 삭제
 exports.deleteBookmark = async (req, res) => {
   const user = req.user;
@@ -114,20 +117,14 @@ exports.deleteBookmark = async (req, res) => {
   }
 };
 
-/** GET /favorites/status */
-// 즐겨찾기 상태 확인 컨트롤러
-
-/** GET /favorites/status  */
+/* GET /favorites/status  */
 // 즐겨찾기 상태 확인 컨트롤러
 exports.checkFavoriteStatus = async (req, res) => {
   const { videoId } = req.query; // 클라이언트에서 보낸 videoId 파라미터
 
- 
-
   if (!req.user || !req.user.id) {
     return res.status(401).json({ message: "로그인되지 않았습니다." });
   }
-
 
   const userId = req.user.id; // 로그인된 사용자 ID (미들웨어로부터 전달받음)
 
