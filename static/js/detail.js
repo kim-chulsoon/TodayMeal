@@ -94,7 +94,6 @@ function delAllMemo() {
       }
     })
     .catch((error) => {
-      console.error(error);
       alert("메모 삭제 중 오류가 발생했습니다.");
     });
 }
@@ -139,7 +138,6 @@ async function initializeBookmark() {
     const { isBookmarked, userId } = response.data; // 서버 응답 데이터에서 isBookmarked와 userId 추출
 
     if (!userId) {
-      console.log("로그인하지 않은 상태입니다. 북마크 초기화를 건너뜁니다.");
       return; // userId가 없으면 초기화 중단
     }
 
@@ -809,9 +807,6 @@ function initializeEditors() {
           await saveOrUpdateMemo(editorData, "recipe");
         });
       } else {
-        console.error(
-          "레시피 저장 버튼(.memoItem.rcp .registr)을 찾을 수 없습니다.",
-        );
       }
     })
     .catch((error) => {
@@ -852,20 +847,14 @@ async function saveOrUpdateMemo(data, noteType) {
     });
 
     if (response.data.success) {
-
       alert(response.data.message || "메모가 저장되었습니다.");
 
       const updatedNote = response.data.note;
-
 
       // noteIdContainer 업데이트
       const noteIdContainer = document.getElementById("noteIdContainer");
       if (noteIdContainer) {
         noteIdContainer.dataset.noteId = updatedNote.id;
-        console.log(
-          "[DEBUG] noteIdContainer 업데이트 완료:",
-          noteIdContainer.dataset.noteId,
-        );
       } else {
         console.error(
           "noteIdContainer가 존재하지 않습니다. HTML을 확인하세요.",
@@ -882,10 +871,6 @@ async function saveOrUpdateMemo(data, noteType) {
               readOnlyArea.value = noteContent || defaultMessage;
               resolve(); // 성공적으로 업데이트 완료 시 resolve 호출
             } else {
-              console.error(
-                defaultMessage.split("입력")[0] +
-                  " textarea를 찾을 수 없습니다!",
-              ); // 에러 메시지 개선
               resolve(); // 엘리먼트를 찾지 못해도 resolve 호출하여 다음 코드 진행
             }
           });
@@ -899,7 +884,6 @@ async function saveOrUpdateMemo(data, noteType) {
         if (ingredientContent) {
           ingredientContent.innerHTML =
             updatedNote.ingredients || "🫑재료를 입력해보세요!"; // HTML 형식으로 업데이트
-          console.log("[DEBUG] ingredientContent 업데이트 완료");
         } else {
           console.error(
             "ingredientContent 요소를 찾을 수 없습니다. HTML을 확인하세요.",
@@ -912,7 +896,6 @@ async function saveOrUpdateMemo(data, noteType) {
         if (RecipeContent) {
           RecipeContent.innerHTML =
             updatedNote.recipe || "🪄레시피를 입력해보세요!‍"; // HTML 형식으로 업데이트
-          console.log("[DEBUG] RecipeContent 업데이트 완료");
         } else {
           console.error(
             "RecipeContent 요소를 찾을 수 없습니다. HTML을 확인하세요.",
@@ -920,23 +903,9 @@ async function saveOrUpdateMemo(data, noteType) {
         }
       }
     } else {
-      // 중복 제거
-      console.error(
-        "[DEBUG] 응답은 성공(success)이 false입니다:",
-        response.data,
-      );
       alert(response.data.message || "메모가 저장되었습니다."); // 서버에서 메시지가 있으면 사용
     }
   } catch (error) {
-    console.error("[DEBUG] 메모 저장/업데이트 오류 발생:", error);
-
-    if (error.response) {
-      console.error("[DEBUG] error.response.status:", error.response.status);
-      console.error("[DEBUG] error.response.data:", error.response.data);
-    } else {
-      console.error("[DEBUG] error.message:", error.message);
-    }
-
     alert("메모 저장/업데이트 중 오류가 발생했습니다.");
   }
 }
@@ -971,7 +940,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   } catch (error) {
     // catch 블록 추가 및 위치 수정
-    console.error("DOMContentLoaded 이벤트 리스너 오류:", error);
   }
 });
 
@@ -996,13 +964,10 @@ function rcpReset() {
 // 재료 메모 삭제 함수
 async function deleteIngredientsMemo() {
   const noteIdContainer = document.getElementById("noteIdContainer"); // noteIdContainer를 사용
-  console.log("노트id", noteIdContainer);
   if (!noteIdContainer) {
-    console.error("noteIdContainer 요소를 찾을 수 없습니다.");
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
-
 
   const noteId = noteIdContainer.dataset.noteId; // noteIdContainer에서 ID 가져오기
 
@@ -1041,16 +1006,13 @@ async function deleteIngredientsMemo() {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("재료 메모 삭제 중 오류가 발생했습니다.");
   }
 }
 // 레시피 메모 삭제 함수
 async function deleteRecipeMemo() {
   const noteIdContainer = document.getElementById("noteIdContainer"); // noteIdContainer를 사용
-  console.log("노트id", noteIdContainer);
   if (!noteIdContainer) {
-    console.error("noteIdContainer 요소를 찾을 수 없습니다.");
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
@@ -1090,7 +1052,6 @@ async function deleteRecipeMemo() {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("레시피 메모 삭제 중 오류가 발생했습니다.");
   }
 }

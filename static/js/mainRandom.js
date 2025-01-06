@@ -21,11 +21,11 @@ function readFoodData() {
   fetch("static/util/food_data.xlsx")
     .then((response) => response.arrayBuffer())
     .then((data) => {
-      const workbook = XLSX.read(new Uint8Array(data), { type: "array" });
+      const workBook = XLSX.read(new Uint8Array(data), { type: "array" });
 
       // 첫 번째 시트만 읽어오기
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
+      const sheetName = workBook.SheetNames[0];
+      const sheet = workBook.Sheets[sheetName];
 
       // 시트를 JSON으로 변환
       const jsonData = XLSX.utils.sheet_to_json(sheet, {
