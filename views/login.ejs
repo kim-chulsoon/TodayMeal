@@ -104,7 +104,6 @@
       function logout() {
         localStorage.clear();
         document.location.href = "/";
-        console.log("로그아웃");
       }
 
       async function login() {
@@ -129,7 +128,6 @@
           const res = response.data;
 
           if (res.success) {
-            console.log("Token :", res.token);
             alert("로그인 성공!");
             window.location.href = "/";
           } else {

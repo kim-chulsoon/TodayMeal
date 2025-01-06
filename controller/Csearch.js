@@ -23,7 +23,6 @@ function getNextApiKey() {
 
 /* GET /video/search */
 exports.searchVideo = async (req, res) => {
-  console.log("검색어", req.query.keyword);
   const query = req.query.keyword;
   const pageToken = req.query.pageToken;
   const maxResults = 7;
@@ -65,7 +64,6 @@ exports.searchVideo = async (req, res) => {
       thumbnail: item.snippet.thumbnails.high.url,
     }));
 
-    console.log("검색 결과 비디오 개수", videos.length);
     res.render("search", {
       videos,
       error: null,
@@ -74,8 +72,6 @@ exports.searchVideo = async (req, res) => {
       prevPageToken: prevPageToken || null,
     });
   } catch (err) {
-    console.log("youtube api err", err.message);
-
     // API 키 변경 및 재시도
     currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
     if (currentKeyIndex === 0) {

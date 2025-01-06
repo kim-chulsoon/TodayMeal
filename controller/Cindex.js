@@ -25,7 +25,6 @@ const cache = {};
 async function getYouTubeVideos(keyword) {
   // 캐싱된 결과가 있으면 반환
   if (cache[keyword]) {
-    console.log(`캐싱된 결과 사용: ${keyword}`);
     return cache[keyword];
   }
 
@@ -83,8 +82,6 @@ exports.main = async (req, res) => {
 
     // YouTube API 데이터 가져오기
     const videos = await getYouTubeVideos(randomKeyword);
-
-    console.log("랜덤 요리 동영상 데이터:", videos);
 
     // 데이터를 main.ejs로 전달
     res.render("main", { videos });

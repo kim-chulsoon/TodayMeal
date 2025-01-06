@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const gnb = document.getElementById("gnb");
   const f_menu = document.getElementById("f_menu");
 
-  console.log("토큰", token);
   if (token) {
     // 로그인 상태
     gnb.innerHTML = `

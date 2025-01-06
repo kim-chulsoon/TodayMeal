@@ -26,7 +26,6 @@ function getAuthToken() {
 // 폼 제출 처리 함수
 async function submitMemoForm(form, type) {
   const authtoken = getAuthToken();
-  console.log("authtoken:", authtoken); // 디버깅용 로그
 
   if (!authtoken) {
     alert("로그인이 필요합니다.");
