@@ -188,7 +188,6 @@ async function toggleBookmark() {
       );
 
       if (response.status === 201) {
-        console.log("북마크가 성공적으로 저장되었습니다!");
         alert("북마크가 성공적으로 저장되었습니다!");
       } else {
         throw new Error("북마크 저장 실패");
@@ -209,7 +208,6 @@ async function toggleBookmark() {
       });
 
       if (response.status === 200) {
-        console.log("북마크가 성공적으로 삭제되었습니다!");
         alert("북마크가 성공적으로 삭제되었습니다!");
       } else {
         throw new Error("북마크 삭제 실패");
@@ -835,17 +833,10 @@ function populateEditors(note) {
 
 // 메모 생성 또는 수정 함수 (디버그 로그 추가 버전)
 async function saveOrUpdateMemo(data, noteType) {
-  console.log("[DEBUG] saveOrUpdateMemo 호출됨:", data, noteType);
-
   const videoId = document.getElementById("videoId").value;
   const title = document.getElementById("title").value;
   const channelTitle = document.getElementById("channelTitle").value;
   const thumbnailUrl = document.getElementById("thumbnailUrl").value;
-
-  console.log("[DEBUG] videoId:", videoId);
-  console.log("[DEBUG] title:", title);
-  console.log("[DEBUG] channelTitle:", channelTitle);
-  console.log("[DEBUG] thumbnailUrl:", thumbnailUrl);
 
   try {
     const payload = {
@@ -856,18 +847,16 @@ async function saveOrUpdateMemo(data, noteType) {
       thumbnailUrl,
     };
 
-    console.log("[DEBUG] 전송할 payload:", payload);
-
     const response = await axios.post("/detail/notes", payload, {
       withCredentials: true,
     });
 
-    console.log("[DEBUG] 서버 응답 status:", response.status);
-    console.log("[DEBUG] 서버 응답 data:", response.data);
-
     if (response.data.success) {
-      const updatedNote = response.data.note; // 여기서 updatedNote를 정의
-      console.log("[DEBUG] updatedNote:", updatedNote);
+
+      alert(response.data.message || "메모가 저장되었습니다.");
+
+      const updatedNote = response.data.note;
+
 
       // noteIdContainer 업데이트
       const noteIdContainer = document.getElementById("noteIdContainer");
@@ -1014,7 +1003,9 @@ async function deleteIngredientsMemo() {
     return;
   }
 
+
   const noteId = noteIdContainer.dataset.noteId; // noteIdContainer에서 ID 가져오기
+
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
     return;
@@ -1065,6 +1056,7 @@ async function deleteRecipeMemo() {
   }
 
   const noteId = noteIdContainer.dataset.noteId; // noteIdContainer에서 ID 가져오기
+
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
     return;

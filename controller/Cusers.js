@@ -19,7 +19,6 @@ exports.users = async (req, res) => {
     }
 
     const userId = user.id;
-    console.log("유저userid", userId);
 
     // User 테이블에서 사용자 정보 조회
     const userData = await User.findOne({
@@ -63,7 +62,6 @@ exports.edit = async (req, res) => {
     }
 
     const userId = user.id;
-    console.log("userid", userId);
 
     // User 테이블에서 사용자 정보 조회
     const userData = await User.findOne({
@@ -78,7 +76,6 @@ exports.edit = async (req, res) => {
         .json({ success: false, message: "사용자 정보를 찾을 수 없습니다." });
     }
 
-    console.log("userdata", userData);
     // 사용자 정보 반환
     res.render("usersedit", {
       success: true,
@@ -101,7 +98,6 @@ exports.register = (req, res) => {
 exports.userRegister = async (req, res) => {
   try {
     const { userId, userPw, userName, userBirth } = req.body; // 요청 데이터 구조에 맞게 수정
-    console.log(userName, userBirth);
 
     // 필수 항목 체크
     if (!userId || !userPw || !userName || !userBirth) {
@@ -143,7 +139,6 @@ exports.userRegister = async (req, res) => {
 exports.checkUserId = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log("아이디:", userId);
 
     if (!userId) {
       return res.status(400).json({ message: "아이디를 입력해주세요." });
@@ -170,7 +165,6 @@ exports.checkUserId = async (req, res) => {
 /* POST /users/userLogin */
 exports.userLogin = async (req, res) => {
   const { userId, userPw, autoLogin } = req.body;
-  console.log(userId, userPw, autoLogin);
 
   try {
     // 데이터베이스에서 사용자 조회
@@ -239,7 +233,7 @@ exports.updateUserInfo = async (req, res) => {
       const hashedPassword = await bcrypt.hash(newUserPw, saltRounds);
       updatedData.user_pw = hashedPassword;
     }
-    console.log("프로필이미지:", profileImage);
+
     // 다른 필드 업데이트
     if (newName) updatedData.name = newName;
     if (newBirthdate) updatedData.birthdate = newBirthdate;
@@ -261,7 +255,6 @@ exports.updateUserInfo = async (req, res) => {
 /**회원 탈퇴 **/
 exports.deleteUser = async (req, res) => {
   const userId = req.user.id;
-  console.log("탈퇴유저아디:", userId);
 
   // User 테이블에서 현재 로그인된 사용자의 데이터 삭제
   const deleted = await User.destroy({
@@ -284,9 +277,6 @@ exports.deleteUser = async (req, res) => {
 //파일 업로드
 exports.dynamicUpload = async (req, res) => {
   try {
-    console.log("Uploaded file info:", req.file);
-    console.log("Additional fields:", req.body);
-
     // 업데이트 성공 시 해당 경로를 응답
     res.send(req.file.path);
   } catch (error) {

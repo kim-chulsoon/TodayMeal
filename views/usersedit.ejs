@@ -164,7 +164,6 @@
           await axios.post("/users/logout"); // 로그아웃 요청
           alert("로그아웃되었습니다.");
           document.location.href = "/";
-          console.log("로그아웃");
         } catch (error) {
           console.error("로그아웃 오류:", error);
           alert("로그아웃 중 오류가 발생했습니다.");
@@ -178,7 +177,6 @@
 
       //파일 업로드
       function fileUpload(input) {
-        //const fileInput = document.getElementById("dynamicFile");
         const userId = document.querySelector(".userId2").value;
 
         const file = input.files[0];
@@ -196,7 +194,7 @@
           })
           .then((res) => {
             document.querySelector("#profileImage").src = "\\" + res.data;
-            console.log("파일경로", "/" + res.data);
+            "파일경로", "/" + res.data;
           })
           .catch((err) => {
             console.error("File upload error:", err);
@@ -218,8 +216,6 @@
           // URL 객체를 사용해 파싱
           const parsedUrl = new URL(imgSrc);
           const relativePath = parsedUrl.pathname;
-
-          console.log("경로:", relativePath);
 
           if (!userId || !userPw1 || !userPw2 || !userName || !userBirth) {
             alert("모든 항목을 입력해주세요");
