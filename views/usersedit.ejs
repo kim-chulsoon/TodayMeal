@@ -146,6 +146,18 @@
       // .title!!!!!!!
       document.querySelector(".title h3").innerText = "정보수정";
 
+      //로그인 상태 아니면 로그인 페이지로
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = document.cookie.includes("authToken=");
+
+        console.log("토큰 users", token);
+
+        if (!token) {
+          alert("로그인이 필요합니다.");
+          document.location.href = "/users/login";
+        }
+      });
+
       // 로그아웃
       async function logout() {
         try {
@@ -208,6 +220,12 @@
 
           if (!userId || !userPw1 || !userPw2 || !userName || !userBirth) {
             alert("모든 항목을 입력해주세요");
+            return false;
+          }
+
+          // 이름 길이 유효성 검사 12자 이하로만 가능
+          if (userName.length > 12) {
+            alert("이름은 12글자 이하로 입력해주세요.");
             return false;
           }
 

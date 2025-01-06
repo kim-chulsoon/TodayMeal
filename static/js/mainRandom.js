@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   recDishs.forEach((recDish) => {
     recDish.addEventListener("click", () => {
       searchForm.keyword.value = recDish.textContent;
+      searchForm.submit();
     });
   });
 });

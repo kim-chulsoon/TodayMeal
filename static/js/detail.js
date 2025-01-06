@@ -12,6 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginCheak(document.cookie.includes("authToken="));
   checkLoginStatus(document.cookie.includes("authToken="));
+
+  // HTML 태그 사용을 위한 코드 변환
+  const testaDiv = document.querySelector(".ingredientContent");
+  const decodedHTML = testaDiv.textContent; // 엔티티를 디코딩
+  testaDiv.innerHTML = decodedHTML; // 디코딩된 값을 innerHTML로 설정
+
+  const testaDiv2 = document.querySelector(".RecipeContent");
+  const decodedHTML2 = testaDiv2.textContent; // 엔티티를 디코딩
+  testaDiv2.innerHTML = decodedHTML2; // 디코딩된 값을 innerHTML로 설정
 });
 
 // 영상 설명 더보기/숨기기
@@ -58,8 +67,37 @@ function checkLoginStatus(status) {
   }
 }
 
-// 전체 메모삭제
-function delAllMemo() {}
+// 전체 메모 삭제
+function delAllMemo() {
+  // videoId 가져오기
+  const videoId = document.getElementById("videoId").value;
+
+  // 확인창
+  const confirmDelete = confirm("정말로 모든 메모를 삭제하시겠습니까?");
+  if (!confirmDelete) return;
+
+  axios
+    .post(
+      "detail/notes/delete",
+      { videoId }, // 요청 본문
+      {
+        withCredentials: true, // 쿠키를 전송할 수 있도록 설정
+      },
+    )
+    .then((response) => {
+      if (response.data.success) {
+        alert("모든 메모가 삭제되었습니다.");
+        // 페이지 새로고침
+        window.location.reload();
+      } else {
+        alert("메모 삭제 중 오류가 발생했습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("메모 삭제 중 오류가 발생했습니다.");
+    });
+}
 
 // 메모 보이기 안보이기
 function loginCheak(token) {
@@ -79,6 +117,8 @@ function loginCheak(token) {
       // 숨김
       loginAlert.classList.add("loginAlert-On");
       loginAlert.classList.remove("loginAlert-Off");
+      form[0].classList.add("blur");
+      form[1].classList.add("blur");
     }
   }
 }
@@ -96,7 +136,14 @@ async function initializeBookmark() {
       withCredentials: true,
     });
 
-    if (response.data.isBookmarked) {
+    const { isBookmarked, userId } = response.data; // 서버 응답 데이터에서 isBookmarked와 userId 추출
+
+    if (!userId) {
+      console.log("로그인하지 않은 상태입니다. 북마크 초기화를 건너뜁니다.");
+      return; // userId가 없으면 초기화 중단
+    }
+
+    if (isBookmarked) {
       // 북마크 상태일 경우
       btn.setAttribute("data-status", true); // 북마크 활성화
       btn.classList.add("bookmarkButton-on");
@@ -113,7 +160,6 @@ async function initializeBookmark() {
     }
   } catch (error) {
     console.error("북마크 초기화 중 오류 발생:", error.response?.data || error);
-    alert("북마크 상태를 확인할 수 없습니다.");
   }
 }
 
@@ -261,7 +307,6 @@ function initializeEditors() {
   const {
     ClassicEditor,
     Alignment,
-    Autoformat,
     AutoImage,
     Autosave,
     BlockQuote,
@@ -269,8 +314,17 @@ function initializeEditors() {
     Code,
     Essentials,
     FindAndReplace,
+    FontBackgroundColor,
+    FontColor,
+    FontFamily,
+    FontSize,
+    FullPage,
+    GeneralHtmlSupport,
     Heading,
     Highlight,
+    HorizontalLine,
+    HtmlComment,
+    HtmlEmbed,
     ImageBlock,
     ImageCaption,
     ImageInline,
@@ -286,10 +340,9 @@ function initializeEditors() {
     LinkImage,
     List,
     ListProperties,
-    Markdown,
-    MediaEmbed,
     Paragraph,
-    PasteFromMarkdownExperimental,
+    ShowBlocks,
+    SourceEditing,
     SpecialCharacters,
     SpecialCharactersArrows,
     SpecialCharactersCurrency,
@@ -315,9 +368,16 @@ function initializeEditors() {
   const ingDataConfig = {
     toolbar: {
       items: [
+        "sourceEditing",
+        "showBlocks",
         "findAndReplace",
         "|",
         "heading",
+        "|",
+        "fontSize",
+        "fontFamily",
+        "fontColor",
+        "fontBackgroundColor",
         "|",
         "bold",
         "italic",
@@ -326,12 +386,13 @@ function initializeEditors() {
         "code",
         "|",
         "specialCharacters",
+        "horizontalLine",
         "link",
         "insertImageViaUrl",
-        "mediaEmbed",
         "insertTable",
         "highlight",
         "blockQuote",
+        "htmlEmbed",
         "|",
         "alignment",
         "|",
@@ -345,7 +406,6 @@ function initializeEditors() {
     },
     plugins: [
       Alignment,
-      Autoformat,
       AutoImage,
       Autosave,
       BlockQuote,
@@ -353,8 +413,17 @@ function initializeEditors() {
       Code,
       Essentials,
       FindAndReplace,
+      FontBackgroundColor,
+      FontColor,
+      FontFamily,
+      FontSize,
+      FullPage,
+      GeneralHtmlSupport,
       Heading,
       Highlight,
+      HorizontalLine,
+      HtmlComment,
+      HtmlEmbed,
       ImageBlock,
       ImageCaption,
       ImageInline,
@@ -370,10 +439,9 @@ function initializeEditors() {
       LinkImage,
       List,
       ListProperties,
-      Markdown,
-      MediaEmbed,
       Paragraph,
-      PasteFromMarkdownExperimental,
+      ShowBlocks,
+      SourceEditing,
       SpecialCharacters,
       SpecialCharactersArrows,
       SpecialCharactersCurrency,
@@ -392,6 +460,13 @@ function initializeEditors() {
       TodoList,
       Underline,
     ],
+    fontFamily: {
+      supportAllValues: true,
+    },
+    fontSize: {
+      options: [10, 12, 14, "default", 18, 20, 22],
+      supportAllValues: true,
+    },
     heading: {
       options: [
         {
@@ -437,6 +512,16 @@ function initializeEditors() {
         },
       ],
     },
+    htmlSupport: {
+      allow: [
+        {
+          name: /^.*$/,
+          styles: true,
+          attributes: true,
+          classes: true,
+        },
+      ],
+    },
     image: {
       toolbar: [
         "toggleImageCaption",
@@ -449,7 +534,8 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "🌽🥬🫑<h3>재료를 입력해보세요!😊</h3>",
+    initialData:
+      "<h1>🥬🌽재료를 입력해보세요!</h1><h3>HTML 마크업, 이미지, 리스트 등 다양한 문서 속성을 지원합니다!</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -472,7 +558,7 @@ function initializeEditors() {
         reversed: true,
       },
     },
-    placeholder: "🌽🥬🫑 재료를 입력해주세요!😊",
+    placeholder: "Type or paste your content here!",
     table: {
       contentToolbar: [
         "tableColumn",
@@ -487,9 +573,16 @@ function initializeEditors() {
   const rcpDataConfig = {
     toolbar: {
       items: [
+        "sourceEditing",
+        "showBlocks",
         "findAndReplace",
         "|",
         "heading",
+        "|",
+        "fontSize",
+        "fontFamily",
+        "fontColor",
+        "fontBackgroundColor",
         "|",
         "bold",
         "italic",
@@ -498,12 +591,13 @@ function initializeEditors() {
         "code",
         "|",
         "specialCharacters",
+        "horizontalLine",
         "link",
         "insertImageViaUrl",
-        "mediaEmbed",
         "insertTable",
         "highlight",
         "blockQuote",
+        "htmlEmbed",
         "|",
         "alignment",
         "|",
@@ -517,7 +611,6 @@ function initializeEditors() {
     },
     plugins: [
       Alignment,
-      Autoformat,
       AutoImage,
       Autosave,
       BlockQuote,
@@ -525,8 +618,17 @@ function initializeEditors() {
       Code,
       Essentials,
       FindAndReplace,
+      FontBackgroundColor,
+      FontColor,
+      FontFamily,
+      FontSize,
+      FullPage,
+      GeneralHtmlSupport,
       Heading,
       Highlight,
+      HorizontalLine,
+      HtmlComment,
+      HtmlEmbed,
       ImageBlock,
       ImageCaption,
       ImageInline,
@@ -542,10 +644,9 @@ function initializeEditors() {
       LinkImage,
       List,
       ListProperties,
-      Markdown,
-      MediaEmbed,
       Paragraph,
-      PasteFromMarkdownExperimental,
+      ShowBlocks,
+      SourceEditing,
       SpecialCharacters,
       SpecialCharactersArrows,
       SpecialCharactersCurrency,
@@ -564,6 +665,13 @@ function initializeEditors() {
       TodoList,
       Underline,
     ],
+    fontFamily: {
+      supportAllValues: true,
+    },
+    fontSize: {
+      options: [10, 12, 14, "default", 18, 20, 22],
+      supportAllValues: true,
+    },
     heading: {
       options: [
         {
@@ -609,6 +717,16 @@ function initializeEditors() {
         },
       ],
     },
+    htmlSupport: {
+      allow: [
+        {
+          name: /^.*$/,
+          styles: true,
+          attributes: true,
+          classes: true,
+        },
+      ],
+    },
     image: {
       toolbar: [
         "toggleImageCaption",
@@ -621,7 +739,8 @@ function initializeEditors() {
         "resizeImage",
       ],
     },
-    initialData: "📌🪄<h3>레시피를 입력해보세요!🧑‍🍳</h3>",
+    initialData:
+      "<h1>🍎🍒🔥레시피를 입력해보세요!</h1><h3>HTML 마크업, 이미지, 리스트 등 다양한 문서 속성을 지원합니다!</h3>",
     language: "ko",
     licenseKey: LICENSE_KEY,
     link: {
@@ -644,7 +763,7 @@ function initializeEditors() {
         reversed: true,
       },
     },
-    placeholder: "📌🪄레시피를 입력해주세요!🧑‍🍳",
+    placeholder: "Type or paste your content here!",
     table: {
       contentToolbar: [
         "tableColumn",
@@ -660,7 +779,6 @@ function initializeEditors() {
   ClassicEditor.create(document.querySelector("#ingData"), ingDataConfig)
     .then((editor) => {
       ingEditor = editor;
-
       // 재료 저장 버튼에 *별도의* 이벤트 리스너 추가
       const ingSaveBtn = document.querySelector(".memoItem.ing .registr");
       if (ingSaveBtn) {
@@ -730,16 +848,29 @@ async function saveOrUpdateMemo(data, noteType) {
     };
 
     const response = await axios.post("/detail/notes", payload, {
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-        "Content-Type": "application/json",
-      },
+      withCredentials: true,
     });
 
     if (response.data.success) {
+
       alert(response.data.message || "메모가 저장되었습니다.");
 
       const updatedNote = response.data.note;
+
+
+      // noteIdContainer 업데이트
+      const noteIdContainer = document.getElementById("noteIdContainer");
+      if (noteIdContainer) {
+        noteIdContainer.dataset.noteId = updatedNote.id;
+        console.log(
+          "[DEBUG] noteIdContainer 업데이트 완료:",
+          noteIdContainer.dataset.noteId,
+        );
+      } else {
+        console.error(
+          "noteIdContainer가 존재하지 않습니다. HTML을 확인하세요.",
+        );
+      }
 
       // 폼 전환 후 DOM 조작을 위한 Promise 기반 함수
       const updateReadonlyArea = (selector, noteContent, defaultMessage) => {
@@ -762,19 +893,31 @@ async function saveOrUpdateMemo(data, noteType) {
       };
 
       if (noteType === "ingredients") {
-        ingForm();
-        await updateReadonlyArea(
-          ".memoItem.ing .ingForm textarea",
-          updatedNote.ingredients,
-          "🫑재료를 입력해보세요!",
-        );
+        ingForm(); // 폼 전환
+
+        const ingredientContent = document.querySelector(".ingredientContent");
+        if (ingredientContent) {
+          ingredientContent.innerHTML =
+            updatedNote.ingredients || "🫑재료를 입력해보세요!"; // HTML 형식으로 업데이트
+          console.log("[DEBUG] ingredientContent 업데이트 완료");
+        } else {
+          console.error(
+            "ingredientContent 요소를 찾을 수 없습니다. HTML을 확인하세요.",
+          );
+        }
       } else if (noteType === "recipe") {
-        rcpForm();
-        await updateReadonlyArea(
-          ".memoItem.rcp .rcpForm textarea",
-          updatedNote.recipe,
-          "🪄레시피를 입력해보세요!‍",
-        );
+        rcpForm(); // 폼 전환
+
+        const RecipeContent = document.querySelector(".RecipeContent");
+        if (RecipeContent) {
+          RecipeContent.innerHTML =
+            updatedNote.recipe || "🪄레시피를 입력해보세요!‍"; // HTML 형식으로 업데이트
+          console.log("[DEBUG] RecipeContent 업데이트 완료");
+        } else {
+          console.error(
+            "RecipeContent 요소를 찾을 수 없습니다. HTML을 확인하세요.",
+          );
+        }
       }
     } else {
       // 중복 제거
@@ -782,7 +925,7 @@ async function saveOrUpdateMemo(data, noteType) {
         "[DEBUG] 응답은 성공(success)이 false입니다:",
         response.data,
       );
-      alert(response.data.message || "메모 저장/업데이트 실패"); // 서버에서 메시지가 있으면 사용
+      alert(response.data.message || "메모가 저장되었습니다."); // 서버에서 메시지가 있으면 사용
     }
   } catch (error) {
     console.error("[DEBUG] 메모 저장/업데이트 오류 발생:", error);
@@ -852,14 +995,16 @@ function rcpReset() {
 
 // 재료 메모 삭제 함수
 async function deleteIngredientsMemo() {
-  const noteIdElement = document.getElementById("noteId_ing");
-  if (!noteIdElement) {
-    console.error("noteId_ing 요소를 찾을 수 없습니다.");
+  const noteIdContainer = document.getElementById("noteIdContainer"); // noteIdContainer를 사용
+  console.log("노트id", noteIdContainer);
+  if (!noteIdContainer) {
+    console.error("noteIdContainer 요소를 찾을 수 없습니다.");
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
 
-  const noteId = noteIdElement.value;
+
+  const noteId = noteIdContainer.dataset.noteId; // noteIdContainer에서 ID 가져오기
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
@@ -867,17 +1012,14 @@ async function deleteIngredientsMemo() {
   }
 
   if (!confirm("재료 메모를 삭제하시겠습니까?")) {
+    // document.querySelector(".ingredientContent").innerHTML = "";
     return;
   }
 
   try {
-    const response = await axios.patch(
-      `/detail/notes/${noteId}/ingredients`,
-      null,
-      {
-        withCredentials: true,
-      },
-    );
+    const response = await axios.patch(`/detail/notes/${noteId}/ingredients`, {
+      withCredentials: true,
+    });
 
     if (response.data.success) {
       alert(response.data.message);
@@ -889,7 +1031,7 @@ async function deleteIngredientsMemo() {
       }
 
       // 재료 <textarea> 요소 다시 표시 및 내용 비우기
-      const ingredientTextarea = document.querySelector(".ingredientTextarea");
+      const ingredientTextarea = document.querySelector(".ingredientContent");
 
       if (ingredientTextarea) {
         ingredientTextarea.style.display = "block"; // 또는 필요한 표시 방식으로 변경
@@ -899,33 +1041,32 @@ async function deleteIngredientsMemo() {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("재료 메모 삭제 오류:", error.response?.data || error);
+    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("재료 메모 삭제 중 오류가 발생했습니다.");
   }
 }
-
 // 레시피 메모 삭제 함수
 async function deleteRecipeMemo() {
-  const noteIdElement = document.getElementById("noteId_rcp");
-  if (!noteIdElement) {
-    console.error("noteId_rcp 요소를 찾을 수 없습니다.");
+  const noteIdContainer = document.getElementById("noteIdContainer"); // noteIdContainer를 사용
+  console.log("노트id", noteIdContainer);
+  if (!noteIdContainer) {
+    console.error("noteIdContainer 요소를 찾을 수 없습니다.");
     alert("내부 오류가 발생했습니다. 다시 시도해주세요.");
     return;
   }
 
-  const noteId = noteIdElement.value;
+  const noteId = noteIdContainer.dataset.noteId; // noteIdContainer에서 ID 가져오기
 
   if (!noteId) {
     alert("삭제할 메모가 없습니다.");
     return;
   }
-
   if (!confirm("레시피 메모를 삭제하시겠습니까?")) {
     return;
   }
 
   try {
-    const response = await axios.patch(`/detail/notes/${noteId}/recipe`, null, {
+    const response = await axios.patch(`/detail/notes/${noteId}/recipe`, {
       withCredentials: true,
     });
 
@@ -939,17 +1080,17 @@ async function deleteRecipeMemo() {
       }
 
       // 레시피 <textarea> 요소 다시 표시 및 내용 비우기
-      const recipeTextarea = document.querySelector(".RecipeTextarea");
+      const RecipeContent = document.querySelector(".RecipeContent");
 
-      if (recipeTextarea) {
-        recipeTextarea.style.display = "block"; // 또는 필요한 표시 방식으로 변경
-        recipeTextarea.textContent = ""; // 내용 비우기
+      if (RecipeContent) {
+        RecipeContent.style.display = "block"; // 또는 필요한 표시 방식으로 변경
+        RecipeContent.textContent = ""; // 내용 비우기
       }
     } else {
       alert(response.data.message || "메모 삭제에 실패했습니다.");
     }
   } catch (error) {
-    console.error("레시피 메모 삭제 오류:", error.response?.data || error);
+    console.error("Axios 오류:", error); // 오류 전체 내용 출력
     alert("레시피 메모 삭제 중 오류가 발생했습니다.");
   }
 }

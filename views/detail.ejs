@@ -50,6 +50,7 @@
     <script>
       const noteStr = "<%= note ? JSON.stringify(note) : 'null' %>";
       const currentNote = noteStr === 'null' ? null : JSON.parse(noteStr);
+
     </script>
   </head>
   <body>
@@ -98,7 +99,8 @@
       
       <div class="memoBox">
         <!-- 로그인이 안됐을때 메모작성을 막기 위한 로그인 알림창 -->
-        <div class="loginAlert loginAlert-On">
+        <div id="noteIdContainer" data-note-id=""></div>
+        <div class="loginAlert loginAlert-Off">
           <h3>지금 로그인하고<br> 메모 기능을 사용해보세요!</h3>
           <p>간편하게 재료와 레시피를 나의 스타일에 맞게 작성할 수 있습니다.</p>
           <div class="buttonBox">
@@ -107,22 +109,28 @@
           </div>
         </div>
         <!-- 재료 메모박스 -->
-        <div class="memoItem blur ing">
+        <div class="memoItem ing">
           <p class="title">재료 메모장</p>
           <form class="ingForm-Open" name="memo" method="post">
-            <input type="hidden" id="noteId_ing" value="<%= note ? note.id : '' %>">
+            <% if(note) { %>
+              <input type="hidden" id="noteId" value="<%= note.id %>">
               <input type="hidden" id="videoId" value="<%= video.videoId %>">
               <input type="hidden" id="title" value="<%= video.title %>">
               <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
               <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
-            <% if(note && note.ingredients) { %>
               <div id="ingData"><%= note.ingredients %></div>
             <% } else { %>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
+              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
+              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
               <div id="ingData"></div>
             <% } %>
             <div class="memoButtons">
-              <button type="button" class="btn btnClose" onclick="deleteIngredientsMemo()">메모 삭제</button>
-              <button type="button" class="btn btnClose" onclick="ingReset()">내용 초기화</button>
+
+              <button type="button" class="btn btnClose" onclick="deleteIngredientsMemo();" >메모 삭제</button>
+              <button type="button" class="btn btnClose" onclick="ingReset();">내용 초기화</button>
+
               <button type="button" class="btn btnClose" onclick="ingForm();">수정취소</button>
               <button type="button" class="btn btnOpen registr">등록</button>
             </div>
@@ -130,49 +138,58 @@
 
         <!-- 재료 뷰 -->
         <form class="ingForm" name="memo" method="post">
-          <textarea class="ingredientTextarea" readonly contenteditable="true">
-          </textarea>
-          <div class="memoButtons">
+          <div class="ingredientContent"><%= note && note.ingredients ? note.ingredients : '' %></div>
+          <div class="memoButtons" contenteditable="true">
             <button type="button" class="btn btnOpen" onclick="ingForm();">수정</button>
           </div>
         </form>
-      </div>
+        </div>
+
         <!-- 재료 메모박스 끝 -->
 
         <!-- 레시피 메모박스 -->
-        <div class="memoItem blur rcp">
+        <div class="memoItem rcp">
           <p class="title">레시피 메모장</p>
+    <% console.log('notee',note) %>
           <form class="rcpForm-Open" name="memo" method="post">
-            <input type="hidden" id="noteId_rcp" value="<%= note ? note.id : '' %>">
-            <input type="hidden" id="videoId" value="<%= video.videoId %>">
-            <input type="hidden" id="title" value="<%= video.title %>">
-            <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
-            <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
-            <% if(note && note.recipe) { %>
-              <div id="rcpData"><%= note.recipe %></div>
+            <% if (note) { %>
+              <input type="hidden" id="noteId_rcp" value="<%= note.id %>">
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+              <input type="hidden" id="title" value="<%= video.title %>">
+              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
+              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
+              <div id="rcpData"><%= note.ingredients || "null" %></div>
             <% } else { %>
+              <input type="hidden" id="videoId" value="<%= video.videoId %>">
+
+              <input type="hidden" id="title" value="<%= video.title %>">
+              <input type="hidden" id="thumbnailUrl" value="<%= video.thumbnail %>">
+              <input type="hidden" id="channelTitle" value="<%= video.channelTitle %>">
               <div id="rcpData"></div>
             <% } %>
             <div class="memoButtons">
               <button type="button" class="btn btnClose" onclick="deleteRecipeMemo()">메모 삭제</button>
-              <button type="button" class="btn btnClose" onclick="rcpReset()" >내용 초기화</button>
-            <button type="button" class="btn btnClose" onclick="rcpForm();">수정취소</button>
-            <button type="button" class="btn btnOpen registr" >등록</button>
+
+              <button type="button" class="btn btnClose" onclick="rcpReset()">내용 초기화</button>
+              <button type="button" class="btn btnClose" onclick="rcpForm()">수정취소</button>
+              <button type="button" class="btn btnOpen registr">등록</button>
+
             </div>
           </form>
-          <!-- 레시피 뷰 -->
-          <form  class="rcpForm" name="memo" method="post">
-            <textarea class="RecipeTextarea" readonly contenteditable="true"></textarea>
-            <div class="memoButtons">
-              <button type="button" class="btn btnOpen" onclick="rcpForm();" >수정</button>
-            </div>
-          </form>
+          
+       <!-- 레시피 뷰 -->
+        <form class="rcpForm" name="memo" method="post">
+          <div class="RecipeContent"><%= note && note.recipe ? note.recipe : '' %></div>
+          <div class="memoButtons">
+            <button type="button" class="btn btnOpen" onclick="rcpForm();">수정</button>
+          </div>
+        </form>
+
           <!-- 전체메모 삭제 -->
           <form method="post" class="delAllMemo">
             <button type="button" class="btn btnClose" onclick="delAllMemo()">전체메모 삭제</button>
           </form>
         </div>
-
          <!-- 레시피 메모박스 끝 -->
       </div>
     </main>
@@ -205,9 +222,7 @@
       </div>
     </div>
 
-    <div class="roundPopup">
-      <h1>내용입니다</h1>
-    </div>
+
 
     <!-- edit -->
     <script src="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.umd.js" crossorigin></script>

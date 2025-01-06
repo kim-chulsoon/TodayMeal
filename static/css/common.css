@@ -14,7 +14,7 @@
   --color-subtitle: #747474;
 }
 
-* {
+a {
   /* 링크에 대한 설정 */
   text-decoration: none;
   color: #000;

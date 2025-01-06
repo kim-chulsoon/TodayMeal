@@ -119,6 +119,18 @@
     // .title!!!!!!!
     document.querySelector(".title h3").innerText = "내정보";
 
+    //로그인 상태 아니면 로그인 페이지로
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = document.cookie.includes("authToken=");
+
+      console.log("토큰 users", token);
+
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        document.location.href = "/users/login";
+      }
+    });
+
     // 회원 탈퇴
     // 회원 탈퇴 함수
     async function confirmClick() {

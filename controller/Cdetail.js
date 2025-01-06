@@ -22,7 +22,9 @@ function getNextApiKey() {
 // GET detail
 exports.detail = async (req, res) => {
   const videoId = req.query.videoId;
+
   const user = req.user;
+
   if (!videoId) {
     return res.render("detail", {
       video: null,
@@ -32,7 +34,9 @@ exports.detail = async (req, res) => {
     });
   }
 
+  console.log("tttt", cache[videoId]);
   // 캐싱된 결과가 있으면 반환
+
   if (cache[videoId]) {
     return res.render("detail", {
       video: cache[videoId].video,
@@ -41,6 +45,7 @@ exports.detail = async (req, res) => {
       user,
     });
   }
+
 
   try {
     const response = await axios.get(
@@ -89,11 +94,26 @@ exports.detail = async (req, res) => {
       });
     } else {
       console.log("비디오 레코드나 사용자가 없습니다.");
+      note = {
+        id: null,
+        ingredients: "",
+        recipe: "",
+      };
     }
 
     // 캐시에 저장
     cache[videoId] = { video, note };
-
+    console.log("cacheeeee", cache);
+    if (cache[videoId]) {
+      console.log(`캐싱된 결과 사용: ${videoId}`);
+      console.log("캐시된 노트:", cache[videoId].note);
+      return res.render("detail", {
+        video: cache[videoId].video,
+        note: cache[videoId].note || null,
+        error: null,
+        user,
+      });
+    }
     res.render("detail", { video, note, error: null, user });
   } catch (err) {
     console.error("YouTube API 오류:", err.message);
@@ -116,37 +136,12 @@ exports.detail = async (req, res) => {
 // POST Notes
 exports.createOrUpdateNotes = async (req, res) => {
   try {
-    // 1. 요청 본문(req.body)에서 recipe 데이터 처리
-    if (req.body.recipe) {
-      // recipe 데이터가 존재하는지 확인
-      if (typeof req.body.recipe !== "string") {
-        // recipe가 문자열 타입이 아닌 경우 (객체 또는 배열일 가능성 높음)
-        try {
-          // JSON.stringify()를 사용하여 문자열로 변환 시도
-          req.body.recipe = JSON.stringify(req.body.recipe);
-        } catch (jsonError) {
-          // JSON 변환 중 오류 발생 시 (예: 순환 참조)
-          console.error("JSON 변환 오류:", jsonError); // 서버 콘솔에 오류 기록
-          return res.status(400).json({
-            // 클라이언트에게 400 Bad Request 응답 전송
-            success: false,
-            message:
-              "잘못된 레시피 데이터 형식입니다. 객체나 배열은 문자열 형태로 전송해야 합니다.",
-            error: jsonError.message, // 오류 메시지 포함
-          });
-        }
-      }
-    } else {
-      // recipe가 undefined 또는 null인 경우, 빈 문자열로 설정하여 DB에 저장
-      req.body.recipe = "";
-    }
-
-    // 2. 요청 본문에서 데이터 추출 (recipe는 위에서 처리되었음)
+    // 요청 본문에서 데이터 추출
     const { ingredients, recipe, title, videoId, thumbnailUrl, channelTitle } =
       req.body;
     const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
 
-    // 3. 비디오 정보 조회 또는 생성
+    // 비디오 정보 조회 또는 생성
     let video = await Videos.findOne({ where: { youtubeUrl: videoId } });
     if (!video) {
       video = await Videos.create({
@@ -157,19 +152,19 @@ exports.createOrUpdateNotes = async (req, res) => {
       });
     }
 
-    // 4. 기존 노트 조회
+    // 기존 노트 조회
     let existingNote = await Notes.findOne({
       where: { videoId: video.id, userId: user.id },
     });
 
-    // 5. 노트 생성 또는 업데이트
+    // 노트 생성 또는 업데이트
     if (!existingNote) {
-      // 5-1. 기존 노트가 없으면 새로 생성
+      // 기존 노트가 없으면 새로 생성
       const newNote = await Notes.create({
         userId: user.id,
         videoId: video.id,
-        ingredients,
-        recipe, // 위에서 문자열로 변환되었거나 빈 문자열임
+        ingredients: ingredients || "", // 전달된 값이 없으면 빈 문자열
+        recipe: recipe || "", // 전달된 값이 없으면 빈 문자열
       });
       return res.status(201).json({
         success: true,
@@ -177,11 +172,11 @@ exports.createOrUpdateNotes = async (req, res) => {
         note: newNote,
       });
     } else {
-      // 5-2. 기존 노트가 있으면 업데이트
+      // 기존 노트가 있으면 업데이트
       await existingNote.update({
         ingredients:
-          ingredients !== undefined ? ingredients : existingNote.ingredients,
-        recipe: recipe !== undefined ? recipe : existingNote.recipe, // 위에서 문자열로 변환되었거나 기존 값 유지
+          ingredients !== undefined ? ingredients : existingNote.ingredients, // 전달된 값이 없으면 기존 값 유지
+        recipe: recipe !== undefined ? recipe : existingNote.recipe, // 전달된 값이 없으면 기존 값 유지
       });
       return res.status(200).json({
         success: true,
@@ -190,12 +185,11 @@ exports.createOrUpdateNotes = async (req, res) => {
       });
     }
   } catch (err) {
-    // 6. 오류 처리
     console.error("createOrUpdateNotes 오류:", err);
     return res.status(500).json({
       success: false,
       message: "서버 오류가 발생했습니다.",
-      error: err.message, // 오류 메시지 포함 (디버깅에 유용)
+      error: err.message,
     });
   }
 };
@@ -204,7 +198,7 @@ exports.createOrUpdateNotes = async (req, res) => {
 exports.nullifyIngredients = async (req, res) => {
   const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정된 사용자 정보
-
+  console.log("서버 노트 id", noteId);
   try {
     // 노트 조회
     const note = await Notes.findOne({
@@ -230,7 +224,7 @@ exports.nullifyIngredients = async (req, res) => {
     console.error("재료 메모 삭제 오류:", err);
     return res
       .status(500)
-      .json({ success: false, message: "서버 오류가 발생했습니다." });
+      .json({ success: false, message: "서버 오류: " + error.message });
   }
 };
 
@@ -269,32 +263,44 @@ exports.nullifyRecipe = async (req, res) => {
 };
 
 // DELETE notes
-
 exports.deleteNote = async (req, res) => {
-  const noteId = req.params.id;
   const user = req.user; // authenticateToken 미들웨어에서 설정
+  const { videoId } = req.body; // 클라이언트에서 전달된 videoId
 
   try {
-    // 노트 조회
-    const note = await Notes.findOne({ where: { id: noteId } });
-
-    if (!note) {
+    if (!videoId) {
       return res
-        .status(404)
-        .json({ success: false, message: "메모를 찾을 수 없습니다." });
+        .status(400)
+        .json({ success: false, message: "videoId가 필요합니다." });
     }
 
-    // 노트의 소유자 확인
-    if (note.userId !== user.id) {
+    // Video 테이블에서 youtubeUrl과 일치하는 Video ID 가져오기
+    const video = await Videos.findOne({ where: { youtubeUrl: videoId } });
+
+    if (!video) {
       return res
-        .status(403)
-        .json({ success: false, message: "권한이 없습니다." });
+        .status(404)
+        .json({ success: false, message: "해당 비디오를 찾을 수 없습니다." });
+    }
+
+    // 해당 videoId(Video ID)와 userId에 해당하는 노트 조회
+    const notes = await Notes.findAll({
+      where: { videoId: video.id, userId: user.id },
+    });
+
+    if (!notes.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "삭제할 메모가 없습니다." });
     }
 
     // 노트 삭제
-    await note.destroy();
+    await Notes.destroy({ where: { videoId: video.id, userId: user.id } });
 
-    res.json({ success: true, message: "메모가 성공적으로 삭제되었습니다." });
+    res.json({
+      success: true,
+      message: "모든 메모가 성공적으로 삭제되었습니다.",
+    });
   } catch (err) {
     console.error("노트 삭제 오류:", err);
     res.status(500).json({ success: false, message: "서버 오류 발생" });
