@@ -160,8 +160,11 @@
           });
           if (response.data.success) {
             idP.innerText = "사용 가능한 아이디입니다.";
+
             idP.style.color = "rgba(160, 160, 160, 1)";
             isIdCheck = true;
+
+
           } else {
             idP.innerText = "이미 사용 중인 아이디입니다.";
             idP.style.color = "red";

@@ -99,7 +99,6 @@
       </div>
       <div class="pageBox">
         <ul class="pagination">
-          <!-- <%# if (prevPageToken) { %> -->
           <li class="page-item arrowLeft">
             <a
               href="/search/video?keyword=<%= query %>&pageToken=<%= prevPageToken %>"
@@ -108,7 +107,7 @@
               ></a
             >
           </li>
-          <%# } %> <% if (nextPageToken) { %>
+          <% if (nextPageToken) { %>
           <li class="page-item arrowRight">
             <a
               href="/search/video?keyword=<%= query %>&pageToken=<%= nextPageToken %>"
@@ -148,18 +147,5 @@
         </div>
       </div>
     </div>
-    <script>
-      function test() {
-        axios({
-          method: "get",
-          url: "/",
-          data: {},
-        })
-          .then((res) => {})
-          .catch((err) => {
-            console.log();
-          });
-      }
-    </script>
   </body>
 </html>

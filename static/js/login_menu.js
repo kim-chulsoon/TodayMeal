@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = document.cookie.includes("authToken=");
   const gnb = document.getElementById("gnb");
   const f_menu = document.getElementById("f_menu");
+
   if (token) {
     // 로그인 상태
     gnb.innerHTML = `
